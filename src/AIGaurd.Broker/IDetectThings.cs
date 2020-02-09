@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AIGaurd.Broker
 {
-    interface IDetectThings
+    public interface IDetectThings
     {
         public string ImagePath { get; set; }
     }

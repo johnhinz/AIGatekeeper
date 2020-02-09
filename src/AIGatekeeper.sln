@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGaurd.Broker", "AIGaurd.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.Interface", "AIGuard.Interface\AIGuard.Interface.csproj", "{039867F6-550B-420A-B583-52EF75367465}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.Console", "AIGuard.Console\AIGuard.Console.csproj", "{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGaurd.DeepStack", "AIGaurd.DeepStack\AIGaurd.DeepStack.csproj", "{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{039867F6-550B-420A-B583-52EF75367465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{039867F6-550B-420A-B583-52EF75367465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{039867F6-550B-420A-B583-52EF75367465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

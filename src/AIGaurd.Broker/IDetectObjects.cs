@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace AIGaurd.Broker
 {
-    interface IDetectObjects
+    public interface IDetectObjects 
     {
-        public Task DetectObjectsAsync(string imagePath);
+        public Task<IPredictions> DetectObjectsAsync(string imagePath);
     }
 }
