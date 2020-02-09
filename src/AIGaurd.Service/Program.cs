@@ -1,5 +1,8 @@
+using AIGaurd.Broker;
+using AIGaurd.DeepStack;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AIGaurd.Service
 {
@@ -14,7 +17,19 @@ namespace AIGaurd.Service
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services.AddSingleton<IDetectObjects, DetectObjects>((serviceProvider) =>
+                         {
+                             return new DetectObjects(@"http://vmhost.johnhinz.com:80/v1/vision/detection"); 
+                         }
+                    ) ;
+                    services.AddHostedService<Worker>((serviceProvider) =>
+                        {
+                            return new Worker(
+                                serviceProvider.GetService<ILogger<Worker>>(), 
+                                serviceProvider.GetService<IDetectObjects>(),
+                                @"c:\Temp");
+                        }
+                        );
                 });
     }
 }

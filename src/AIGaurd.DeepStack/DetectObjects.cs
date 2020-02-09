@@ -8,13 +8,11 @@ namespace AIGaurd.DeepStack
 {
     public class DetectObjects : IDetectObjects
     {
-        private readonly HttpClient _client;
         private readonly string _endPoint;
 
         public DetectObjects(string endPoint)
         {
-            
-            _endPoint = endPoint;
+           _endPoint = endPoint;
         }
         public async Task<IPredictions> DetectObjectsAsync(string imagePath)
         {
