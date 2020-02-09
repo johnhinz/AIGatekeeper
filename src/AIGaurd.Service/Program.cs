@@ -19,7 +19,7 @@ namespace AIGaurd.Service
                 {
                     services.AddSingleton<IDetectObjects, DetectObjects>((serviceProvider) =>
                          {
-                             return new DetectObjects(@"http://vmhost.johnhinz.com:80/v1/vision/detection"); 
+                             return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
                          }
                     ) ;
                     services.AddHostedService<Worker>((serviceProvider) =>
@@ -27,7 +27,7 @@ namespace AIGaurd.Service
                             return new Worker(
                                 serviceProvider.GetService<ILogger<Worker>>(), 
                                 serviceProvider.GetService<IDetectObjects>(),
-                                @"c:\Temp");
+                                hostContext.Configuration.GetSection("WatchFolder").Value);
                         }
                         );
                 });
