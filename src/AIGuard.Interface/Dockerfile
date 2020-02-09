@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["AIGuard/AIGuard.csproj", "AIGuard/"]
-RUN dotnet restore "AIGuard/AIGuard.csproj"
+COPY ["AIGuard.Interface/AIGuard.Interface.csproj", "AIGuard.Interface/"]
+RUN dotnet restore "AIGuard.Interface/AIGuard.Interface.csproj"
 COPY . .
-WORKDIR "/src/AIGuard"
-RUN dotnet build "AIGuard.csproj" -c Release -o /app/build
+WORKDIR "/src/AIGuard.Interface"
+RUN dotnet build "AIGuard.Interface.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AIGuard.csproj" -c Release -o /app/publish
+RUN dotnet publish "AIGuard.Interface.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AIGuard.dll"]
+ENTRYPOINT ["dotnet", "AIGuard.Interface.dll"]
