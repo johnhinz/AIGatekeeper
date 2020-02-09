@@ -1,5 +1,4 @@
 ﻿using AIGaurd.DeepStack;
-using System;
 using System.Threading.Tasks;
 
 namespace AIGuard.Console

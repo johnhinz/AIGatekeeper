@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AIGaurd.Broker
+﻿namespace AIGaurd.Broker
 {
     public interface IDetectedObject
     {
