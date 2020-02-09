@@ -9,7 +9,12 @@ namespace AIGuard.Console
         static async Task Main(string[] args)
         {
             DetectObjects objDetector = new DetectObjects("http://vmhost.johnhinz.com:80/v1/vision/detection");
-            var result = await objDetector.DetectObjectsAsync(@"C:\Temp\AIGarage.20200202_164055262.jpg");
+            var result = await objDetector.DetectObjectsAsync(@"C:\Temp\AIWest.20200208_220143497.jpg");
+            foreach (var item in result.Detections)
+            {
+                System.Console.WriteLine($"{item.Label} {item.Confidence}");
+            }
+            System.Console.ReadLine();
         }
     }
 }
