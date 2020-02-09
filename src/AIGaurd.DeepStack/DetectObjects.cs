@@ -14,7 +14,7 @@ namespace AIGaurd.DeepStack
         {
            _endPoint = endPoint;
         }
-        public async Task<IPredictions> DetectObjectsAsync(string imagePath)
+        public async Task<IPrediction> DetectObjectsAsync(string imagePath)
         {
             string jsonString = string.Empty;
             using (var _client = new HttpClient())

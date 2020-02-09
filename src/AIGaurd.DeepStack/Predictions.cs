@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace AIGaurd.DeepStack
 {
     [JsonObject("predictions")]
-    public class Predictions : IPredictions
+    public class Predictions : IPrediction
     {
         public Predictions()
         {

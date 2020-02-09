@@ -29,15 +29,13 @@ namespace AIGaurd.Service
             {
                 dirWatcher.Path = _path;
                 dirWatcher.NotifyFilter = NotifyFilters.FileName;
-                              
                 dirWatcher.Filter = "*.jpg";
                 dirWatcher.Created += OnChanged;
                 dirWatcher.EnableRaisingEvents = true;
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                    //await Task.Delay(1000, stoppingToken);
+                    
                 }
             }
         }
