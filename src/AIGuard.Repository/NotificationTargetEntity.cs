@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AIGuard.Repository
 {
-    public class NotificationTarget
+    public class NotificationTargetEntity
     {
         public Guid Id { get; set; }
         public NotificationEnum NotificationType { get; set; }
