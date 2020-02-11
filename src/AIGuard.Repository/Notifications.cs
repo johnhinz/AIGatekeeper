@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AIGuard.Repository
 {
-    public class FileEntity
+    public class Notification
     {
         public Guid Id { get; set; }
+        public string Method { get; set; }
+        public DateTime When { get; set; }
         public bool Success { get; set; }
-        public ICollection<ItemEntity> Items { get; set; }
-        public ICollection<Notification> Notifications { get; set; }
     }
 }
