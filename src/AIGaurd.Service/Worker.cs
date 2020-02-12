@@ -46,33 +46,31 @@ namespace AIGaurd.Service
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
-            
-            
-            var factory = new MqttFactory();
-            var mqttClient = factory.CreateMqttClient();
-            var options = new MqttClientOptionsBuilder()
-                .WithClientId("Client1")
-                .WithTcpServer("vmhost.johnhinz.com")
-                .WithCleanSession()
-                .Build();
-
-            mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
 
             var result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
-            
-            foreach (var item in result.Detections)
+            if (result.Success)
             {
-                _logger.LogInformation($"{item.Label} {item.Confidence}");
+                byte[] imageArray = File.ReadAllBytes(e.FullPath);
+                string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                result.base64Image = base64ImageRepresentation;
+
+                var factory = new MqttFactory();
+                var mqttClient = factory.CreateMqttClient();
+                var options = new MqttClientOptionsBuilder()
+                    .WithClientId("Client2")
+                    .WithTcpServer("vmhost.johnhinz.com")
+                    .WithCleanSession()
+                    .Build();
+
+                mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
+
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic($"AI/{e.Name.Split('.')[0]}/{e.Name}")
                     .WithPayload(JsonSerializer.Serialize<IPrediction>(result))
                     .Build();
                 mqttClient.PublishAsync(message, CancellationToken.None);
             }
-            if (result.Detections.Count() == 0)
-            {
-                _logger.LogInformation($"No objects found in {e.FullPath}");
-            }
+            
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
         }
     }
