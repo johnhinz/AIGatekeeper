@@ -14,5 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AIGaurd.DeepStack\AIGaurd.DeepStack.csproj" />
+    <ProjectReference Include="..\IRepository\IRepository.csproj" />
   </ItemGroup>
 </Project>

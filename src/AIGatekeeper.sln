@@ -11,11 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGaurd.API", "AIGaurd.API\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGaurd.Broker", "AIGaurd.Broker\AIGaurd.Broker.csproj", "{CEF2173A-DCFB-4E3A-A12C-69118BBA6F95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.Interface", "AIGuard.Interface\AIGuard.Interface.csproj", "{039867F6-550B-420A-B583-52EF75367465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.Interface", "AIGuard.Interface\AIGuard.Interface.csproj", "{039867F6-550B-420A-B583-52EF75367465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.Console", "AIGuard.Console\AIGuard.Console.csproj", "{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.Console", "AIGuard.Console\AIGuard.Console.csproj", "{FE7C2BFE-010B-42C1-8E0D-8355EC8B5517}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGaurd.DeepStack", "AIGaurd.DeepStack\AIGaurd.DeepStack.csproj", "{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGaurd.DeepStack", "AIGaurd.DeepStack\AIGaurd.DeepStack.csproj", "{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRepository", "IRepository\IRepository.csproj", "{BDA7F7B8-94DC-4829-947D-4B5F84E39376}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttRepository", "MqttRepository\MqttRepository.csproj", "{B6E38385-1F86-4F4D-A3B8-A9E9287EB2CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B5F314F-DDED-4F63-B376-B69DB3D9F3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDA7F7B8-94DC-4829-947D-4B5F84E39376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA7F7B8-94DC-4829-947D-4B5F84E39376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA7F7B8-94DC-4829-947D-4B5F84E39376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA7F7B8-94DC-4829-947D-4B5F84E39376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E38385-1F86-4F4D-A3B8-A9E9287EB2CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E38385-1F86-4F4D-A3B8-A9E9287EB2CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E38385-1F86-4F4D-A3B8-A9E9287EB2CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E38385-1F86-4F4D-A3B8-A9E9287EB2CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="mqttnet" Version="3.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AIGaurd.Broker\AIGaurd.Broker.csproj" />
+    <ProjectReference Include="..\IRepository\IRepository.csproj" />
+  </ItemGroup>
+
+</Project>

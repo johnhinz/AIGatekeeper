@@ -6,10 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using AIGaurd.Broker;
 using AIGaurd.DeepStack;
+using IRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
 using MQTTnet.Client.Options;
+using MQTTnet.Client.Publishing;
 
 namespace AIGaurd.Service
 {
@@ -18,12 +20,14 @@ namespace AIGaurd.Service
         private readonly string _path;
         private readonly ILogger<Worker> _logger;
         private readonly IDetectObjects _objDetector;
+        private readonly IPublish _publisher;
 
-        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, string imagePath)
+        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish publisher, string imagePath)
         {
             _path = imagePath;
             _logger = logger;
             _objDetector = objectDetector;
+            _publisher = publisher;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -54,21 +58,10 @@ namespace AIGaurd.Service
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
                 result.base64Image = base64ImageRepresentation;
 
-                var factory = new MqttFactory();
-                var mqttClient = factory.CreateMqttClient();
-                var options = new MqttClientOptionsBuilder()
-                    .WithClientId("Client2")
-                    .WithTcpServer("vmhost.johnhinz.com")
-                    .WithCleanSession()
-                    .Build();
 
-                mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
+                _publisher.PublishAsync<MqttClientPublishResult>(result, e.Name, CancellationToken.None);
 
-                var message = new MqttApplicationMessageBuilder()
-                    .WithTopic($"AI/{e.Name.Split('.')[0]}/{e.Name}")
-                    .WithPayload(JsonSerializer.Serialize<IPrediction>(result))
-                    .Build();
-                mqttClient.PublishAsync(message, CancellationToken.None);
+                
             }
             
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");

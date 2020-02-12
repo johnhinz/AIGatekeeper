@@ -1,0 +1,46 @@
+﻿using AIGaurd.Broker;
+using IRepository;
+using MQTTnet;
+using MQTTnet.Client;
+using MQTTnet.Client.Options;
+using MQTTnet.Client.Publishing;
+using System;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MqttRepository
+{
+    public class MqttPublish : IPublish
+    {
+        private readonly string _server;
+        private readonly string _clientName;
+
+        public MqttPublish(string server, string clientName)
+        {
+            _server = server;
+            _clientName = clientName;
+        }
+        public Task<TResult> PublishAsync<TResult>(IPrediction message, string source, CancellationToken token) where TResult : MqttClientPublishResult
+        {
+            var factory = new MqttFactory();
+            using (var mqttClient = factory.CreateMqttClient())
+            {
+                var options = new MqttClientOptionsBuilder()
+                    .WithClientId(_clientName)
+                    .WithTcpServer(_server)
+                    .WithCleanSession()
+                    .Build();
+
+                mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
+
+                var messageMqtt = new MqttApplicationMessageBuilder()
+                    .WithTopic($"AI/{source.Split('.')[0]}/{source}")
+                    .WithPayload(JsonSerializer.Serialize<IPrediction>(message))
+                    .Build();
+                return mqttClient.PublishAsync(messageMqtt, CancellationToken.None);
+            }
+            
+        }
+    }
+}
