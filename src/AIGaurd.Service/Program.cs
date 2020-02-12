@@ -30,9 +30,9 @@ namespace AIGaurd.Service
                                 serviceProvider.GetService<ILogger<Worker>>(), 
                                 serviceProvider.GetService<IDetectObjects>(),
                                 serviceProvider.GetService<IPublish<MqttClientPublishResult>>(),
-                                hostContext.Configuration.GetSection("WatchFolder").Value);
-                        }
-                        );
+                                hostContext.Configuration.GetSection("WatchFolder").Value,
+                                hostContext.Configuration.GetSection("WatchedExtensions").Value);
+                        });
                 });
     }
 }
