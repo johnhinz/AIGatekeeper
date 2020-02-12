@@ -1,4 +1,6 @@
-﻿namespace AIGaurd.Broker
+﻿using System.Collections.Generic;
+
+namespace AIGaurd.Broker
 {
     public interface IPrediction
     {

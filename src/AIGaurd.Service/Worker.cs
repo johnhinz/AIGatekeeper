@@ -1,12 +1,15 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using AIGaurd.Broker;
 using AIGaurd.DeepStack;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MQTTnet;
+using MQTTnet.Client.Options;
 
 namespace AIGaurd.Service
 {
@@ -43,10 +46,28 @@ namespace AIGaurd.Service
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
+            
+            
+            var factory = new MqttFactory();
+            var mqttClient = factory.CreateMqttClient();
+            var options = new MqttClientOptionsBuilder()
+                .WithClientId("Client1")
+                .WithTcpServer("vmhost.johnhinz.com")
+                .WithCleanSession()
+                .Build();
+
+            mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
+
             var result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
+            
             foreach (var item in result.Detections)
             {
                 _logger.LogInformation($"{item.Label} {item.Confidence}");
+                var message = new MqttApplicationMessageBuilder()
+                    .WithTopic($"AI/{e.Name.Split('.')[0]}/{e.Name}")
+                    .WithPayload(JsonSerializer.Serialize<IPrediction>(result))
+                    .Build();
+                mqttClient.PublishAsync(message, CancellationToken.None);
             }
             if (result.Detections.Count() == 0)
             {

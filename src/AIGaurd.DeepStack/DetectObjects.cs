@@ -9,7 +9,7 @@ namespace AIGaurd.DeepStack
     public class DetectObjects : IDetectObjects
     {
         private readonly string _endPoint;
-
+        public string ImagePath { get; set; }
         public DetectObjects(string endPoint)
         {
            _endPoint = endPoint;
@@ -17,17 +17,18 @@ namespace AIGaurd.DeepStack
         public async Task<IPrediction> DetectObjectsAsync(string imagePath)
         {
             string jsonString = string.Empty;
+            var request = new MultipartFormDataContent();
+            ImagePath = imagePath;
+            HttpResponseMessage output;
             using (var _client = new HttpClient())
             {
-                var request = new MultipartFormDataContent();
-                var image_data = File.OpenRead(imagePath);
-                request.Add(new StreamContent(image_data), "image", Path.GetFileName(imagePath));
-                var output = await _client.PostAsync(_endPoint, request);
-                jsonString = await output.Content.ReadAsStringAsync();
+                using (var image_data = File.OpenRead(imagePath))
+                {
+                    request.Add(new StreamContent(image_data), "image", Path.GetFileName(imagePath));
+                    output = await _client.PostAsync(_endPoint, request);
+                }
             }
-            return JsonConvert.DeserializeObject<Predictions>(jsonString);
+            return JsonConvert.DeserializeObject<Predictions>(await output.Content.ReadAsStringAsync());
         }
-
-      
     }
 }
