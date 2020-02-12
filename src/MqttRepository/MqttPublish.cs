@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MqttRepository
 {
-    public class MqttPublish : IPublish
+    public class MqttPublish : IPublish<MqttClientPublishResult>
     {
         private readonly string _server;
         private readonly string _clientName;
@@ -21,7 +21,7 @@ namespace MqttRepository
             _server = server;
             _clientName = clientName;
         }
-        public Task<TResult> PublishAsync<TResult>(IPrediction message, string source, CancellationToken token) where TResult : MqttClientPublishResult
+        public Task<MqttClientPublishResult> PublishAsync(IPrediction message, string source, CancellationToken token) 
         {
             var factory = new MqttFactory();
             using (var mqttClient = factory.CreateMqttClient())

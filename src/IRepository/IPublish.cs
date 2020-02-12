@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace IRepository
 {
-    public interface IPublish
+    public interface IPublish<TResult>
     {
-        public Task<TResult> PublishAsync<TResult>
+        public Task<TResult> PublishAsync
             (IPrediction message, string source, CancellationToken token);
     }
 }

@@ -20,9 +20,9 @@ namespace AIGaurd.Service
         private readonly string _path;
         private readonly ILogger<Worker> _logger;
         private readonly IDetectObjects _objDetector;
-        private readonly IPublish _publisher;
+        private readonly IPublish<MqttClientPublishResult> _publisher;
 
-        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish publisher, string imagePath)
+        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, string imagePath)
         {
             _path = imagePath;
             _logger = logger;
@@ -40,10 +40,7 @@ namespace AIGaurd.Service
                 dirWatcher.Created += OnChanged;
                 dirWatcher.EnableRaisingEvents = true;
 
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    
-                }
+                while (!stoppingToken.IsCancellationRequested) { }
             }
         }
 
@@ -57,11 +54,7 @@ namespace AIGaurd.Service
                 byte[] imageArray = File.ReadAllBytes(e.FullPath);
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
                 result.base64Image = base64ImageRepresentation;
-
-
-                _publisher.PublishAsync<MqttClientPublishResult>(result, e.Name, CancellationToken.None);
-
-                
+                _publisher.PublishAsync(result, e.Name, CancellationToken.None);
             }
             
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");

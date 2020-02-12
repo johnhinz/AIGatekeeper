@@ -1,8 +1,10 @@
 using AIGaurd.Broker;
 using AIGaurd.DeepStack;
+using IRepository;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MQTTnet.Client.Publishing;
 
 namespace AIGaurd.Service
 {
@@ -27,6 +29,7 @@ namespace AIGaurd.Service
                             return new Worker(
                                 serviceProvider.GetService<ILogger<Worker>>(), 
                                 serviceProvider.GetService<IDetectObjects>(),
+                                serviceProvider.GetService<IPublish<MqttClientPublishResult>>(),
                                 hostContext.Configuration.GetSection("WatchFolder").Value);
                         }
                         );
