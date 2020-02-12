@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
+using MqttRepository;
 
 namespace AIGaurd.Service
 {
@@ -24,6 +25,11 @@ namespace AIGaurd.Service
                              return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
                          }
                     ) ;
+                    services.AddTransient<IPublish<MqttClientPublishResult>>((serviceProvider) =>
+                    {
+                        return new MqttPublish(hostContext.Configuration.GetSection("MQTTEndpoint").Value, "AIClient");
+                    });
+
                     services.AddHostedService<Worker>((serviceProvider) =>
                         {
                             return new Worker(
