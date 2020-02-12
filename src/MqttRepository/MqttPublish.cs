@@ -34,6 +34,7 @@ namespace MqttRepository
 
                 mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
 
+                //TODO: need a better way to determine topic
                 var messageMqtt = new MqttApplicationMessageBuilder()
                     .WithTopic($"AI/{source.Split('.')[0]}/{source}")
                     .WithPayload(JsonSerializer.Serialize<IPrediction>(message))

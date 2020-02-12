@@ -5,6 +5,5 @@ namespace AIGaurd.Broker
     public interface IDetectObjects 
     {
         public Task<IPrediction> DetectObjectsAsync(string imagePath);
-        public string ImagePath { get; set; }
     }
 }

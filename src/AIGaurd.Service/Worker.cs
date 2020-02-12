@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,12 +55,20 @@ namespace AIGaurd.Service
 
             if (_watchedExtensions.Any(ext => e.Name.EndsWith(ext)))
             {
-                var result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
-                if (result.Success)
+                try
                 {
-                    result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                    _publisher.PublishAsync(result, e.Name, CancellationToken.None);
+                    IPrediction result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
+                    if (result.Success)
+                    {
+                        result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+                        _publisher.PublishAsync(result, e.Name, CancellationToken.None);
+                    }
                 }
+                catch (HttpRequestException ex)
+                {
+                    _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}");
+                }
+
             }
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
         }
