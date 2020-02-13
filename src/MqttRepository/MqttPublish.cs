@@ -36,7 +36,7 @@ namespace MqttRepository
 
                 //TODO: need a better way to determine topic
                 var messageMqtt = new MqttApplicationMessageBuilder()
-                    .WithTopic($"AI/{source.Split('.')[0]}/{source}")
+                    .WithTopic($"AI/{source.Split('.')[0]}")
                     .WithPayload(JsonSerializer.Serialize<IPrediction>(message))
                     .Build();
                 return mqttClient.PublishAsync(messageMqtt, CancellationToken.None);
