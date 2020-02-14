@@ -5,7 +5,9 @@ using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using MQTTnet.Client.Publishing;
 using System;
+using System.Diagnostics.Contracts;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,11 +17,19 @@ namespace MqttRepository
     {
         private readonly string _server;
         private readonly string _clientName;
+        private readonly string _regexPattern;
+        private readonly int _position;
+        private readonly string _queueName;
 
-        public MqttPublish(string server, string clientName)
+        public MqttPublish(string server, string clientName, string regexPattern, int position, string queueName)
         {
+            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(server), "MqttPublish:server cannot be null");
+            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(queueName), "MqttPublish:queueName cannot be null");
             _server = server;
             _clientName = clientName;
+            _regexPattern = regexPattern;
+            _position = position;
+            _queueName = queueName;
         }
         public Task<MqttClientPublishResult> PublishAsync(IPrediction message, string source, CancellationToken token) 
         {
@@ -34,9 +44,13 @@ namespace MqttRepository
 
                 mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
 
-                //TODO: need a better way to determine topic
+                string[] topicName = Regex.Split(source, _regexPattern);
+                if (!(topicName.Length > _position))
+                {
+                    throw new ArgumentOutOfRangeException("Sub-topic name cannot be determined.");
+                }
                 var messageMqtt = new MqttApplicationMessageBuilder()
-                    .WithTopic($"AI/{source.Split('.')[0]}")
+                    .WithTopic($"{_queueName}/{topicName[_position]}")
                     .WithPayload(JsonSerializer.Serialize<IPrediction>(message))
                     .Build();
                 return mqttClient.PublishAsync(messageMqtt, CancellationToken.None);

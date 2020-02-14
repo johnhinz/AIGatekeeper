@@ -27,7 +27,12 @@ namespace AIGaurd.Service
                     ) ;
                     services.AddTransient<IPublish<MqttClientPublishResult>>((serviceProvider) =>
                     {
-                        return new MqttPublish(hostContext.Configuration.GetSection("MQTTEndpoint").Value, "AIClient");
+                        return new MqttPublish(
+                            hostContext.Configuration.GetSection("MQTTEndpoint").Value,
+                            "AIPublisher",
+                            "\\.",
+                            0,
+                            "AI");
                     });
 
                     services.AddHostedService<Worker>((serviceProvider) =>
