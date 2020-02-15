@@ -7,7 +7,18 @@ The library has abstracted the AI dicovery tool and the repository.  There are i
 An implementation of AI discovery tool that corresponds to AIGaurd.Broker and a repository that corresponds to AIGaurd.IRepository.
 
 ## Installation
-appsettings configuration:
+Configuration parmeters:
 ```
-AIEndpoint : the URL of the AI discovery tool.
+AIEndpoint : The URL of the AI discovery tool.
+PublisherName : The client name connecting to the repository
+TopicParser : A regex that determines the topic as derived from the image file name
+TopicPosition : The position of the topic as derived from the image file name
+QueueName : The repository queue name
+WatchFolder : The folder to watch for new files.  These files are passed to the AIEndpoint for discovery
+WatchedExtensions : The file extension types passed to the AIEndpoint (these file types, if created in the watch folder will be passed to the AIEndpoint)
+RepositoryEndpoint : The repository endpoint.
+WatchedObjects : A Javascript object containing the items that trigger a write to the repository
+  { 
+    "person": "0.75" : Items of interest and the confidence level that trigger a repository write
+  }
 ```

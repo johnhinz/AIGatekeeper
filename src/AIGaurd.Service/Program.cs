@@ -31,7 +31,7 @@ namespace AIGaurd.Service
                     services.AddTransient<IPublish<MqttClientPublishResult>>((serviceProvider) =>
                     {
                         return new MqttPublish(
-                            hostContext.Configuration.GetSection("MQTTEndpoint").Value,
+                            hostContext.Configuration.GetSection("RepositoryEndpoint").Value,
                             hostContext.Configuration.GetSection("PublisherName").Value,
                             hostContext.Configuration.GetSection("TopicParser").Value,
                             int.Parse(hostContext.Configuration.GetSection("TopicPosition").Value),
