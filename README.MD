@@ -8,4 +8,6 @@ An implementation of AI discovery tool that corresponds to AIGaurd.Broker and a 
 
 ## Installation
 appsettings configuration:
-'AIEndpoint' the URL of the AI discovery tool.
+'''
+AIEndpoint : the URL of the AI discovery tool.
+'''
