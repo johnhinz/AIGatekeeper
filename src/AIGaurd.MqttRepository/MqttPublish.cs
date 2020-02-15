@@ -1,17 +1,15 @@
 ﻿using AIGaurd.Broker;
-using IRepository;
+using AIGaurd.IRepository;
 using MQTTnet;
-using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using MQTTnet.Client.Publishing;
 using System;
-using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MqttRepository
+namespace AIGuard.MqttRepository
 {
     public class MqttPublish : IPublish<MqttClientPublishResult>
     {
@@ -23,10 +21,10 @@ namespace MqttRepository
 
         public MqttPublish(string server, string clientName, string regexPattern, int position, string queueName)
         {
-            //Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(server),
-            //                                         "MqttPublish:server cannot be null");
-            //Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(queueName),
-            //    "MqttPublish:queueName cannot be null");
+            if (string.IsNullOrEmpty(server)) throw new ArgumentNullException("MqttPublish:server cannot be null");
+            if (string.IsNullOrEmpty(regexPattern)) throw new ArgumentNullException("MqttPublish:regexPattern cannot be null");
+            if (position < 0) throw new ArgumentOutOfRangeException("MqttPublish:position < 0");
+
             _server = server;
             _clientName = clientName;
             _regexPattern = regexPattern;
@@ -51,7 +49,8 @@ namespace MqttRepository
                 {
                     throw new ArgumentOutOfRangeException("Sub-topic name cannot be determined.");
                 }
-                return mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                return mqttClient.PublishAsync(
+                                new MqttApplicationMessageBuilder()
                                         .WithTopic($"{_queueName}/{topicName[_position]}")
                                         .WithPayload(JsonSerializer.Serialize(message))
                                         .Build(), 

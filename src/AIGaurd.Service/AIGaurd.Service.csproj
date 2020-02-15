@@ -14,8 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AIGaurd.Broker\AIGaurd.Broker.csproj" />
     <ProjectReference Include="..\AIGaurd.DeepStack\AIGaurd.DeepStack.csproj" />
-    <ProjectReference Include="..\IRepository\IRepository.csproj" />
-    <ProjectReference Include="..\MqttRepository\MqttRepository.csproj" />
+    <ProjectReference Include="..\AIGaurd.IRepository\AIGaurd.IRepository.csproj" />
+    <ProjectReference Include="..\AIGaurd.MqttRepository\AIGaurd.MqttRepository.csproj" />
   </ItemGroup>
 </Project>

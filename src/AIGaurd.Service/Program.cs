@@ -1,13 +1,12 @@
 using AIGaurd.Broker;
 using AIGaurd.DeepStack;
-using IRepository;
+using AIGaurd.IRepository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
-using MqttRepository;
-using Newtonsoft.Json;
+using AIGuard.MqttRepository;
 using System.Collections.Generic;
 
 namespace AIGaurd.Service

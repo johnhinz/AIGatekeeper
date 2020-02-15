@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AIGaurd.Broker\AIGaurd.Broker.csproj" />
-    <ProjectReference Include="..\IRepository\IRepository.csproj" />
+    <ProjectReference Include="..\AIGaurd.IRepository\AIGaurd.IRepository.csproj" />
   </ItemGroup>
 
 </Project>

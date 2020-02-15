@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IRepository
+namespace AIGaurd.IRepository
 {
     public interface IPublish<TResult>
     {
