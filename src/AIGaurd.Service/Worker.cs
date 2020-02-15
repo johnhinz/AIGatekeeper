@@ -46,7 +46,10 @@ namespace AIGaurd.Service
                 dirWatcher.Created += OnChanged;
                 dirWatcher.EnableRaisingEvents = true;
 
-                while (!stoppingToken.IsCancellationRequested) { }
+                while (!stoppingToken.IsCancellationRequested) 
+                {
+                    Thread.Sleep(100);
+                }
             }
         }
 

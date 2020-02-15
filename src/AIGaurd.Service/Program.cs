@@ -21,9 +21,10 @@ namespace AIGaurd.Service
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddSingleton<IDetectObjects, DetectObjects>((serviceProvider) =>
+                    services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>
                          {
                              return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
                          }

@@ -23,10 +23,10 @@ namespace MqttRepository
 
         public MqttPublish(string server, string clientName, string regexPattern, int position, string queueName)
         {
-            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(server),
-                                                     "MqttPublish:server cannot be null");
-            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(queueName),
-                "MqttPublish:queueName cannot be null");
+            //Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(server),
+            //                                         "MqttPublish:server cannot be null");
+            //Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(queueName),
+            //    "MqttPublish:queueName cannot be null");
             _server = server;
             _clientName = clientName;
             _regexPattern = regexPattern;
