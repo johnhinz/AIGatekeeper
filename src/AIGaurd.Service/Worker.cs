@@ -78,8 +78,11 @@ namespace AIGaurd.Service
                         {
                             if(_watchedObjects.ContainsKey(detection.Label))
                             {
-                                targetFound = detection.Confidence >= _watchedObjects[detection.Label];
-                                break;
+                                if (targetFound = detection.Confidence >= _watchedObjects[detection.Label])
+                                {
+                                    targetFound = true;
+                                    break;
+                                }
                             }
                         }
                         if (targetFound)
