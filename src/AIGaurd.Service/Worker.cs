@@ -24,15 +24,16 @@ namespace AIGaurd.Service
         private readonly IDetectObjects _objDetector;
         private readonly IPublish<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
+        private readonly IDictionary<string, float> _watchedObjects;
 
-        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, string imagePath, string watchedExtensions)
+        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
         {
             _path = imagePath;
             _logger = logger;
             _objDetector = objectDetector;
             _publisher = publisher;
             _watchedExtensions = watchedExtensions.Split(';').ToList();
-
+            _watchedObjects = watchedObjects;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -57,20 +58,71 @@ namespace AIGaurd.Service
             {
                 try
                 {
+                    IsFileClosed(e.FullPath, true);
+
                     IPrediction result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
                     if (result.Success)
                     {
-                        result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                        _publisher.PublishAsync(result, e.Name, CancellationToken.None);
+                        // nothing found worth notifying
+                        if (!result.Detections.Any(d => _watchedObjects.ContainsKey(d.Label)))
+                        {
+                            return;
+                        }
+
+                        // confirm confidence is above lower limit
+                        bool targetFound = false;
+                        foreach (var detection in result.Detections)
+                        {
+                            if(_watchedObjects.ContainsKey(detection.Label))
+                            {
+                                targetFound = detection.Confidence >= _watchedObjects[detection.Label];
+                                break;
+                            }
+                        }
+                        if (targetFound)
+                        {
+                            result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+                            _publisher.PublishAsync(result, e.Name, CancellationToken.None);
+                        }
                     }
                 }
                 catch (HttpRequestException ex)
                 {
-                    _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}");
+                    _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}:{ex.Message}");
                 }
 
             }
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
+        }
+
+        private bool IsFileClosed(string filepath, bool wait)
+        {
+            bool fileClosed = false;
+            int retries = 20;
+            const int delay = 500; // Max time spent here = retries*delay milliseconds
+
+            if (!File.Exists(filepath))
+                return false;
+            do
+            {
+                try
+                {
+                    // Attempts to open then close the file in RW mode, denying other users to place any locks.
+                    FileStream fs = File.Open(filepath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                    fs.Close();
+                    fileClosed = true; // success
+                }
+                catch (IOException) { }
+
+                if (!wait) break;
+
+                retries--;
+
+                if (!fileClosed)
+                    Thread.Sleep(delay);
+            }
+            while (!fileClosed && retries > 0);
+            return fileClosed;
         }
     }
 }

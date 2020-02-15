@@ -23,8 +23,10 @@ namespace MqttRepository
 
         public MqttPublish(string server, string clientName, string regexPattern, int position, string queueName)
         {
-            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(server), "MqttPublish:server cannot be null");
-            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(queueName), "MqttPublish:queueName cannot be null");
+            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(server),
+                                                     "MqttPublish:server cannot be null");
+            Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(queueName),
+                "MqttPublish:queueName cannot be null");
             _server = server;
             _clientName = clientName;
             _regexPattern = regexPattern;
@@ -49,11 +51,11 @@ namespace MqttRepository
                 {
                     throw new ArgumentOutOfRangeException("Sub-topic name cannot be determined.");
                 }
-                var messageMqtt = new MqttApplicationMessageBuilder()
-                    .WithTopic($"{_queueName}/{topicName[_position]}")
-                    .WithPayload(JsonSerializer.Serialize<IPrediction>(message))
-                    .Build();
-                return mqttClient.PublishAsync(messageMqtt, CancellationToken.None);
+                return mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                                        .WithTopic($"{_queueName}/{topicName[_position]}")
+                                        .WithPayload(JsonSerializer.Serialize(message))
+                                        .Build(), 
+                                 CancellationToken.None);
             }
             
         }

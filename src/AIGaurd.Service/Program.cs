@@ -1,11 +1,14 @@
 using AIGaurd.Broker;
 using AIGaurd.DeepStack;
 using IRepository;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
 using MqttRepository;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace AIGaurd.Service
 {
@@ -29,10 +32,10 @@ namespace AIGaurd.Service
                     {
                         return new MqttPublish(
                             hostContext.Configuration.GetSection("MQTTEndpoint").Value,
-                            "AIPublisher",
-                            "\\.",
-                            0,
-                            "AI");
+                            hostContext.Configuration.GetSection("PublisherName").Value,
+                            hostContext.Configuration.GetSection("TopicParser").Value,
+                            int.Parse(hostContext.Configuration.GetSection("TopicPosition").Value),
+                            hostContext.Configuration.GetSection("QueueName").Value);
                     });
 
                     services.AddHostedService<Worker>((serviceProvider) =>
@@ -41,6 +44,7 @@ namespace AIGaurd.Service
                                 serviceProvider.GetService<ILogger<Worker>>(), 
                                 serviceProvider.GetService<IDetectObjects>(),
                                 serviceProvider.GetService<IPublish<MqttClientPublishResult>>(),
+                                hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string,float>>(),
                                 hostContext.Configuration.GetSection("WatchFolder").Value,
                                 hostContext.Configuration.GetSection("WatchedExtensions").Value);
                         });
