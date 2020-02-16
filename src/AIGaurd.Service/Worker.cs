@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using AIGaurd.Broker;
-using AIGaurd.DeepStack;
 using AIGaurd.IRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MQTTnet;
-using MQTTnet.Client.Options;
 using MQTTnet.Client.Publishing;
 
 namespace AIGaurd.Service
@@ -28,6 +24,9 @@ namespace AIGaurd.Service
 
         public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
         {
+            if (string.IsNullOrEmpty(imagePath)) throw new ArgumentNullException("Worker:imagePath cannot be null.");
+            if (string.IsNullOrEmpty(watchedExtensions)) throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
+
             _path = imagePath;
             _logger = logger;
             _objDetector = objectDetector;
@@ -56,36 +55,17 @@ namespace AIGaurd.Service
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
-
             if (_watchedExtensions.Any(ext => e.Name.EndsWith(ext)))
             {
                 try
                 {
                     IsFileClosed(e.FullPath, true);
-
                     IPrediction result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
                     if (result.Success)
                     {
-                        // nothing found worth notifying
                         if (!result.Detections.Any(d => _watchedObjects.ContainsKey(d.Label)))
-                        {
                             return;
-                        }
-
-                        // confirm confidence is above lower limit
-                        bool targetFound = false;
-                        foreach (var detection in result.Detections)
-                        {
-                            if(_watchedObjects.ContainsKey(detection.Label))
-                            {
-                                if (targetFound = detection.Confidence >= _watchedObjects[detection.Label])
-                                {
-                                    targetFound = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (targetFound)
+                        if (DetectTarget(result.Detections))
                         {
                             result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
                             _publisher.PublishAsync(result, e.Name, CancellationToken.None);
@@ -96,16 +76,25 @@ namespace AIGaurd.Service
                 {
                     _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}:{ex.Message}");
                 }
-
             }
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
+        }
+
+        private bool DetectTarget(IDetectedObject[] items)
+        {
+            bool targetFound = false;
+            foreach (var detection in items)
+                if (_watchedObjects.ContainsKey(detection.Label))
+                    if (targetFound = detection.Confidence >= _watchedObjects[detection.Label])
+                        break;
+            return targetFound;
         }
 
         private bool IsFileClosed(string filepath, bool wait)
         {
             bool fileClosed = false;
             int retries = 20;
-            const int delay = 500; // Max time spent here = retries*delay milliseconds
+            const int delayMS = 500;
 
             if (!File.Exists(filepath))
                 return false;
@@ -125,7 +114,7 @@ namespace AIGaurd.Service
                 retries--;
 
                 if (!fileClosed)
-                    Thread.Sleep(delay);
+                    Thread.Sleep(delayMS);
             }
             while (!fileClosed && retries > 0);
             return fileClosed;
