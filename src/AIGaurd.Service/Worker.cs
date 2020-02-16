@@ -61,15 +61,10 @@ namespace AIGaurd.Service
                 {
                     IsFileClosed(e.FullPath, true);
                     IPrediction result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
-                    if (result.Success)
+                    if (result.Success && DetectTarget(result.Detections))
                     {
-                        if (!result.Detections.Any(d => _watchedObjects.ContainsKey(d.Label)))
-                            return;
-                        if (DetectTarget(result.Detections))
-                        {
-                            result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                            _publisher.PublishAsync(result, e.Name, CancellationToken.None);
-                        }
+                        result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+                        _publisher.PublishAsync(result, e.Name, CancellationToken.None);
                     }
                 }
                 catch (HttpRequestException ex)
@@ -82,6 +77,8 @@ namespace AIGaurd.Service
 
         private bool DetectTarget(IDetectedObject[] items)
         {
+            if (!items.Any(d => _watchedObjects.ContainsKey(d.Label)))
+                return false;
             bool targetFound = false;
             foreach (var detection in items)
                 if (_watchedObjects.ContainsKey(detection.Label))
