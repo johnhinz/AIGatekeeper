@@ -10,6 +10,7 @@ using AIGaurd.IRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
+using Polly;
 
 namespace AIGaurd.Service
 {
@@ -59,8 +60,21 @@ namespace AIGaurd.Service
             {
                 try
                 {
-                    IsFileClosed(e.FullPath, true);
-                    IPrediction result = _objDetector.DetectObjectsAsync(e.FullPath).Result;
+                    var retryPolicy = Policy
+                        .Handle<HttpRequestException>()
+                        .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(1));
+
+                    IPrediction result = null;
+                    retryPolicy.ExecuteAsync(async () =>
+                        {
+                            result = await _objDetector.DetectObjectsAsync(e.FullPath);
+                        });
+
+                    if (result == null)
+                    {
+                        _logger.LogError($"Cannot connect to object detector.");
+                        return;
+                    }
                     if (result.Success && DetectTarget(result.Detections))
                     {
                         result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
