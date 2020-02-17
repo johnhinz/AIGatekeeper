@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
 using Polly;
+using Polly.Retry;
 
 namespace AIGaurd.Service
 {
@@ -22,6 +23,7 @@ namespace AIGaurd.Service
         private readonly IPublish<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
         private readonly IDictionary<string, float> _watchedObjects;
+        private readonly AsyncRetryPolicy _httpRetryPolicy;
 
         public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
         {
@@ -34,6 +36,14 @@ namespace AIGaurd.Service
             _publisher = publisher;
             _watchedExtensions = watchedExtensions.Split(';').ToList();
             _watchedObjects = watchedObjects;
+
+            _httpRetryPolicy = Policy
+                .Handle<HttpRequestException>()
+                .WaitAndRetryAsync(3, i => TimeSpan.FromMilliseconds(100),
+                    (ex, timeSpan) =>
+                    {
+                        _logger.LogError(ex.Message);
+                    });
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -60,25 +70,27 @@ namespace AIGaurd.Service
             {
                 try
                 {
-                    var retryPolicy = Policy
-                        .Handle<HttpRequestException>()
-                        .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(1));
+                    if (IsFileClosed(e.FullPath, true))
+                    {
+                        IPrediction result = null;
+                        _httpRetryPolicy.ExecuteAndCaptureAsync(async () =>
+                            {
+                                result = await _objDetector.DetectObjectsAsync(e.FullPath);
+                            }).Wait();
 
-                    IPrediction result = null;
-                    retryPolicy.ExecuteAsync(async () =>
+                        if (result == null)
                         {
-                            result = await _objDetector.DetectObjectsAsync(e.FullPath);
-                        });
-
-                    if (result == null)
-                    {
-                        _logger.LogError($"Cannot connect to object detector.");
-                        return;
-                    }
-                    if (result.Success && DetectTarget(result.Detections))
-                    {
-                        result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                        _publisher.PublishAsync(result, e.Name, CancellationToken.None);
+                            _logger.LogError($"Cannot connect to object detector.");
+                            return;
+                        }
+                        if (result.Success && DetectTarget(result.Detections))
+                        {
+                            result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+                            _httpRetryPolicy.ExecuteAsync(async () =>
+                            {
+                                await _publisher.PublishAsync(result, e.Name, CancellationToken.None);
+                            });
+                        }
                     }
                 }
                 catch (HttpRequestException ex)
@@ -105,7 +117,7 @@ namespace AIGaurd.Service
         {
             bool fileClosed = false;
             int retries = 20;
-            const int delayMS = 500;
+            const int delayMS = 100;
 
             if (!File.Exists(filepath))
                 return false;
@@ -113,8 +125,7 @@ namespace AIGaurd.Service
             {
                 try
                 {
-                    // Attempts to open then close the file in RW mode, denying other users to place any locks.
-                    FileStream fs = File.Open(filepath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                    FileStream fs = File.Open(filepath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     fs.Close();
                     fileClosed = true; // success
                 }
