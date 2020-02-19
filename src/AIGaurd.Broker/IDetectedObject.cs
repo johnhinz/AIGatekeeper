@@ -1,7 +1,9 @@
 ﻿namespace AIGaurd.Broker
 {
-    public interface IDetectedObject : IWatchedObject
+    public interface IDetectedObject
     {
+        public float Confidence { get; set; }
+        public string Label { get; set; }
         public int YMin { get; set; }
         public int XMin { get; set; }
         public int YMax { get; set; }
