@@ -27,14 +27,13 @@ namespace AIGaurd.Service
 
         public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
         {
-            if (string.IsNullOrEmpty(imagePath)) throw new ArgumentNullException("Worker:imagePath cannot be null.");
-            if (string.IsNullOrEmpty(watchedExtensions)) throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
+            _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
+            _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
 
-            _path = imagePath;
+            
             _logger = logger;
             _objDetector = objectDetector;
             _publisher = publisher;
-            _watchedExtensions = watchedExtensions.Split(';').ToList();
             _watchedObjects = watchedObjects;
 
             _httpRetryPolicy = Policy
