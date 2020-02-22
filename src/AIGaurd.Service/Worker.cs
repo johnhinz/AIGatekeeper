@@ -71,12 +71,7 @@ namespace AIGaurd.Service
                 {
                     if (IsFileClosed(e.FullPath, true))
                     {
-                        IPrediction result = null;
-                        _httpRetryPolicy.ExecuteAndCaptureAsync(async () =>
-                            {
-                                result = await _objDetector.DetectObjectsAsync(e.FullPath);
-                            }).Wait();
-
+                        IPrediction result = DetectObjectAsync(e.FullPath).Result;
                         if (result == null)
                         {
                             _logger.LogError($"Cannot connect to object detector.");
@@ -85,10 +80,12 @@ namespace AIGaurd.Service
                         if (result.Success && DetectTarget(result.Detections))
                         {
                             result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                            _httpRetryPolicy.ExecuteAsync(async () =>
-                            {
-                                await _publisher.PublishAsync(result, e.Name, CancellationToken.None);
-                            });
+                            PublishAsync(result, e.Name, CancellationToken.None).Wait();
+                        }
+                        else if (result.Detections.Count() > 0)
+                        {
+                            result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+                            PublishAsync(result, "False", CancellationToken.None).Wait();
                         }
                     }
                 }
@@ -98,6 +95,16 @@ namespace AIGaurd.Service
                 }
             }
             _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
+        }
+
+        private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
+        {
+            return await _httpRetryPolicy.ExecuteAsync<MqttClientPublishResult>(() => _publisher.PublishAsync(prediction, fileName, token));
+        }
+
+        private async Task<IPrediction> DetectObjectAsync(string filePath)
+        {
+            return await _httpRetryPolicy.ExecuteAsync<IPrediction>(() => _objDetector.DetectObjectsAsync(filePath));
         }
 
         private bool DetectTarget(IDetectedObject[] items)
