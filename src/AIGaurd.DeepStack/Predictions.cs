@@ -12,7 +12,8 @@ namespace AIGaurd.DeepStack
         }
         [JsonProperty("success")]
         public bool Success { get; set; }
-        public string base64Image { get; set; }
+        public string Base64Image { get; set; }
+        public string FileName { get; set; }
         [JsonProperty("predictions")]
         public IDetectedObject[] Detections { get; set; }
         
