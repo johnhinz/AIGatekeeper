@@ -25,6 +25,8 @@ namespace AIGaurd.Service
         private readonly IDictionary<string, float> _watchedObjects;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
 
+        private const string falseDetectionTopic = "False";
+
         public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
         {
             _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
@@ -85,7 +87,7 @@ namespace AIGaurd.Service
                         else if (result.Detections.Count() > 0)
                         {
                             result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                            PublishAsync(result, "False", CancellationToken.None).Wait();
+                            PublishAsync(result, falseDetectionTopic, CancellationToken.None).Wait();
                         }
                     }
                 }
