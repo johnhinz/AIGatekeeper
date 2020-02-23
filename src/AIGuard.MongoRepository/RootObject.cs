@@ -12,7 +12,7 @@ namespace AIGuard.MongoRepository
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Topic { get; set; }
-        public Payload Payload { get; set; }
+        public Prediction Payload { get; set; }
         public int Qos { get; set; }
         public bool Retain { get; set; }
         public string Msgid { get; set; }

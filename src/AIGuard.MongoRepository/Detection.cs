@@ -1,12 +1,14 @@
-﻿using System;
+﻿using AIGaurd.Broker;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AIGuard.MongoRepository
 {
-    public class Detection
+    public class Detection : IDetectedObject
     {
-        public double Confidence { get; set; }
+        public float Confidence { get; set; }
         public string Label { get; set; }
         public int YMin { get; set; }
         public int XMin { get; set; }
