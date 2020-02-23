@@ -79,15 +79,14 @@ namespace AIGaurd.Service
                             _logger.LogError($"Cannot connect to object detector.");
                             return;
                         }
-                        if (result.Success && DetectTarget(result.Detections))
+                        bool foundTarget = DetectTarget(result.Detections);
+                        if ((result.Success && foundTarget) ||
+                            (result.Detections.Count() > 0))
                         {
-                            result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                            PublishAsync(result, e.Name, CancellationToken.None).Wait();
-                        }
-                        else if (result.Detections.Count() > 0)
-                        {
-                            result.base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
-                            PublishAsync(result, falseDetectionTopic, CancellationToken.None).Wait();
+                            result.FileName = e.Name;
+                            result.Base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+                            string topic = foundTarget ? e.Name : falseDetectionTopic;
+                            PublishAsync(result, topic, CancellationToken.None).Wait();
                         }
                     }
                 }
