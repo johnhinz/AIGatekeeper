@@ -16,6 +16,6 @@ namespace AIGuard.DeepStack
         public string FileName { get; set; }
         [JsonProperty("predictions")]
         public IDetectedObject[] Detections { get; set; }
-
+        
     }
 }

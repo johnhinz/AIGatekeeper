@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AIGaurd.Broker
+namespace AIGuard.Broker
 {
     public interface IPrediction
     {

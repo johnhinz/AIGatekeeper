@@ -1,8 +1,8 @@
-﻿using AIGaurd.Broker;
+﻿using AIGuard.Broker;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AIGaurd.IRepository
+namespace AIGuard.IRepository
 {
     public interface IPublish<TResult>
     {

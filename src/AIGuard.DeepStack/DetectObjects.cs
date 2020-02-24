@@ -11,11 +11,11 @@ namespace AIGuard.DeepStack
         private readonly string _endPoint;
         public DetectObjects(string endPoint)
         {
-            _endPoint = endPoint;
+           _endPoint = endPoint;
         }
         public async Task<IPrediction> DetectObjectsAsync(string imagePath)
         {
-
+            
             HttpResponseMessage output;
             using (var _client = new HttpClient())
             {

@@ -4,7 +4,7 @@ The goal of this library is to design a tool that would watch a folder for speci
 The library has abstracted the AI discovery tool and the repository.  There are implementations for [DeepStack](https://deepstack.cc/)  and [MQTT](https://github.com/chkr1011/MQTTnet).
 
 ## Requirements
-An implementation of AI discovery tool that corresponds to AIGaurd.Broker and a repository that corresponds to AIGaurd.IRepository.
+An implementation of AI discovery tool that corresponds to AIGuard.Broker and a repository that corresponds to AIGuard.IRepository.
 
 ## Installation
 Configuration parmeters:

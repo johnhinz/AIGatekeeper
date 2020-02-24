@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>dotnet-AIGaurd.Service-FFB49D53-3EBE-4784-A370-B2ADB9FC27B3</UserSecretsId>
+    <UserSecretsId>dotnet-AIGuard.Service-FFB49D53-3EBE-4784-A370-B2ADB9FC27B3</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
@@ -16,9 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AIGaurd.Broker\AIGaurd.Broker.csproj" />
-    <ProjectReference Include="..\AIGaurd.DeepStack\AIGaurd.DeepStack.csproj" />
-    <ProjectReference Include="..\AIGaurd.IRepository\AIGaurd.IRepository.csproj" />
-    <ProjectReference Include="..\AIGaurd.MqttRepository\AIGaurd.MqttRepository.csproj" />
+    <ProjectReference Include="..\AIGaurd.DeepStack\AIGuard.DeepStack.csproj" />
+    <ProjectReference Include="..\AIGuard.Broker\AIGuard.Broker.csproj" />
+    <ProjectReference Include="..\AIGuard.Interface\AIGuard.Interface.csproj" />
+    <ProjectReference Include="..\AIGuard.IRepository\AIGuard.IRepository.csproj" />
+    <ProjectReference Include="..\AIGuard.MqttRepository\AIGuard.MqttRepository.csproj" />
   </ItemGroup>
 </Project>
