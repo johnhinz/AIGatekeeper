@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AIGaurd.DeepStack\AIGuard.DeepStack.csproj" />
     <ProjectReference Include="..\AIGuard.Broker\AIGuard.Broker.csproj" />
+    <ProjectReference Include="..\AIGuard.DeepStack\AIGuard.DeepStack.csproj" />
     <ProjectReference Include="..\AIGuard.Interface\AIGuard.Interface.csproj" />
     <ProjectReference Include="..\AIGuard.IRepository\AIGuard.IRepository.csproj" />
     <ProjectReference Include="..\AIGuard.MqttRepository\AIGuard.MqttRepository.csproj" />
