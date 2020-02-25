@@ -5,15 +5,15 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using AIGaurd.Broker;
-using AIGaurd.IRepository;
+using AIGuard.Broker;
+using AIGuard.IRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
 using Polly;
 using Polly.Retry;
 
-namespace AIGaurd.Service
+namespace AIGuard.Service
 {
     public class Worker : BackgroundService
     {

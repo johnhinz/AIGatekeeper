@@ -1,10 +1,10 @@
-﻿using AIGaurd.Broker;
+﻿using AIGuard.Broker;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace AIGaurd.DeepStack
+namespace AIGuard.DeepStack
 {
     public class DetectObjects : IDetectObjects
     {

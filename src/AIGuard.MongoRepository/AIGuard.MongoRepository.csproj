@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AIGaurd.Broker\AIGaurd.Broker.csproj" />
+    <ProjectReference Include="..\AIGuard.Broker\AIGuard.Broker.csproj" />
   </ItemGroup>
 
 </Project>

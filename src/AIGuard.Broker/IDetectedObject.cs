@@ -1,4 +1,4 @@
-﻿namespace AIGaurd.Broker
+﻿namespace AIGuard.Broker
 {
     public interface IDetectedObject
     {

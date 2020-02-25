@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AIGaurd.Broker
+namespace AIGuard.Broker
 {
     public interface IDetectObjects 
     {

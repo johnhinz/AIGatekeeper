@@ -1,5 +1,5 @@
-﻿using AIGaurd.Broker;
-using AIGaurd.IRepository;
+﻿using AIGuard.Broker;
+using AIGuard.IRepository;
 using MQTTnet;
 using MQTTnet.Client.Options;
 using MQTTnet.Client.Publishing;

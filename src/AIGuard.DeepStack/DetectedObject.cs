@@ -1,7 +1,7 @@
-﻿using AIGaurd.Broker;
+﻿using AIGuard.Broker;
 using Newtonsoft.Json;
 
-namespace AIGaurd.DeepStack
+namespace AIGuard.DeepStack
 {
     public class DetectedObject : IDetectedObject
     {

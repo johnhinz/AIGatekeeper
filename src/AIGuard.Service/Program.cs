@@ -1,6 +1,6 @@
-using AIGaurd.Broker;
-using AIGaurd.DeepStack;
-using AIGaurd.IRepository;
+using AIGuard.Broker;
+using AIGuard.DeepStack;
+using AIGuard.IRepository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +9,7 @@ using MQTTnet.Client.Publishing;
 using AIGuard.MqttRepository;
 using System.Collections.Generic;
 
-namespace AIGaurd.Service
+namespace AIGuard.Service
 {
     public class Program
     {
