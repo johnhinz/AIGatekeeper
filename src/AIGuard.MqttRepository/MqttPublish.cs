@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AIGuard.MqttRepository
 {
-    public class MqttPublish : IPublish<MqttClientPublishResult>
+    public class MqttPublish : IPublishDetections<MqttClientPublishResult>
     {
         private readonly string _server;
         private readonly string _clientName;

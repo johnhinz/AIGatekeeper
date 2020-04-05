@@ -28,7 +28,7 @@ namespace AIGuard.Service
                              return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
                          }
                     ) ;
-                    services.AddTransient<IPublish<MqttClientPublishResult>>((serviceProvider) =>
+                    services.AddTransient<IPublishDetections<MqttClientPublishResult>>((serviceProvider) =>
                     {
                         return new MqttPublish(
                             hostContext.Configuration.GetSection("RepositoryEndpoint").Value,
@@ -43,7 +43,7 @@ namespace AIGuard.Service
                             return new Worker(
                                 serviceProvider.GetService<ILogger<Worker>>(), 
                                 serviceProvider.GetService<IDetectObjects>(),
-                                serviceProvider.GetService<IPublish<MqttClientPublishResult>>(),
+                                serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
                                 hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string,float>>(),
                                 hostContext.Configuration.GetSection("WatchFolder").Value,
                                 hostContext.Configuration.GetSection("WatchedExtensions").Value);

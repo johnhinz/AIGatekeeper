@@ -6,12 +6,12 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY . /src
-WORKDIR /src/AIGaurd.Service
-RUN dotnet restore "AIGaurd.Service.csproj"
-RUN dotnet build "AIGaurd.Service.csproj" -c Release -o /app/build
+WORKDIR /src/AIGuard.Service
+RUN dotnet restore "AIGuard.Service.csproj"
+RUN dotnet build "AIGuard.Service.csproj" -c Release -o /app/build
 FROM build AS publish
-RUN dotnet publish "AIGaurd.Service.csproj" -c Release -o /app/publish
+RUN dotnet publish "AIGuard.Service.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AIGaurd.Service.dll"]
+ENTRYPOINT ["dotnet", "AIGuard.Service.dll"]

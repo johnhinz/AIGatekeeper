@@ -20,14 +20,14 @@ namespace AIGuard.Service
         private readonly string _path;
         private readonly ILogger<Worker> _logger;
         private readonly IDetectObjects _objDetector;
-        private readonly IPublish<MqttClientPublishResult> _publisher;
+        private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
         private readonly IDictionary<string, float> _watchedObjects;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
 
         private const string falseDetectionTopic = "False";
 
-        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublish<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
+        public Worker(ILogger<Worker> logger, IDetectObjects objectDetector, IPublishDetections<MqttClientPublishResult> publisher, IDictionary<string,float> watchedObjects, string imagePath, string watchedExtensions)
         {
             _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
             _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");

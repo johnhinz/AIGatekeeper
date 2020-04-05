@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AIGuard.IRepository
 {
-    public interface IPublish<TResult>
+    public interface IPublishDetections<TResult>
     {
         public Task<TResult> PublishAsync
             (IPrediction message, string source, CancellationToken token);

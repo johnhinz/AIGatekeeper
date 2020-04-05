@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "AIGuard.Service": {
+    "AIGuard.PresenceDetector": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
