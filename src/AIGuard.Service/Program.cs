@@ -30,7 +30,7 @@ namespace AIGuard.Service
                     ) ;
                     services.AddTransient<IPublishDetections<MqttClientPublishResult>>((serviceProvider) =>
                     {
-                        return new MqttPublish(
+                        return new MqttAIPublish(
                             hostContext.Configuration.GetSection("RepositoryEndpoint").Value,
                             hostContext.Configuration.GetSection("PublisherName").Value,
                             hostContext.Configuration.GetSection("TopicParser").Value,

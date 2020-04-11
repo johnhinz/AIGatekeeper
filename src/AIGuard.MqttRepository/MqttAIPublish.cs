@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AIGuard.MqttRepository
 {
-    public class MqttPublish : IPublishDetections<MqttClientPublishResult>
+    public class MqttAIPublish : IPublishDetections<MqttClientPublishResult>
     {
         private readonly string _server;
         private readonly string _clientName;
@@ -19,7 +19,7 @@ namespace AIGuard.MqttRepository
         private readonly int _position;
         private readonly string _queueName;
 
-        public MqttPublish(string server, string clientName, string regexPattern, int position, string queueName)
+        public MqttAIPublish(string server, string clientName, string regexPattern, int position, string queueName)
         {
             if (string.IsNullOrEmpty(server)) throw new ArgumentNullException("MqttPublish:server cannot be null");
             if (string.IsNullOrEmpty(regexPattern)) throw new ArgumentNullException("MqttPublish:regexPattern cannot be null");
