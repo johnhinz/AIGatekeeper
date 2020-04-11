@@ -6,7 +6,7 @@ namespace AIGuard.IRepository
 {
     public interface IPublishDetections<TResult>
     {
-        public Task<TResult> PublishAsync
-            (IPrediction message, string source, CancellationToken token);
+        public Task<TResult> PublishAsync<TPredictionType>
+            (TPredictionType message, string source, CancellationToken token);
     }
 }
