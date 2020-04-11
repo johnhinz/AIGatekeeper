@@ -9,8 +9,10 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AIGuard.Broker;
+using AIGuard.IRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MQTTnet.Client.Publishing;
 using Newtonsoft.Json;
 
 namespace AIGuard.PresenceDetector
@@ -22,11 +24,13 @@ namespace AIGuard.PresenceDetector
 
         private readonly ILogger<Worker> _logger;
         private readonly IDictionary<string, string> _ipRange;
+        private readonly IPublishDetections<MqttClientPublishResult> _publisher;
 
-        public Worker(ILogger<Worker> logger, IDictionary<string, string> IPRange)
+        public Worker(ILogger<Worker> logger, IDictionary<string, string> IPRange, IPublishDetections<MqttClientPublishResult> publisher)
         {
             _logger = logger;
             _ipRange = IPRange;
+            _publisher = publisher;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -59,10 +63,12 @@ namespace AIGuard.PresenceDetector
                             for (int i = 0; i < macAddrLen; i++)
                                 str[i] = macAddr[i].ToString("x2");
 
+                            _publisher.PublishAsync("FOUND", "JOHN", options.CancellationToken);
                             _logger.LogInformation($"{ipAddress}  {string.Join(":", str)} FOUND");
                         }
                         else
                         {
+                            _publisher.PublishAsync("NOT FOUND", "JOHN", options.CancellationToken);
                             _logger.LogInformation($"{ipAddress}  NOT Found");
                         }
                     }

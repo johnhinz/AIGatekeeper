@@ -31,7 +31,7 @@ namespace AIGuard.MqttRepository
             _position = position;
             _queueName = queueName;
         }
-        public Task<MqttClientPublishResult> PublishAsync(IPrediction message, string source, CancellationToken token) 
+        public Task<MqttClientPublishResult> PublishAsync<TPrediction>(TPrediction message, string source, CancellationToken token) 
         {
             var factory = new MqttFactory();
             using (var mqttClient = factory.CreateMqttClient())
