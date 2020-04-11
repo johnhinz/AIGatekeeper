@@ -21,6 +21,7 @@ namespace AIGuard.PresenceDetector
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddTransient<IPublishDetections<MqttClientPublishResult>>((serviceProvider) =>
@@ -38,7 +39,8 @@ namespace AIGuard.PresenceDetector
                         return new Worker(
                                 serviceProvider.GetService<ILogger<Worker>>(),
                                 hostContext.Configuration.GetSection("IPRange").Get<Dictionary<string, string>>(),
-                                serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>()
+                                serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
+                                int.Parse(hostContext.Configuration.GetSection("CheckFrequency").Value)
                             );
                     });
                 });

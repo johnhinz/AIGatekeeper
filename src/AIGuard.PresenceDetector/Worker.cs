@@ -25,12 +25,19 @@ namespace AIGuard.PresenceDetector
         private readonly ILogger<Worker> _logger;
         private readonly IDictionary<string, string> _ipRange;
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
+        private readonly int _checkFrequency;
 
-        public Worker(ILogger<Worker> logger, IDictionary<string, string> IPRange, IPublishDetections<MqttClientPublishResult> publisher)
+        private const string FOUND = "FOUND";
+        private const string NOTFOUND = "NOT FOUND";
+
+        public Worker(ILogger<Worker> logger, 
+            IDictionary<string, string> IPRange, 
+            IPublishDetections<MqttClientPublishResult> publisher, int checkFrequency)
         {
             _logger = logger;
             _ipRange = IPRange;
             _publisher = publisher;
+            _checkFrequency = checkFrequency;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -63,19 +70,18 @@ namespace AIGuard.PresenceDetector
                             for (int i = 0; i < macAddrLen; i++)
                                 str[i] = macAddr[i].ToString("x2");
 
-                            _publisher.PublishAsync("FOUND", "JOHN", options.CancellationToken);
+                            _publisher.PublishAsync(FOUND, "JOHN", options.CancellationToken);
                             _logger.LogInformation($"{ipAddress}  {string.Join(":", str)} FOUND");
                         }
                         else
                         {
-                            _publisher.PublishAsync("NOT FOUND", "JOHN", options.CancellationToken);
+                            _publisher.PublishAsync(NOTFOUND, "JOHN", options.CancellationToken);
                             _logger.LogInformation($"{ipAddress}  NOT Found");
                         }
                     }
 
-                    options.CancellationToken.ThrowIfCancellationRequested();
                 });
-                await Task.Delay(15000, stoppingToken);
+                await Task.Delay(_checkFrequency, stoppingToken);
             }
         }
 
