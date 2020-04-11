@@ -23,9 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.IRepository", "AIGu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.DeepStack", "AIGuard.DeepStack\AIGuard.DeepStack.csproj", "{E26B05D2-7D40-48DF-9A56-B66618E47865}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.PresenceDetector", "AIGuard.PresenceDetector\AIGuard.PresenceDetector.csproj", "{DF2A2953-BA37-4156-9D5A-447D857AA527}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.EAP", "AIGuard.EAP\AIGuard.EAP.csproj", "{2849BF21-D09D-465F-BB89-5F796BB13865}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.PresenceDetector", "AIGuard.PresenceDetector\AIGuard.PresenceDetector.csproj", "{DF2A2953-BA37-4156-9D5A-447D857AA527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +63,6 @@ Global
 		{DF2A2953-BA37-4156-9D5A-447D857AA527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF2A2953-BA37-4156-9D5A-447D857AA527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF2A2953-BA37-4156-9D5A-447D857AA527}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2849BF21-D09D-465F-BB89-5F796BB13865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2849BF21-D09D-465F-BB89-5F796BB13865}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2849BF21-D09D-465F-BB89-5F796BB13865}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2849BF21-D09D-465F-BB89-5F796BB13865}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
