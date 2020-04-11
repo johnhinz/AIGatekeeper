@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AIGuard.PresenceDetector
 {
@@ -18,7 +20,13 @@ namespace AIGuard.PresenceDetector
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services.AddHostedService<Worker>((serviceProvider) =>
+                    {
+                        return new Worker(
+                                serviceProvider.GetService<ILogger<Worker>>(),
+                                hostContext.Configuration.GetSection("IPRange").Get<Dictionary<string, string>>()
+                            );
+                    });
                 });
     }
 }
