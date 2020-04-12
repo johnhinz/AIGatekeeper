@@ -40,7 +40,8 @@ namespace AIGuard.PresenceDetector
                                 serviceProvider.GetService<ILogger<Worker>>(),
                                 hostContext.Configuration.GetSection("IPRange").Get<Dictionary<string, string>>(),
                                 serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
-                                int.Parse(hostContext.Configuration.GetSection("CheckFrequency").Value)
+                                int.Parse(hostContext.Configuration.GetSection("CheckFrequency").Value),
+                                hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string, WatchedObject>>()
                             );
                     });
                 });

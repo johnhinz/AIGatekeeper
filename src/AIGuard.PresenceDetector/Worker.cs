@@ -26,18 +26,25 @@ namespace AIGuard.PresenceDetector
         private readonly IDictionary<string, string> _ipRange;
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly int _checkFrequency;
+        private readonly Dictionary<string, WatchedObject> _watched;
+        private List<bool> _hits;
 
         private const string FOUND = "FOUND";
         private const string NOTFOUND = "NOT FOUND";
 
         public Worker(ILogger<Worker> logger, 
             IDictionary<string, string> IPRange, 
-            IPublishDetections<MqttClientPublishResult> publisher, int checkFrequency)
+            IPublishDetections<MqttClientPublishResult> publisher, 
+            int checkFrequency,
+            Dictionary<string,WatchedObject> Watched)
         {
             _logger = logger;
             _ipRange = IPRange;
             _publisher = publisher;
             _checkFrequency = checkFrequency;
+            _watched = Watched;
+
+            _hits = Enumerable.Repeat(false, 5).ToList();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -70,17 +77,29 @@ namespace AIGuard.PresenceDetector
                             for (int i = 0; i < macAddrLen; i++)
                                 str[i] = macAddr[i].ToString("x2");
 
-                            _publisher.PublishAsync(FOUND, "JOHN", options.CancellationToken);
+                            _hits.Insert(0, true);
+                            _hits.RemoveAt(_hits.Count - 1);
+                            
                             _logger.LogInformation($"{ipAddress}  {string.Join(":", str)} FOUND");
                         }
                         else
                         {
-                            _publisher.PublishAsync(NOTFOUND, "JOHN", options.CancellationToken);
+                            _hits.Insert(0, false);
+                            _hits.RemoveAt(_hits.Count - 1);
                             _logger.LogInformation($"{ipAddress}  NOT Found");
                         }
                     }
 
                 });
+
+                if (_hits.Any(h => h == true))
+                {
+                    await _publisher.PublishAsync(FOUND, "JOHN", options.CancellationToken);
+                }
+                else
+                {
+                    await _publisher.PublishAsync(NOTFOUND, "JOHN", options.CancellationToken);
+                }
                 await Task.Delay(_checkFrequency, stoppingToken);
             }
         }
