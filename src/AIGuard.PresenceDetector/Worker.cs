@@ -79,14 +79,11 @@ namespace AIGuard.PresenceDetector
                             _logger.LogInformation($"{watchedItem.Key}  {watchedItem.Value.NotFoundValue}");
                         }
                     }
-                    if (watchedItem.Value.Avalaible)
-                    {
-                        _publisher.PublishAsync(FOUND, "JOHN", options.CancellationToken);
-                    }
-                    else
-                    {
-                        _publisher.PublishAsync(NOTFOUND, "JOHN", options.CancellationToken);
-                    }
+
+                    _publisher.PublishAsync(
+                        watchedItem.Value.Avalaible ? watchedItem.Value.FoundValue : watchedItem.Value.FoundValue, 
+                        watchedItem.Value.QueSubName, options.CancellationToken);
+                   
                 });
 
                 
