@@ -28,7 +28,7 @@ namespace AIGuard.PresenceDetector
             }
         }
 
-        private List<bool> _hits;
+        private List<bool> _hits = Enumerable.Repeat(false, 5).ToList();
 
         public WatchedObject()
         {
