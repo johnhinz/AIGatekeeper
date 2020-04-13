@@ -27,7 +27,7 @@ namespace AIGuard.PresenceDetector
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly int _checkFrequency;
         private readonly Dictionary<string, WatchedObject> _watched;
-        private List<bool> _hits;
+        private Dictionary<string, List<bool>> _hits;
 
         private const string FOUND = "FOUND";
         private const string NOTFOUND = "NOT FOUND";
@@ -43,8 +43,6 @@ namespace AIGuard.PresenceDetector
             _publisher = publisher;
             _checkFrequency = checkFrequency;
             _watched = Watched;
-
-            _hits = Enumerable.Repeat(false, 5).ToList();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -55,17 +53,12 @@ namespace AIGuard.PresenceDetector
 
                 Object obj = new object();
 
-                IPAddress startIP = IPAddress.Parse(_ipRange["IPStart"]);
-                IPAddress endIP = IPAddress.Parse(_ipRange["IPEnd"]);
-                RangeFinder range = new RangeFinder();
-                IEnumerable<string> ipAddresses = range.GetIPRange(startIP, endIP);
-
                 ParallelOptions options = new ParallelOptions();
                 options.CancellationToken = stoppingToken;
 
-                Parallel.ForEach(ipAddresses, options, (ipAddress) =>
+                Parallel.ForEach(_watched, options, (watchedItem) =>
                 {
-                    IPAddress dst = IPAddress.Parse(ipAddress); // the destination IP address
+                    IPAddress dst = IPAddress.Parse(watchedItem.Value.IP); // the destination IP address
                     byte[] macAddr = new byte[6];
                     uint macAddrLen = (uint)macAddr.Length;
                     lock (obj)
@@ -77,29 +70,26 @@ namespace AIGuard.PresenceDetector
                             for (int i = 0; i < macAddrLen; i++)
                                 str[i] = macAddr[i].ToString("x2");
 
-                            _hits.Insert(0, true);
-                            _hits.RemoveAt(_hits.Count - 1);
-                            
-                            _logger.LogInformation($"{ipAddress}  {string.Join(":", str)} FOUND");
+                            watchedItem.Value.AddDiscovery(true);
+                            _logger.LogInformation($"{watchedItem.Key}  {string.Join(":", str)} {watchedItem.Value.FoundValue}");
                         }
                         else
                         {
-                            _hits.Insert(0, false);
-                            _hits.RemoveAt(_hits.Count - 1);
-                            _logger.LogInformation($"{ipAddress}  NOT Found");
+                            watchedItem.Value.AddDiscovery(false);
+                            _logger.LogInformation($"{watchedItem.Key}  {watchedItem.Value.NotFoundValue}");
                         }
                     }
-
+                    if (watchedItem.Value.Avalaible)
+                    {
+                        _publisher.PublishAsync(FOUND, "JOHN", options.CancellationToken);
+                    }
+                    else
+                    {
+                        _publisher.PublishAsync(NOTFOUND, "JOHN", options.CancellationToken);
+                    }
                 });
 
-                if (_hits.Any(h => h == true))
-                {
-                    await _publisher.PublishAsync(FOUND, "JOHN", options.CancellationToken);
-                }
-                else
-                {
-                    await _publisher.PublishAsync(NOTFOUND, "JOHN", options.CancellationToken);
-                }
+                
                 await Task.Delay(_checkFrequency, stoppingToken);
             }
         }
