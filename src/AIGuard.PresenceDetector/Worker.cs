@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using AIGuard.Broker;
 using AIGuard.IRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
-using Newtonsoft.Json;
 
 namespace AIGuard.PresenceDetector
 {
@@ -23,23 +17,16 @@ namespace AIGuard.PresenceDetector
         public static extern int SendARP(int destIp, int srcIP, byte[] macAddr, ref uint physicalAddrLen);
 
         private readonly ILogger<Worker> _logger;
-        private readonly IDictionary<string, string> _ipRange;
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly int _checkFrequency;
         private readonly Dictionary<string, WatchedObject> _watched;
-        private Dictionary<string, List<bool>> _hits;
-
-        private const string FOUND = "FOUND";
-        private const string NOTFOUND = "NOT FOUND";
 
         public Worker(ILogger<Worker> logger, 
-            IDictionary<string, string> IPRange, 
             IPublishDetections<MqttClientPublishResult> publisher, 
             int checkFrequency,
             Dictionary<string,WatchedObject> Watched)
         {
             _logger = logger;
-            _ipRange = IPRange;
             _publisher = publisher;
             _checkFrequency = checkFrequency;
             _watched = Watched;
@@ -85,8 +72,6 @@ namespace AIGuard.PresenceDetector
                         watchedItem.Value.QueSubName, options.CancellationToken);
                    
                 });
-
-                
                 await Task.Delay(_checkFrequency, stoppingToken);
             }
         }
