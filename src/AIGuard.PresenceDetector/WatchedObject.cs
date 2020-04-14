@@ -11,6 +11,7 @@ namespace AIGuard.PresenceDetector
         public string QueSubName { get; set; }
         public string FoundValue { get; set; }
         public string NotFoundValue { get; set; }
+        public int Tolerance { get; set; }
 
         public bool Avalaible
         {
@@ -28,25 +29,27 @@ namespace AIGuard.PresenceDetector
             }
         }
 
-        private List<bool> _hits = Enumerable.Repeat(false, 5).ToList();
+        private readonly int _tolorance;
+        private List<bool> _hits = Enumerable.Repeat(false, 10).ToList();
 
         public WatchedObject()
         {
-
-            new WatchedObject(5, false);
+            new WatchedObject(10, false);
         }
 
-        public WatchedObject(int sampleSize, bool initialState)
+        public WatchedObject(int tolorance, bool initialState)
         {
-            _hits = Enumerable.Repeat(initialState, sampleSize).ToList();
+            _tolorance = tolorance;
+            _hits = Enumerable.Repeat(initialState, tolorance).ToList();
         }
 
         public void AddDiscovery(bool discovery)
         {
+            if (_hits.Count > _tolorance)
+            {
+                _hits.RemoveAt(_hits.Count - 1);
+            }
             _hits.Insert(0, discovery);
-            _hits.RemoveAt(_hits.Count - 1);
         }
-
-
     }
 }
