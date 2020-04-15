@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,45 +12,59 @@ namespace AIGuard.PresenceDetector
         public string QueSubName { get; set; }
         public string FoundValue { get; set; }
         public string NotFoundValue { get; set; }
-        public int Tolerance { get; set; }
+        protected int Tolerance { get; set; }
+        private FixedSizedQueue _hits = new FixedSizedQueue(20);
 
-        public bool Avalaible
+        public bool Available
         {
             get 
             {
-                if (_hits != null)
-                {
-
-                    return _hits.Any(h => h == true);
-                }
-                else
-                {
-                    return false;
-                }
+                    return _hits.Available; 
             }
-        }
-
-        private readonly int _tolorance;
-        private List<bool> _hits = Enumerable.Repeat(false, 10).ToList();
-
-        public WatchedObject()
-        {
-            new WatchedObject(10, false);
-        }
-
-        public WatchedObject(int tolorance, bool initialState)
-        {
-            _tolorance = tolorance;
-            _hits = Enumerable.Repeat(initialState, tolorance).ToList();
         }
 
         public void AddDiscovery(bool discovery)
         {
-            if (_hits.Count > _tolorance)
+            _hits.Enqueue(discovery);
+        }
+
+        private class FixedSizedQueue
+        {
+            private readonly int _tolerance;
+            private ConcurrentQueue<bool> _queue = new ConcurrentQueue<bool>();
+            private object lockObject = new object();
+
+            public bool Available
             {
-                _hits.RemoveAt(_hits.Count - 1);
+                get
+                {
+                    if (_queue != null)
+                    {
+
+                        return _queue.Any(h => h == true);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
-            _hits.Insert(0, discovery);
+
+
+            public FixedSizedQueue(int size)
+            {
+                _tolerance = size;
+            }
+          
+            public void Enqueue(bool obj)
+            {
+                _queue.Enqueue(obj);
+                lock (lockObject)
+                {
+                    bool overflow;
+                    while (_queue.Count > _tolerance && _queue.TryDequeue(out overflow)) ;
+                }
+            }
         }
     }
 }
