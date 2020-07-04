@@ -31,8 +31,6 @@ namespace AIGuard.Service
         {
             _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
             _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
-
-            
             _logger = logger;
             _objDetector = objectDetector;
             _publisher = publisher;
