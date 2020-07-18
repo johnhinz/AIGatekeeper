@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -68,6 +69,8 @@ namespace AIGuard.Service
                 {
                     Thread.Sleep(100);
                 }
+
+                dirWatcher.Created -= OnChanged;
             }
         }
 
@@ -90,7 +93,29 @@ namespace AIGuard.Service
                         (result.Detections.Count() > 0))
                     {
                         result.FileName = e.Name;
-                        result.Base64Image = Convert.ToBase64String(File.ReadAllBytes(e.FullPath));
+
+
+                        Image image = Image.FromFile(e.FullPath);
+                        using (Graphics g = Graphics.FromImage(image))
+                        {
+                            Pen redPen = new Pen(Color.Red, 5);
+
+                            foreach (IDetectedObject detectedObject in result.Detections)
+                            {
+                                g.DrawRectangle(
+                                    redPen, 
+                                    detectedObject.XMin, 
+                                    detectedObject.YMin,
+                                    detectedObject.XMax - detectedObject.XMin,
+                                    detectedObject.YMax - detectedObject.YMin);
+                            }
+
+                            using (var ms = new MemoryStream())
+                            {
+                                image.Save(ms, image.RawFormat);
+                                result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                            }
+                        }
                         string topic = foundTarget ? e.Name : falseDetectionTopic;
                         PublishAsync(result, topic, CancellationToken.None).Wait();
                     }
@@ -111,7 +136,8 @@ namespace AIGuard.Service
 
         private async Task<IPrediction> DetectObjectAsync(string filePath)
         {
-            return await _httpRetryPolicy.ExecuteAsync<IPrediction>(() => _objDetector.DetectObjectsAsync(filePath));
+            return await _httpRetryPolicy.ExecuteAsync<IPrediction>(
+                () => _objDetector.DetectObjectsAsync(filePath));
         }
 
         private bool DetectTarget(IDetectedObject[] items)
