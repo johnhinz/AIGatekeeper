@@ -24,10 +24,10 @@ namespace AIGuard.Service
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>
-                         {
-                             return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
-                         }
-                    ) ;
+                    {
+                        return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
+                    }) ;
+
                     services.AddTransient<IPublishDetections<MqttClientPublishResult>>((serviceProvider) =>
                     {
                         return new MqttAIPublish(
@@ -39,15 +39,15 @@ namespace AIGuard.Service
                     });
 
                     services.AddHostedService<Worker>((serviceProvider) =>
-                        {
-                            return new Worker(
-                                serviceProvider.GetService<ILogger<Worker>>(), 
-                                serviceProvider.GetService<IDetectObjects>(),
-                                serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
-                                hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string,float>>(),
-                                hostContext.Configuration.GetSection("WatchFolder").Value,
-                                hostContext.Configuration.GetSection("WatchedExtensions").Value);
-                        });
+                    {
+                        return new Worker(
+                            serviceProvider.GetService<ILogger<Worker>>(), 
+                            serviceProvider.GetService<IDetectObjects>(),
+                            serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
+                            hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string,float>>(),
+                            hostContext.Configuration.GetSection("WatchFolder").Value,
+                            hostContext.Configuration.GetSection("WatchedExtensions").Value);
+                    });
                 });
     }
 }
