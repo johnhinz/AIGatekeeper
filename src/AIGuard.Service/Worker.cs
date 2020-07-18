@@ -82,6 +82,7 @@ namespace AIGuard.Service
             {
                 if (IsFileClosed(e.FullPath, true))
                 {
+                    _logger.LogInformation($"Checking file {e.FullPath}.");
                     IPrediction result = DetectObjectAsync(e.FullPath).Result;
                     if (result == null)
                     {
@@ -93,13 +94,13 @@ namespace AIGuard.Service
                         (result.Detections.Count() > 0))
                     {
                         result.FileName = e.Name;
-
+                        _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
 
                         Image image = Image.FromFile(e.FullPath);
                         using (Graphics g = Graphics.FromImage(image))
                         {
-                            Pen redPen = new Pen(Color.Red, 5);
 
+                            Pen redPen = new Pen(Color.Red, 5);
                             foreach (IDetectedObject detectedObject in result.Detections)
                             {
                                 g.DrawRectangle(
@@ -126,11 +127,12 @@ namespace AIGuard.Service
                 _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}:{ex.Message}");
             }
             
-        _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
+            _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
         }
 
         private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
         {
+            _logger.LogInformation($"Publishing {fileName}");
             return await _httpRetryPolicy.ExecuteAsync<MqttClientPublishResult>(() => _publisher.PublishAsync(prediction, fileName, token));
         }
 
