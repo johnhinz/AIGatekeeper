@@ -103,12 +103,15 @@ namespace AIGuard.Service
                             Pen redPen = new Pen(Color.Red, 5);
                             foreach (IDetectedObject detectedObject in result.Detections)
                             {
-                                g.DrawRectangle(
-                                    redPen, 
-                                    detectedObject.XMin, 
-                                    detectedObject.YMin,
-                                    detectedObject.XMax - detectedObject.XMin,
-                                    detectedObject.YMax - detectedObject.YMin);
+                                if (_watchedObjects.ContainsKey(detectedObject.Label))
+                                {
+                                    g.DrawRectangle(
+                                        redPen,
+                                        detectedObject.XMin,
+                                        detectedObject.YMin,
+                                        detectedObject.XMax - detectedObject.XMin,
+                                        detectedObject.YMax - detectedObject.YMin);
+                                }
                             }
 
                             using (var ms = new MemoryStream())
