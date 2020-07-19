@@ -25,7 +25,8 @@ namespace AIGuard.Service
                 {
                     services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>
                     {
-                        return new DetectObjects(hostContext.Configuration.GetSection("AIEndpoint").Value); 
+                        return new DetectObjects(serviceProvider.GetService<ILogger<DetectObjects>>(),
+                            hostContext.Configuration.GetSection("AIEndpoint").Value); 
                     }) ;
 
                     services.AddTransient<IPublishDetections<MqttClientPublishResult>>((serviceProvider) =>

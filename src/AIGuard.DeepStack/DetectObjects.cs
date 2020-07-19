@@ -1,4 +1,5 @@
 ﻿using AIGuard.Broker;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
@@ -8,10 +9,12 @@ namespace AIGuard.DeepStack
 {
     public class DetectObjects : IDetectObjects
     {
+        private readonly ILogger<DetectObjects> _logger;
         private readonly string _endPoint;
-        public DetectObjects(string endPoint)
+        public DetectObjects(ILogger<DetectObjects> logger, string endPoint)
         {
-           _endPoint = endPoint;
+            _logger = logger;
+            _endPoint = endPoint;
         }
         public async Task<IPrediction> DetectObjectsAsync(byte[] image, string imagePath)
         {
