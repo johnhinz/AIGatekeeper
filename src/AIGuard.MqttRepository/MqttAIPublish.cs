@@ -1,5 +1,6 @@
 ﻿using AIGuard.Broker;
 using AIGuard.IRepository;
+using Microsoft.Extensions.Logging;
 using MQTTnet;
 using MQTTnet.Client.Options;
 using MQTTnet.Client.Publishing;
@@ -13,18 +14,20 @@ namespace AIGuard.MqttRepository
 {
     public class MqttAIPublish : IPublishDetections<MqttClientPublishResult>
     {
+        private readonly ILogger<MqttAIPublish> _logger;
         private readonly string _server;
         private readonly string _clientName;
         private readonly string _regexPattern;
         private readonly int _position;
         private readonly string _queueName;
 
-        public MqttAIPublish(string server, string clientName, string regexPattern, int position, string queueName)
+        public MqttAIPublish(ILogger<MqttAIPublish> logger, string server, string clientName, string regexPattern, int position, string queueName)
         {
             if (string.IsNullOrEmpty(server)) throw new ArgumentNullException("MqttPublish:server cannot be null");
             if (string.IsNullOrEmpty(regexPattern)) throw new ArgumentNullException("MqttPublish:regexPattern cannot be null");
             if (position < 0) throw new ArgumentOutOfRangeException("MqttPublish:position < 0");
 
+            _logger = logger;
             _server = server;
             _clientName = clientName;
             _regexPattern = regexPattern;
