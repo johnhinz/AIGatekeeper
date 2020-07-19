@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
 using AIGuard.MqttRepository;
 using System.Collections.Generic;
+using Serilog;
+using System.Security.Policy;
+using System.IO;
 
 namespace AIGuard.Service
 {
@@ -15,12 +18,24 @@ namespace AIGuard.Service
     {
         public static void Main(string[] args)
         {
+            
+
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
+                .ConfigureLogging((hostContext,logging) =>
+                {
+                    var serilogLogger = new LoggerConfiguration()
+                    .WriteTo.Console()
+                    .WriteTo.File(hostContext.Configuration.GetSection("LogFile").Value)
+                    .CreateLogger();
+
+                    logging.ClearProviders();
+                    logging.AddSerilog(serilogLogger);
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>

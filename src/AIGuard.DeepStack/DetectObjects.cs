@@ -18,6 +18,7 @@ namespace AIGuard.DeepStack
         }
         public async Task<IPrediction> DetectObjectsAsync(byte[] image, string imagePath)
         {
+            _logger.LogInformation($"DetectObjectsAsync called for {imagePath}");
             MemoryStream ms = new MemoryStream(image);
             HttpResponseMessage output;
             using (var _client = new HttpClient())

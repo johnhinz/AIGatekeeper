@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -24,6 +24,7 @@ namespace AIGuard.Service
         private readonly IDetectObjects _objDetector;
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
+        private readonly Stopwatch _stopwatch;
         private readonly IDictionary<string, float> _watchedObjects;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
 
@@ -43,7 +44,9 @@ namespace AIGuard.Service
             _watchedObjects = watchedObjects;
             _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
             _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
-            
+
+            _stopwatch = new Stopwatch();
+
             _httpRetryPolicy = Policy
                 .Handle<HttpRequestException>()
                 .WaitAndRetryAsync(3, i => TimeSpan.FromMilliseconds(100),
@@ -77,70 +80,75 @@ namespace AIGuard.Service
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
-
+            _stopwatch.Start();
             try
             {
-                if (IsFileClosed(e.FullPath, true))
+                _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
+                try
                 {
-                    Image image = Image.FromFile(e.FullPath);
-                    MemoryStream ms = new MemoryStream();
-                    image.Save(ms, image.RawFormat);
-
-                    _logger.LogInformation($"Checking file {e.FullPath}.");
-                    IPrediction result = DetectObjectAsync(ms.ToArray(), e.FullPath).Result;
-                    if (result == null)
+                    if (IsFileClosed(e.FullPath, true))
                     {
-                        _logger.LogError($"Cannot connect to object detector.");
-                        return;
-                    }
-                    bool foundTarget = DetectTarget(result.Detections);
-                    if ((result.Success && foundTarget) ||
-                        (result.Detections.Count() > 0))
-                    {
-                        result.FileName = e.Name;
-                        _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
+                        Image image = Image.FromFile(e.FullPath);
+                        MemoryStream ms = new MemoryStream();
+                        image.Save(ms, image.RawFormat);
 
-                        
-                        using (Graphics g = Graphics.FromImage(image))
+                        _logger.LogInformation($"Checking file {e.FullPath}.");
+                        IPrediction result = DetectObjectAsync(ms.ToArray(), e.FullPath).Result;
+                        if (result == null)
                         {
+                            _logger.LogError($"Cannot connect to object detector.");
+                            return;
+                        }
+                        bool foundTarget = DetectTarget(result.Detections);
+                        if ((result.Success && foundTarget) ||
+                            (result.Detections.Count() > 0))
+                        {
+                            result.FileName = e.Name;
+                            _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
 
-                            Pen redPen = new Pen(Color.Red, 5);
-                            foreach (IDetectedObject detectedObject in result.Detections)
+                            using (Graphics g = Graphics.FromImage(image))
                             {
-                                if (_watchedObjects.ContainsKey(detectedObject.Label))
+                                Pen redPen = new Pen(Color.Red, 5);
+                                foreach (IDetectedObject detectedObject in result.Detections)
                                 {
-                                    g.DrawRectangle(
-                                        redPen,
-                                        detectedObject.XMin,
-                                        detectedObject.YMin,
-                                        detectedObject.XMax - detectedObject.XMin,
-                                        detectedObject.YMax - detectedObject.YMin);
+                                    _logger.LogInformation($"Found item: {detectedObject.Label}, confidence: {detectedObject.Confidence} at x:{detectedObject.XMin} y:{detectedObject.YMin} xmax:{detectedObject.XMax} ymax:{detectedObject.YMax}");
+                                    if (_watchedObjects.ContainsKey(detectedObject.Label))
+                                    {
+                                        g.DrawRectangle(
+                                            redPen,
+                                            detectedObject.XMin,
+                                            detectedObject.YMin,
+                                            detectedObject.XMax - detectedObject.XMin,
+                                            detectedObject.YMax - detectedObject.YMin);
+                                    }
+                                }
+
+                                using (var msUpdated = new MemoryStream())
+                                {
+                                    image.Save(msUpdated, image.RawFormat);
+                                    result.Base64Image = Convert.ToBase64String(msUpdated.ToArray());
                                 }
                             }
-
-                            using (var msUpdated = new MemoryStream())
-                            {
-                                image.Save(msUpdated, image.RawFormat);
-                                result.Base64Image = Convert.ToBase64String(msUpdated.ToArray());
-                            }
+                            string topic = foundTarget ? e.Name : falseDetectionTopic;
+                            PublishAsync(result, topic, CancellationToken.None).Wait();
                         }
-                        string topic = foundTarget ? e.Name : falseDetectionTopic;
-                        PublishAsync(result, topic, CancellationToken.None).Wait();
                     }
                 }
+                catch (HttpRequestException ex)
+                {
+                    _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}:{ex.Message}");
+                }
             }
-            catch (HttpRequestException ex)
+            finally
             {
-                _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}:{ex.Message}");
+                _stopwatch.Stop();
+                _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}, elapsed time:{_stopwatch.Elapsed.TotalSeconds}");
+                _stopwatch.Reset();
             }
-            
-            _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}");
         }
 
         private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
         {
-            _logger.LogInformation($"Publishing {fileName}");
             return await _httpRetryPolicy.ExecuteAsync<MqttClientPublishResult>(() => _publisher.PublishAsync(prediction, fileName, token));
         }
 

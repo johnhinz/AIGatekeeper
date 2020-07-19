@@ -15,10 +15,11 @@ TopicParser : A regex that determines the topic as derived from the image file n
 TopicPosition : The position of the topic as derived from the image file name
 QueueName : The repository queue name
 WatchFolder : The folder to watch for new files.  These files are passed to the AIEndpoint for discovery
+LogFile : The full path and file name where logs are written
 WatchedExtensions : The file extension types passed to the AIEndpoint (these file types, if created in the watch folder will be passed to the AIEndpoint)
 RepositoryEndpoint : The repository endpoint.
 WatchedObjects : A Javascript object containing the items that trigger a write to the repository
   { 
-    "person": "0.75" : Items of interest and the confidence level that trigger a repository write
+    "person": "0.75" : Items of interest and the confidence level that triggers a repository write
   }
 ```

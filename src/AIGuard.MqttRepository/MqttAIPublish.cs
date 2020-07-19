@@ -36,6 +36,7 @@ namespace AIGuard.MqttRepository
         }
         public Task<MqttClientPublishResult> PublishAsync<TPrediction>(TPrediction message, string source, CancellationToken token) 
         {
+            _logger.LogInformation($"MqttAIPublish called for {source}");
             var factory = new MqttFactory();
             using (var mqttClient = factory.CreateMqttClient())
             {
