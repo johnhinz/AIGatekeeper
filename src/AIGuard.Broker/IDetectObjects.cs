@@ -4,6 +4,6 @@ namespace AIGuard.Broker
 {
     public interface IDetectObjects 
     {
-        public Task<IPrediction> DetectObjectsAsync(string imagePath);
+        public Task<IPrediction> DetectObjectsAsync(byte[] image, string imagePath);
     }
 }

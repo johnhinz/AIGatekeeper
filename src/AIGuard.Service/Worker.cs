@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -82,8 +83,12 @@ namespace AIGuard.Service
             {
                 if (IsFileClosed(e.FullPath, true))
                 {
+                    Image image = Image.FromFile(e.FullPath);
+                    MemoryStream ms = new MemoryStream();
+                    image.Save(ms, image.RawFormat);
+
                     _logger.LogInformation($"Checking file {e.FullPath}.");
-                    IPrediction result = DetectObjectAsync(e.FullPath).Result;
+                    IPrediction result = DetectObjectAsync(ms.ToArray(), e.FullPath).Result;
                     if (result == null)
                     {
                         _logger.LogError($"Cannot connect to object detector.");
@@ -96,7 +101,7 @@ namespace AIGuard.Service
                         result.FileName = e.Name;
                         _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
 
-                        Image image = Image.FromFile(e.FullPath);
+                        
                         using (Graphics g = Graphics.FromImage(image))
                         {
 
@@ -114,10 +119,10 @@ namespace AIGuard.Service
                                 }
                             }
 
-                            using (var ms = new MemoryStream())
+                            using (var msUpdated = new MemoryStream())
                             {
-                                image.Save(ms, image.RawFormat);
-                                result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                                image.Save(msUpdated, image.RawFormat);
+                                result.Base64Image = Convert.ToBase64String(msUpdated.ToArray());
                             }
                         }
                         string topic = foundTarget ? e.Name : falseDetectionTopic;
@@ -139,10 +144,10 @@ namespace AIGuard.Service
             return await _httpRetryPolicy.ExecuteAsync<MqttClientPublishResult>(() => _publisher.PublishAsync(prediction, fileName, token));
         }
 
-        private async Task<IPrediction> DetectObjectAsync(string filePath)
+        private async Task<IPrediction> DetectObjectAsync(byte[] image, string filePath)
         {
             return await _httpRetryPolicy.ExecuteAsync<IPrediction>(
-                () => _objDetector.DetectObjectsAsync(filePath));
+                () => _objDetector.DetectObjectsAsync(image,filePath));
         }
 
         private bool DetectTarget(IDetectedObject[] items)
