@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.Interface", "AIGuar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2D637BAC-77D6-43DD-A269-1EB302A3C4A4}"
 	ProjectSection(SolutionItems) = preProject
+		COPYRIGHT.MD = COPYRIGHT.MD
 		Dockerfile = Dockerfile
 		..\README.MD = ..\README.MD
 	EndProjectSection
