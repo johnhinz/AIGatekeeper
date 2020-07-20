@@ -129,9 +129,9 @@ namespace AIGuard.Service
                                     result.Base64Image = Convert.ToBase64String(msUpdated.ToArray());
                                 }
                             }
-                            string topic = foundTarget ? e.Name : falseDetectionTopic;
-                            PublishAsync(result, topic, CancellationToken.None).Wait();
                         }
+                        string topic = foundTarget ? e.Name : falseDetectionTopic;
+                        PublishAsync(result, topic, CancellationToken.None).Wait();
                     }
                 }
                 catch (HttpRequestException ex)
