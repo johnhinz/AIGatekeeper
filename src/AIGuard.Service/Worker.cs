@@ -122,12 +122,8 @@ namespace AIGuard.Service
                                             detectedObject.YMax - detectedObject.YMin);
                                     }
                                 }
-
-                                using (var msUpdated = new MemoryStream())
-                                {
-                                    image.Save(msUpdated, image.RawFormat);
-                                    result.Base64Image = Convert.ToBase64String(msUpdated.ToArray());
-                                }
+                                image.Save(ms, image.RawFormat);
+                                result.Base64Image = Convert.ToBase64String(ms.ToArray());
                             }
                         }
                         string topic = foundTarget ? e.Name : falseDetectionTopic;
