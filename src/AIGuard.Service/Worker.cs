@@ -122,6 +122,8 @@ namespace AIGuard.Service
                                             detectedObject.YMax - detectedObject.YMin);
                                     }
                                 }
+                                ms.Flush();
+                                ms.Position = 0;
                                 image.Save(ms, image.RawFormat);
                                 result.Base64Image = Convert.ToBase64String(ms.ToArray());
                             }
