@@ -25,7 +25,7 @@ namespace AIGuard.Service
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
         private readonly Stopwatch _stopwatch;
-        private readonly IDictionary<string, float> _watchedObjects;
+        private readonly IDictionary<string, WatchedObject> _watchedObjects;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
 
         private const string falseDetectionTopic = "False";
@@ -34,7 +34,7 @@ namespace AIGuard.Service
             ILogger<Worker> logger, 
             IDetectObjects objectDetector, 
             IPublishDetections<MqttClientPublishResult> publisher, 
-            IDictionary<string,float> watchedObjects, 
+            IDictionary<string, WatchedObject> watchedObjects, 
             string imagePath, 
             string watchedExtensions)
         {
@@ -122,7 +122,6 @@ namespace AIGuard.Service
                                             detectedObject.YMax - detectedObject.YMin);
                                     }
                                 }
-                                ms.Flush();
                                 ms.Position = 0;
                                 image.Save(ms, image.RawFormat);
                                 result.Base64Image = Convert.ToBase64String(ms.ToArray());
@@ -160,12 +159,31 @@ namespace AIGuard.Service
         {
             if (!items.Any(d => _watchedObjects.ContainsKey(d.Label)))
                 return false;
+
             bool targetFound = false;
             foreach (var detection in items)
                 if (_watchedObjects.ContainsKey(detection.Label))
-                    if (targetFound = detection.Confidence >= _watchedObjects[detection.Label])
+                {
+                    if (detection.Confidence >= _watchedObjects[detection.Label].Confidence)
+                    {
+                        double hypo = CalcHypotinuse(detection.XMax - detection.XMin, detection.YMax - detection.YMin);
+                        if (_watchedObjects[detection.Label].Hypotenuse == 0)
+                        {
+                            targetFound = true;
+                        }
+                        else
+                        {
+                            targetFound = hypo > _watchedObjects[detection.Label].Hypotenuse;
+                        }
                         break;
+                    }
+                }
             return targetFound;
+        }
+
+        private double CalcHypotinuse(int a, int b)
+        {
+            return Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
         }
 
         private bool IsFileClosed(string filepath, bool wait)

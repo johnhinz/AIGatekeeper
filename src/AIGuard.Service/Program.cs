@@ -61,7 +61,7 @@ namespace AIGuard.Service
                             serviceProvider.GetService<ILogger<Worker>>(), 
                             serviceProvider.GetService<IDetectObjects>(),
                             serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
-                            hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string,float>>(),
+                            hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string, WatchedObject>>(),
                             hostContext.Configuration.GetSection("WatchFolder").Value,
                             hostContext.Configuration.GetSection("WatchedExtensions").Value);
                     });

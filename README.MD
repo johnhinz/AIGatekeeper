@@ -20,6 +20,8 @@ WatchedExtensions : The file extension types passed to the AIEndpoint (these fil
 RepositoryEndpoint : The repository endpoint.
 WatchedObjects : A Javascript object containing the items that trigger a write to the repository
   { 
-    "person": "0.75" : Items of interest and the confidence level that triggers a repository write
+    "person": {                Items of interest
+      "confidence": "0.75",    the confidence level that triggers a repository write
+      "hypotenuse": "150"      the minimum hypotenuse to trigger an alert (use to eliminate false positives).  Set to 0 to ignore.
   }
 ```
