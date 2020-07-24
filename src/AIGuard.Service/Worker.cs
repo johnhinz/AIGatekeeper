@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AIGuard.Broker;
 using AIGuard.IRepository;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
@@ -25,7 +27,7 @@ namespace AIGuard.Service
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
         private readonly Stopwatch _stopwatch;
-        private readonly IDictionary<string, WatchedObject> _watchedObjects;
+        private readonly IEnumerable<Camera> _cameras;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
 
         private const string falseDetectionTopic = "False";
@@ -34,14 +36,14 @@ namespace AIGuard.Service
             ILogger<Worker> logger, 
             IDetectObjects objectDetector, 
             IPublishDetections<MqttClientPublishResult> publisher, 
-            IDictionary<string, WatchedObject> watchedObjects, 
+            IEnumerable<Camera> cameras, 
             string imagePath, 
             string watchedExtensions)
         {
             _logger = logger;
             _objDetector = objectDetector;
             _publisher = publisher;
-            _watchedObjects = watchedObjects;
+            _cameras = cameras;
             _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
             _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
 
@@ -88,47 +90,55 @@ namespace AIGuard.Service
                 {
                     if (IsFileClosed(e.FullPath, true))
                     {
-                        Image image = Image.FromFile(e.FullPath);
-                        MemoryStream ms = new MemoryStream();
-                        image.Save(ms, image.RawFormat);
-
-                        _logger.LogInformation($"Checking file {e.FullPath}.");
-                        IPrediction result = DetectObjectAsync(ms.ToArray(), e.FullPath).Result;
-                        if (result == null)
+                        using (Image image = Image.FromFile(e.FullPath))
                         {
-                            _logger.LogError($"Cannot connect to object detector.");
-                            return;
-                        }
-                        bool foundTarget = DetectTarget(result.Detections);
-                        if ((result.Success && foundTarget) ||
-                            (result.Detections.Count() > 0))
-                        {
-                            result.FileName = e.Name;
-                            _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
+                            _logger.LogInformation($"Checking file {e.FullPath}.");
 
-                            using (Graphics g = Graphics.FromImage(image))
+                            IPrediction result = DetectObjectAsync(image, e.FullPath).Result;
+                            if (result == null)
                             {
-                                Pen redPen = new Pen(Color.Red, 5);
-                                foreach (IDetectedObject detectedObject in result.Detections)
+                                _logger.LogError($"Cannot connect to object detector.");
+                                return;
+                            }
+
+                            Camera camera = FindCamera(e, result);
+                            if (camera == null)
+                            {
+                                _logger.LogError($"Camera not found for {result.FileName}");
+                                return;
+                            }
+
+                            bool foundTarget = DetectTarget(camera, result.Detections);
+
+                            if ((result.Success && foundTarget) || (result.Detections.Count() > 0))
+                            {
+                                _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
+                                result.FileName = e.Name;
+
+                                string topic = foundTarget ? e.Name : falseDetectionTopic;
+                                if (camera.Clip)
                                 {
-                                    _logger.LogInformation($"Found item: {detectedObject.Label}, confidence: {detectedObject.Confidence} at x:{detectedObject.XMin} y:{detectedObject.YMin} xmax:{detectedObject.XMax} ymax:{detectedObject.YMax}");
-                                    if (_watchedObjects.ContainsKey(detectedObject.Label))
+                                    List<MemoryStream> streams = CropBounds(image, result, camera);
+                                    foreach (MemoryStream ms in streams)
                                     {
-                                        g.DrawRectangle(
-                                            redPen,
-                                            detectedObject.XMin,
-                                            detectedObject.YMin,
-                                            detectedObject.XMax - detectedObject.XMin,
-                                            detectedObject.YMax - detectedObject.YMin);
+                                        using (ms)
+                                        {
+                                            result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                                            PublishAsync(result, topic, CancellationToken.None).Wait();
+                                        }
                                     }
                                 }
-                                ms.Position = 0;
-                                image.Save(ms, image.RawFormat);
-                                result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                                else
+                                {
+                                    using (MemoryStream ms = DrawBounds(image, result, camera))
+                                    {
+                                        result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                                        PublishAsync(result, topic, CancellationToken.None).Wait();
+                                    }
+                                }
                             }
+
                         }
-                        string topic = foundTarget ? e.Name : falseDetectionTopic;
-                        PublishAsync(result, topic, CancellationToken.None).Wait();
                     }
                 }
                 catch (HttpRequestException ex)
@@ -144,47 +154,117 @@ namespace AIGuard.Service
             }
         }
 
+        private List<MemoryStream> CropBounds(Image image, IPrediction result, Camera camera)
+        {
+            List<MemoryStream> streams = new List<MemoryStream>();
+            foreach (IDetectedObject detection in result.Detections)
+            {
+                if (camera.Watches.Any(i => i.Label == detection.Label))
+                {
+                    Rectangle cropRect = new Rectangle(detection.XMin, detection.YMin, detection.XMax - detection.XMin, detection.YMax - detection.YMin);
+                    Bitmap src = image as Bitmap;
+                    Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+
+
+                    using (Graphics g = Graphics.FromImage(target))
+                    {
+
+                        g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                         cropRect,
+                                         GraphicsUnit.Pixel);
+
+                    }
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        target.Save(ms, image.RawFormat);
+                        streams.Add(ms);
+                    }
+                }
+            }
+            return streams;
+        }
+
+        private MemoryStream DrawBounds(Image image, IPrediction result, Camera camera)
+        {
+            using (Graphics g = Graphics.FromImage(image))
+            {
+                Pen redPen = new Pen(Color.Red, 5);
+                foreach (IDetectedObject detection in result.Detections)
+                {
+                    _logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
+                    if (camera.Watches.Any(i => i.Label == detection.Label))
+                    {
+                        g.DrawRectangle(
+                            redPen,
+                            detection.XMin,
+                            detection.YMin,
+                            detection.XMax - detection.XMin,
+                            detection.YMax - detection.YMin);
+                    }
+                }
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    //result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                    return ms;
+                }
+            }
+        }
+
+        private Camera FindCamera(FileSystemEventArgs e, IPrediction result)
+        {
+            Camera camera = null;
+            foreach (var item in _cameras)
+            {
+                if (e.Name.Contains(item.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    _logger.LogDebug($"Found camera {item.Name} for file {result.FileName}");
+                    camera = item;
+                    break;
+                }
+            }
+
+            return camera;
+        }
+
         private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
         {
             return await _httpRetryPolicy.ExecuteAsync<MqttClientPublishResult>(() => _publisher.PublishAsync(prediction, fileName, token));
         }
 
-        private async Task<IPrediction> DetectObjectAsync(byte[] image, string filePath)
+        private async Task<IPrediction> DetectObjectAsync(Image image, string filePath)
         {
-            return await _httpRetryPolicy.ExecuteAsync<IPrediction>(
-                () => _objDetector.DetectObjectsAsync(image,filePath));
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, image.RawFormat);
+                return await _httpRetryPolicy.ExecuteAsync<IPrediction>(
+                    () => _objDetector.DetectObjectsAsync(ms.ToArray(), filePath));
+            }
         }
 
-        private bool DetectTarget(IDetectedObject[] items)
+        private bool DetectTarget(Camera camera, IDetectedObject[] detectedItems)
         {
-            if (!items.Any(d => _watchedObjects.ContainsKey(d.Label)))
+            if (!detectedItems.Any(i => camera.Watches.Any(w => w.Label == i.Label)))
                 return false;
 
             bool targetFound = false;
-            foreach (var detection in items)
-                if (_watchedObjects.ContainsKey(detection.Label))
+            foreach (var detection in detectedItems)
+            {
+                Item item = camera.Watches.Where(w => w.Label == detection.Label).FirstOrDefault();
+                if (item != null)
                 {
-                    if (detection.Confidence >= _watchedObjects[detection.Label].Confidence)
+                    if (item.Confidence <= detection.Confidence)
                     {
-                        double hypo = CalcHypotinuse(detection.XMax - detection.XMin, detection.YMax - detection.YMin);
-                        if (_watchedObjects[detection.Label].Hypotenuse == 0)
-                        {
-                            targetFound = true;
-                        }
-                        else
-                        {
-                            targetFound = hypo > _watchedObjects[detection.Label].Hypotenuse;
-                        }
-                        break;
+                        return true;
                     }
                 }
+                
+            }
             return targetFound;
         }
 
-        private double CalcHypotinuse(int a, int b)
-        {
-            return Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
-        }
+   
 
         private bool IsFileClosed(string filepath, bool wait)
         {

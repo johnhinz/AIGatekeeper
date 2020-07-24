@@ -4,9 +4,9 @@ using System.Text;
 
 namespace AIGuard.Service
 {
-    public class WatchedObject
+    public class Item
     {
+        public string Label { get; set; }
         public float Confidence { get; set; }
-        public int Hypotenuse { get; set; }
     }
 }

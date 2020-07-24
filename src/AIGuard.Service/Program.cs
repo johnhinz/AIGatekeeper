@@ -18,8 +18,6 @@ namespace AIGuard.Service
     {
         public static void Main(string[] args)
         {
-            
-
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -61,7 +59,7 @@ namespace AIGuard.Service
                             serviceProvider.GetService<ILogger<Worker>>(), 
                             serviceProvider.GetService<IDetectObjects>(),
                             serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
-                            hostContext.Configuration.GetSection("WatchedObjects").Get<Dictionary<string, WatchedObject>>(),
+                            hostContext.Configuration.GetSection("Cameras").Get<IEnumerable<Camera>>(),
                             hostContext.Configuration.GetSection("WatchFolder").Value,
                             hostContext.Configuration.GetSection("WatchedExtensions").Value);
                     });

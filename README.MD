@@ -18,10 +18,21 @@ WatchFolder : The folder to watch for new files.  These files are passed to the 
 LogFile : The full path and file name where logs are written
 WatchedExtensions : The file extension types passed to the AIEndpoint (these file types, if created in the watch folder will be passed to the AIEndpoint)
 RepositoryEndpoint : The repository endpoint.
-WatchedObjects : A Javascript object containing the items that trigger a write to the repository
-  { 
-    "person": {                Items of interest
-      "confidence": "0.75",    the confidence level that triggers a repository write
-      "hypotenuse": "150"      the minimum hypotenuse to trigger an alert (use to eliminate false positives).  Set to 0 to ignore.
-  }
+Cameras : A Javascript array containing a list of cameras.
+  [ 
+    {
+      "name": "east",   Name of the camera.  The value must be a substring of the image filename.
+      "clip": false,    True will crop the image to the object of interest, false will send the whole image with a target in a bounded rectangle
+      "watches": [      A Javascript array containing the items of interest and the confidence level required to produce a match
+        {
+          "label": "person",   The title of an object of interest
+          "confidence": 0.75   The confidence level that will produce a match
+        },
+        {
+          "label": "car",   
+          "confidence": 0.75   
+        }
+      ]
+    }
+  ]
 ```
