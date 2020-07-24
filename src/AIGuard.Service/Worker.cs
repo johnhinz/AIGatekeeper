@@ -159,6 +159,8 @@ namespace AIGuard.Service
             List<MemoryStream> streams = new List<MemoryStream>();
             foreach (IDetectedObject detection in result.Detections)
             {
+                _logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
+
                 if (camera.Watches.Any(i => i.Label == detection.Label))
                 {
                     Rectangle cropRect = new Rectangle(detection.XMin, detection.YMin, detection.XMax - detection.XMin, detection.YMax - detection.YMin);
