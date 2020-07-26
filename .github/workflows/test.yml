@@ -22,7 +22,10 @@ jobs:
     - name: List directories
       run: ls -la
     - name: Install dependencies
-      run: dotnet restore
+      run:
+        cd src
+        ls -ls 
+        dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
