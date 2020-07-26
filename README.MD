@@ -1,4 +1,4 @@
-![Build Status](https://github.com/johnhinz/AIGatekeeper/workflows/.NET%20Core/badge.svg?branch=github-actions) [![Coverage Status](https://coveralls.io/repos/github.com/johnhinz/AIGatekeeper/badge.svg?branch=github-actions)](https://coveralls.io/github.com/johnhinz/AIGatekeeper?branch=github-actions) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/johnhinz/AIGatekeeper/blob/master/LICENSE)
+![Build Status](https://github.com/johnhinz/AIGatekeeper/workflows/.NET%20Core/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github.com/johnhinz/AIGatekeeper/badge.svg?branch=master)](https://coveralls.io/github.com/johnhinz/AIGatekeeper?branch=github-actions) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/johnhinz/AIGatekeeper/blob/master/LICENSE)
 
 # AIGateKeeper
 
