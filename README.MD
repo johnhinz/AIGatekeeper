@@ -1,3 +1,5 @@
+![Build Status](https://github.com/johnhinz/AIGatekeeper/workflows/.NET%20Core/badge.svg?branch=github-actions) [![Coverage Status](https://coveralls.io/repos/github.com/johnhinz/AIGatekeeper/badge.svg?branch=github-actions)](https://coveralls.io/github.com/johnhinz/AIGatekeeper?branch=github-actions) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/johnhinz/AIGatekeeper/blob/master/LICENSE)
+
 # AIGateKeeper
 
 The goal of this library is to design a tool that would watch a folder for specific files, send them to an AI discovery tool and take some action if an appropriate subject is found.
