@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -10,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AIGuard.Broker;
 using AIGuard.IRepository;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Client.Publishing;
@@ -101,10 +99,14 @@ namespace AIGuard.Service
                                 return;
                             }
 
-                            Camera camera = FindCamera(e, result);
-                            if (camera == null)
+                            Camera camera = null;
+                            try
                             {
-                                _logger.LogError($"Camera not found for {result.FileName}");
+                                camera = FindCamera(e);
+                            }
+                            catch (ArgumentOutOfRangeException exp)
+                            {
+                                _logger.LogError(exp.Message);
                                 return;
                             }
 
@@ -214,20 +216,17 @@ namespace AIGuard.Service
             }
         }
 
-        private Camera FindCamera(FileSystemEventArgs e, IPrediction result)
+        public Camera FindCamera(FileSystemEventArgs e)
         {
-            Camera camera = null;
             foreach (var item in _cameras)
             {
                 if (e.Name.Contains(item.Name, StringComparison.OrdinalIgnoreCase))
                 {
-                    _logger.LogDebug($"Found camera {item.Name} for file {result.FileName}");
-                    camera = item;
-                    break;
+                    _logger.LogDebug($"Found camera {item.Name} for file {e.Name}");
+                    return item;
                 }
             }
-
-            return camera;
+            throw new ArgumentOutOfRangeException($"Camera for {e.Name} not found");
         }
 
         private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
@@ -245,7 +244,7 @@ namespace AIGuard.Service
             }
         }
 
-        private bool DetectTarget(Camera camera, IDetectedObject[] detectedItems)
+        public bool DetectTarget(Camera camera, IDetectedObject[] detectedItems)
         {
             if (!detectedItems.Any(i => camera.Watches.Any(w => w.Label == i.Label)))
                 return false;
