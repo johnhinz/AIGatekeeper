@@ -23,8 +23,8 @@ jobs:
       run: ls -la
     - name: Install dependencies
       run: |
-        cd src |
-        ls -ls |
+        cd src 
+        ls -ls 
         dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
