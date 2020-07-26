@@ -22,9 +22,9 @@ jobs:
     - name: List directories
       run: ls -la
     - name: Install dependencies
-      run:
-        cd src
-        ls -ls 
+      run: |
+        cd src |
+        ls -ls |
         dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
