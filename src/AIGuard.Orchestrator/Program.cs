@@ -9,10 +9,8 @@ using MQTTnet.Client.Publishing;
 using AIGuard.MqttRepository;
 using System.Collections.Generic;
 using Serilog;
-using System.Security.Policy;
-using System.IO;
 
-namespace AIGuard.Service
+namespace AIGuard.Orchestrator
 {
     public class Program
     {

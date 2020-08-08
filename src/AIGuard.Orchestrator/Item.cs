@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AIGuard.Service
+namespace AIGuard.Orchestrator
 {
     public class Item
     {

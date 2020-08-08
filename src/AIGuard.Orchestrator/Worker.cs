@@ -15,7 +15,7 @@ using MQTTnet.Client.Publishing;
 using Polly;
 using Polly.Retry;
 
-namespace AIGuard.Service
+namespace AIGuard.Orchestrator
 {
     public class Worker : BackgroundService
     {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AIGuard.Service\AIGuard.Service.csproj" />
+    <ProjectReference Include="..\AIGuard.Broker\AIGuard.Broker.csproj" />
+    <ProjectReference Include="..\AIGuard.IRepository\AIGuard.IRepository.csproj" />
+    <ProjectReference Include="..\AIGuard.Orchestrator\AIGuard.Orchestrator.csproj" />
   </ItemGroup>
 
 </Project>

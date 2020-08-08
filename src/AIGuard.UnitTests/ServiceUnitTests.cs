@@ -1,16 +1,13 @@
 using AIGuard.Broker;
 using AIGuard.IRepository;
-using AIGuard.Service;
-using Castle.Core.Logging;
+using AIGuard.Orchestrator;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MQTTnet.Client.Publishing;
-using NuGet.Frameworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace AIGuard.UnitTests
 {
