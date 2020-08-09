@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,12 +22,14 @@ namespace AIGuard.MySQLSubscriber
         private readonly ILogger<Worker> _logger;
         private readonly string _mySQLConnectionString;
         private readonly string _mqttServer;
+        private readonly Stopwatch _stopwatch;
 
         public Worker(ILogger<Worker> logger, string MySQLConnectionString, string MqttServer)
         {
             _logger = logger;
             _mySQLConnectionString = MySQLConnectionString;
             _mqttServer = MqttServer;
+            _stopwatch = new Stopwatch();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,11 +48,21 @@ namespace AIGuard.MySQLSubscriber
                 var payload = JsonSerializer.Deserialize<Capture>(e.ApplicationMessage.Payload);
                 if (payload != null)
                 {
-                    _logger.LogInformation($"Message recieved {payload.FileName}");
-                    using (AIContext context = new AIContext(_mySQLConnectionString)) 
+                    try
                     {
-                        context.Captures.Add(payload);
-                        context.SaveChanges();
+                        _stopwatch.Start();
+                        _logger.LogInformation($"Message recieved {payload.FileName}");
+                        using (AIContext context = new AIContext(_mySQLConnectionString))
+                        {
+                            context.Captures.Add(payload);
+                            context.SaveChanges();
+                        }
+                        _stopwatch.Stop();
+                        _logger.LogInformation($"Message {payload.FileName} persited in {_stopwatch.ElapsedMilliseconds}ms");
+                    }
+                    finally
+                    {
+                        _stopwatch.Reset();
                     }
                 }
             });
