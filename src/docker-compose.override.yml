@@ -1,5 +1,0 @@
-version: '3.4'
-services:
-  aiguard.mysqlsubscriber:
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
