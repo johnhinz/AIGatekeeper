@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AIGuard.MySQLRepository
 {
-    class Detection
+    public class Detection
     {
         public int Id { get; set; }
         public string Target { get; set; }

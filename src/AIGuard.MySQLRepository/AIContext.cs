@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AIGuard.MySQLRepository
 {
-    class AIContext : DbContext
+    public class AIContext : DbContext
     {
         private string _connectionStr;
 
@@ -25,8 +25,18 @@ namespace AIGuard.MySQLRepository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Capture>(
+                    c => c.ToTable("captures")
+                );
+
+            modelBuilder.Entity<Capture>(
                 e => e.HasMany(d => d.Detections));
-            
+
+            modelBuilder.Entity<Detection>(
+                    d => d.ToTable("detections")
+                );
+
+
+
             base.OnModelCreating(modelBuilder);
         }
     }
