@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.MySQLRepository", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.Orchestrator", "AIGuard.Orchestrator\AIGuard.Orchestrator.csproj", "{4661DE2B-48F9-46BD-A540-A9B33F710C3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIGuard.MySQLSubscriber", "AIGuard.MySQLSubscriber\AIGuard.MySQLSubscriber.csproj", "{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{4661DE2B-48F9-46BD-A540-A9B33F710C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4661DE2B-48F9-46BD-A540-A9B33F710C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4661DE2B-48F9-46BD-A540-A9B33F710C3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
