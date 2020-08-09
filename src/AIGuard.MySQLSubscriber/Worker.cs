@@ -54,6 +54,7 @@ namespace AIGuard.MySQLSubscriber
                         _logger.LogInformation($"Message recieved {payload.FileName}");
                         using (AIContext context = new AIContext(_mySQLConnectionString))
                         {
+                            payload.dt = DateTime.Now;
                             context.Captures.Add(payload);
                             context.SaveChanges();
                         }

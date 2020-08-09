@@ -8,6 +8,7 @@ namespace AIGuard.MySQLRepository
     public class Capture
     {
         public int Id { get; set; }
+        public DateTime dt { get; set; }
         [Column("success")]
         public bool Success { get; set; }
         [Column("filename")]
