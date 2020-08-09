@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}aiguardmysqlsubscriber
     build:
       context: .
-      dockerfile: AIGuard.MySQLSubscriber/Dockerfile
+      #dockerfile: AIGuard.MySQLSubscriber/Dockerfile
