@@ -35,8 +35,6 @@ namespace AIGuard.MySQLSubscriber
                             hostContext.Configuration.GetSection("ConnectionStrings:MySQL").Value,
                             hostContext.Configuration.GetSection("ConnectionStrings:MQTT").Value);
                     });
-                    
-
                 });
     }
 }

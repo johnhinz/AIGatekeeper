@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  aiguard.mysqlsubscriber:
+    image: ${DOCKER_REGISTRY-}aiguardmysqlsubscriber
+    build:
+      context: .
+      dockerfile: AIGuard.MySQLSubscriber/Dockerfile
