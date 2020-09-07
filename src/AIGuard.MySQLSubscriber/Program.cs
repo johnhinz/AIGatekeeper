@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MQTTnet;
 using Serilog;
 
 namespace AIGuard.MySQLSubscriber
@@ -35,6 +36,7 @@ namespace AIGuard.MySQLSubscriber
                         return new Worker(
                             serviceProvider.GetService<ILogger<Worker>>(),
                             new PublishDetections(hostContext.Configuration.GetSection("ConnectionStrings:MySQL").Value),
+                            new MqttFactory(),
                             hostContext.Configuration.GetSection("ConnectionStrings:MQTT").Value);
                     });
                 });

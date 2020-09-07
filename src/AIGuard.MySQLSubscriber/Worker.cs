@@ -23,20 +23,22 @@ namespace AIGuard.MySQLSubscriber
         private readonly ILogger<Worker> _logger;
         private readonly string _mqttServer;
         private readonly IPublishDetections<int> _publisher;
+        private readonly IMqttClientFactory _mqttFactory;
         private readonly Stopwatch _stopwatch;
 
-        public Worker(ILogger<Worker> logger, IPublishDetections<int> publisher, string MqttServer)
+        public Worker(ILogger<Worker> logger, IPublishDetections<int> publisher, IMqttClientFactory mqttFactory, string MqttServer)
         {
             _logger = logger;
             _mqttServer = MqttServer;
             _publisher = publisher;
+            _mqttFactory = mqttFactory;
             _stopwatch = new Stopwatch();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var factory = new MqttFactory();
-            var client = factory.CreateMqttClient();
+            //var factory = new MqttFactory();
+            var client = _mqttFactory.CreateMqttClient();
             var clientOptions = new MqttClientOptions
             {
                 ChannelOptions = new MqttClientTcpOptions
@@ -44,7 +46,59 @@ namespace AIGuard.MySQLSubscriber
                     Server = _mqttServer
                 }
             };
-            client.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(async e =>
+
+            client.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(MessageReceiver());
+
+            client.ConnectedHandler = new MqttClientConnectedHandlerDelegate(ClientConnect(client));
+
+            client.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(ClientDisconnect(client, clientOptions));
+
+            try
+            {
+                await client.ConnectAsync(clientOptions);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogInformation($"Connection Failed {exception?.Message}");
+            }
+
+            _logger.LogInformation("Waiting for messages.");
+
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
+
+        private Func<MqttClientDisconnectedEventArgs, Task> ClientDisconnect(IMqttClient client, MqttClientOptions clientOptions)
+        {
+            return async e =>
+            {
+                _logger.LogInformation($"Disconnected from server");
+                try
+                {
+                    await client.ConnectAsync(clientOptions);
+                }
+                catch (Exception x)
+                {
+                    _logger.LogError($"Reconnection failed {x.Message}");
+                }
+            };
+        }
+
+        private Func<MqttClientConnectedEventArgs, Task> ClientConnect(IMqttClient client)
+        {
+            return async e =>
+            {
+                _logger.LogInformation($"Connected to Mqtt");
+                await client.SubscribeAsync(new MqttTopicFilter { Topic = "AI/#", QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce });
+                _logger.LogInformation($"Subscribed to Mqtt");
+            };
+        }
+
+        private Func<MqttApplicationMessageReceivedEventArgs, Task> MessageReceiver()
+        {
+            return async e =>
             {
                 if (e.ApplicationMessage.Topic.Contains("False"))
                 {
@@ -69,7 +123,8 @@ namespace AIGuard.MySQLSubscriber
                                     item.CaptureId = payload.Id;
                                     await _publisher.PublishAsync<Detection>(item, string.Empty, CancellationToken.None);
                                 }
-                            } catch (Exception ex)
+                            }
+                            catch (Exception ex)
                             {
                                 _logger.LogError(ex.InnerException?.Message);
                             }
@@ -82,43 +137,7 @@ namespace AIGuard.MySQLSubscriber
                         }
                     }
                 }
-            });
-
-            client.ConnectedHandler = new MqttClientConnectedHandlerDelegate(async e =>
-            {
-                _logger.LogInformation($"Connected to Mqtt");
-                await client.SubscribeAsync(new MqttTopicFilter { Topic = "AI/#", QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce });
-                _logger.LogInformation($"Subscribed to Mqtt");
-            });
-
-            client.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(async e =>
-            { 
-                _logger.LogInformation($"Disconnected from server");
-                try
-                {
-                    await client.ConnectAsync(clientOptions);
-                }
-                catch (Exception x)
-                {
-                    _logger.LogError($"Reconnection failed {x.Message}");
-                }
-            });
-
-            try
-            {
-                await client.ConnectAsync(clientOptions);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogInformation($"Connection Failed {exception?.Message}");
-            }
-
-            _logger.LogInformation("Waiting for messages.");
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await Task.Delay(1000, stoppingToken);
-            }
+            };
         }
     }
 }
