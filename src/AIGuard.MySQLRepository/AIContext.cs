@@ -27,16 +27,12 @@ namespace AIGuard.MySQLRepository
             modelBuilder.Entity<Capture>(
                     c => c.ToTable("captures")
                 );
-
             modelBuilder.Entity<Capture>(
                 e => e.HasMany(d => d.Detections));
 
             modelBuilder.Entity<Detection>(
                     d => d.ToTable("detections")
                 );
-
-
-
             base.OnModelCreating(modelBuilder);
         }
     }
