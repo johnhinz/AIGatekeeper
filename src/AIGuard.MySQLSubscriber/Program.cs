@@ -1,3 +1,5 @@
+using AIGuard.IRepository;
+using AIGuard.MySQLRepository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +34,7 @@ namespace AIGuard.MySQLSubscriber
                     {
                         return new Worker(
                             serviceProvider.GetService<ILogger<Worker>>(),
-                            hostContext.Configuration.GetSection("ConnectionStrings:MySQL").Value,
+                            new PublishDetections(hostContext.Configuration.GetSection("ConnectionStrings:MySQL").Value),
                             hostContext.Configuration.GetSection("ConnectionStrings:MQTT").Value);
                     });
                 });

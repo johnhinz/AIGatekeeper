@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using AIGuard.IRepository;
 using AIGuard.MySQLRepository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,15 +21,15 @@ namespace AIGuard.MySQLSubscriber
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly string _mySQLConnectionString;
         private readonly string _mqttServer;
+        private readonly IPublishDetections<int> _publisher;
         private readonly Stopwatch _stopwatch;
 
-        public Worker(ILogger<Worker> logger, string MySQLConnectionString, string MqttServer)
+        public Worker(ILogger<Worker> logger, IPublishDetections<int> publisher, string MqttServer)
         {
             _logger = logger;
-            _mySQLConnectionString = MySQLConnectionString;
             _mqttServer = MqttServer;
+            _publisher = publisher;
             _stopwatch = new Stopwatch();
         }
 
@@ -43,7 +44,7 @@ namespace AIGuard.MySQLSubscriber
                     Server = _mqttServer
                 }
             };
-            client.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(e =>
+            client.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(async e =>
             {
                 if (e.ApplicationMessage.Topic.Contains("False"))
                 {
@@ -58,11 +59,19 @@ namespace AIGuard.MySQLSubscriber
                         {
                             _stopwatch.Start();
                             _logger.LogInformation($"Message recieved {payload.FileName}");
-                            using (AIContext context = new AIContext(_mySQLConnectionString))
+                            //IPublishDetections<int> publish = new PublishDetections(_mySQLConnectionString);
+                            payload.dt = DateTime.Now;
+                            try
                             {
-                                payload.dt = DateTime.Now;
-                                context.Captures.Add(payload);
-                                context.SaveChanges();
+                                await _publisher.PublishAsync<Capture>(payload, string.Empty, CancellationToken.None);
+                                foreach (var item in payload.Detections)
+                                {
+                                    item.CaptureId = payload.Id;
+                                    await _publisher.PublishAsync<Detection>(item, string.Empty, CancellationToken.None);
+                                }
+                            } catch (Exception ex)
+                            {
+                                _logger.LogError(ex.InnerException?.Message);
                             }
                             _stopwatch.Stop();
                             _logger.LogInformation($"Message {payload.FileName} persited in {_stopwatch.ElapsedMilliseconds}ms");
