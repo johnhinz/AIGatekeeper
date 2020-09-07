@@ -12,7 +12,7 @@ using System.IO;
 namespace AIGuard.UnitTests
 {
     [TestClass]
-    public class ServiceUnitTests
+    public class AIGuard_Orchestrator_UnitTests
     {
         private Mock<IPublishDetections<List<int>>> _detectionPublisher;
         private Worker _worker;
