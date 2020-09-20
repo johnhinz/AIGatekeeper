@@ -1,0 +1,27 @@
+@startuml test
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
+
+
+
+title AIGatekeeper System Context Diagram
+
+Person(recipient, "Notified person", "A person notified when an event of interest occurs")
+System_Ext(sys, "File System", "Source for Detections")
+System(discovery, "Item Discovery")
+System(detector, "Item Detector")
+System(workflow, "Workflow")
+System(repo, "Repository")
+System(notification, "Notifications")
+
+Rel(sys, discovery, "Monitors")
+Rel(discovery, detector, "Files for detection engine")
+Rel_Back(discovery, detector, "Detection results")
+Rel(discovery, workflow, "Item of interest found")
+Rel(workflow, repo, "Item of interest found")
+Rel(workflow, notification, "Item of interest found")
+Rel(notification, recipient, "Item of interest found")
+
+' Rel_Neighbor(banking_system, mail_system, "Sends e-mails", "SMTP")
+' Rel(banking_system, mainframe, "Uses")
+
+@enduml
