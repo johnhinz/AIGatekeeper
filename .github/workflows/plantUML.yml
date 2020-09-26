@@ -2,7 +2,7 @@ name: generate plantuml
 on:
   push:
     paths:
-      - './diagrams/*.puml'
+      - '/diagrams/*.puml'
     branches:
       - master
 jobs:
