@@ -4,22 +4,21 @@
 title AIGatekeeper System Context Diagram
 
 Person(recipient, "Notified person", "A person notified when an event of interest occurs")
-System_Ext(sys, "File System", "Source for Detections")
-System_Boundary(bound, "AIGuardian") {
-    System(discovery, "Item Discovery : AIGuard.Orchestrator")
-    System(detector, "Item Detector : AIGuard.Broker")
-    System(repo, "Repository : AIGuard.IRepository")
-}
+
+System(guard, "AIGuardian")
+
+System_Ext(filesys, "File System", "Source for Detections")
 System_Ext(bus, "Message Bus")
 System_Ext(notification, "Notifications")
 System_Ext(workflow, "Workflow")
 
-Rel(sys, discovery, "Monitors")
-Rel(discovery, detector, "Files for detection engine")
-Rel_Back(discovery, detector, "Detection results")
-Rel(discovery, bus, "Item of interest found")
+Rel(filesys, guard, "Files Added")
+'Rel(guard, detector, "Files for detection engine")
+'Rel_Back(guard, detector, "Detection results")
+Rel(guard, bus, "Item of interest found")
+Rel(bus, guard, "Item of interest found")
 Rel(bus, workflow, "Item of interest found")
-Rel(bus, repo, "Item persisted")
+'Rel(bus, repo, "Item persisted")
 Rel(workflow, notification, "Item of interest found")
 Rel(notification, recipient, "Item of interest found")
 
