@@ -1,8 +1,8 @@
-name: generate plantuml
+name: generate plantuml diagrams
 on:
   push:
     paths:
-      - '/diagrams/*.puml'
+      - './diagrams/*.puml'
     branches:
       - master
 jobs:
