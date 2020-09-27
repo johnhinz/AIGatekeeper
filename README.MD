@@ -12,10 +12,10 @@ An implementation of AI discovery tool that corresponds to AIGuard.Broker and a 
 [Architectural Overview]
 
 ### System Context
-(https://github.com/johnhinz/AIGatekeeper/blob/master/diagrams/systemcontext.svg)
+![System Context](diagrams/systemcontext.svg)
 
 ### Container 
-(https://github.com/johnhinz/AIGatekeeper/blob/master/diagrams/container.svg)
+![Container](diagrams/container.svg)
 
 
 ## Installation
