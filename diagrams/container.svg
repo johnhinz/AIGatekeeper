@@ -16,7 +16,7 @@ link discovery to detector--><path d="M137.934,293.039 C141.56,318.419 146.495,3
 link detector to bus--><path d="M152.792,456.435 C152.556,476.288 155.056,500.913 166,520 C171.902,530.294 180.572,539.213 189.964,546.711 " fill="none" id="detector-to-bus" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="194.028,549.836,189.3335,541.1779,190.065,546.7873,184.4556,547.5188,194.028,549.836" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="167" y="501.0669">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="210" y="516.1997">found</text><!--MD5=[eecc44e5b637a4d3bc1e08c6ebb6e2dd]
 link bus to repo--><path d="M275.682,549.904 C285.259,541.271 294.982,531.008 302,520 C347.197,449.109 369.982,351.827 379.788,298.133 " fill="none" id="bus-to-repo" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="380.696,293.075,375.1674,301.2257,379.8118,297.9962,383.0413,302.6405,380.696,293.075" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="359" y="417.5669">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="402" y="432.6997">found</text><!--MD5=[59d05459374325cb1e2177977deb1fc6]
 link repo to persist--><path d="M430.407,293.039 C467.85,322.161 520.81,363.352 555.993,390.717 " fill="none" id="repo-to-persist" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="560.193,393.984,555.5446,385.3011,556.2462,390.9143,550.6331,391.6159,560.193,393.984" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="509" y="336.0669">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="552" y="351.1997">found</text><!--MD5=[a29a36ecc64aeadc2f5e0d77092c8627]
-link filesys to discovery--><path d="M133,92.187 C133,128.493 133,180.778 133,216.56 " fill="none" id="filesys-to-discovery" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="133,221.715,137,212.715,133,216.715,129,212.715,133,221.715" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="144" x="134" y="135.0669">File system change</text><!--MD5=[699ee912d7a570bc9a1944f0ddd9e458]
+link filesys to discovery--><path d="M133,92.187 C133,128.493 133,180.778 133,216.56 " fill="none" id="filesys-to-discovery" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="133,221.715,137,212.715,133,216.715,129,212.715,133,221.715" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="144" x="134" y="135.0669">File system change</text><!--MD5=[03dc1105b9dae0dceaa2cc27c611c094]
 @startuml
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
   
@@ -35,14 +35,12 @@ System_Boundary(bound, "AIGuardian") {
 }
 
 Rel(bus, workflow, "File system change")
-
 Rel(notification, recipient, "User notified")
 Rel(workflow, notification, "Item of interest found")
 Rel(discovery, detector, "Item of interest found")
 Rel(detector, bus, "Item of interest found")
 Rel(bus, repo, "Item of interest found")
 Rel(repo, persist, "Item of interest found")
-
 Rel(filesys, discovery, "File system change")
 @enduml
 
@@ -195,14 +193,12 @@ rectangle "==AIGuardian\n<size:12>[System]</size>" <<boundary>> as bound {
 }
 
 bus - -> workflow : "===File system change"
-
 notification - -> recipient : "===User notified"
 workflow - -> notification : "===Item of interest found"
 discovery - -> detector : "===Item of interest found"
 detector - -> bus : "===Item of interest found"
 bus - -> repo : "===Item of interest found"
 repo - -> persist : "===Item of interest found"
-
 filesys - -> discovery : "===File system change"
 @enduml
 
