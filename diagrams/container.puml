@@ -16,14 +16,12 @@ System_Boundary(bound, "AIGuardian") {
 }
 
 Rel(bus, workflow, "File system change")
-
 Rel(notification, recipient, "User notified")
 Rel(workflow, notification, "Item of interest found")
 Rel(discovery, detector, "Item of interest found")
 Rel(detector, bus, "Item of interest found")
 Rel(bus, repo, "Item of interest found")
 Rel(repo, persist, "Item of interest found")
-
 Rel(filesys, discovery, "File system change")
 
 @enduml
