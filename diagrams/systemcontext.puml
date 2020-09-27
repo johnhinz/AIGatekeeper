@@ -11,6 +11,7 @@ System_Ext(filesys, "File System", "Source for Detections")
 System_Ext(bus, "Message Bus")
 System_Ext(notification, "Notifications")
 System_Ext(workflow, "Workflow")
+System_Ext(persist, "Storgage")
 
 Rel(filesys, guard, "Files Added")
 'Rel(guard, detector, "Files for detection engine")
