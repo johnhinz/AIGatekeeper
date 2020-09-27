@@ -14,12 +14,10 @@ System_Ext(workflow, "Workflow")
 System_Ext(persist, "Storgage")
 
 Rel(filesys, guard, "Files Added")
-'Rel(guard, detector, "Files for detection engine")
-'Rel_Back(guard, detector, "Detection results")
 Rel(guard, bus, "Item of interest found")
 Rel(bus, guard, "Item of interest found")
 Rel(bus, workflow, "Item of interest found")
-'Rel(bus, repo, "Item persisted")
+Rel(guard, persist, "Item persisted")
 Rel(workflow, notification, "Item of interest found")
 Rel(notification, recipient, "Item of interest found")
 
