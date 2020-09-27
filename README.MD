@@ -9,7 +9,14 @@ The library has abstracted the AI discovery tool and the repository.  There are 
 An implementation of AI discovery tool that corresponds to AIGuard.Broker and a repository that corresponds to AIGuard.IRepository.
 
 ## Architecture
-[Architectural Overview](http://www.plantuml.com/plantuml/png/jLLBRzim3BxhLn3UPJkiimSayOeqQDUjm0ujYhZ03aaFWaKxGcqf49MbsT3_FigF8bvpo66n0GUW-3r8YSebUUdyfgxUQtLnROt7P_z1UEqhX1yUQ_Y67dDl7No4R4SXqcK9GK_QhAMJDVmH0BIIocwrAQ6G5I57f7DsUyFPcVwDaCGSKbZ8JUKV67zLwTBKQ3pa_477gridrp-ryYlu78ViMZxV8f4iiME8nOjOQON0HXnQlrlZdWl7HgKfAvnEaz5irhZwAlEdqjcDKTUsuYhUgURXbM2iYyND4xAjK-Yww9UhyBBYGOMJ2unFBJ0vjK1wQe4a_eyAhxmGNOH9e4sDRcccn4Vld9KMz-Z8ciVffn2PHT2U0Kam6c9lDF-six8FpspXjzBrIptFqYnDPZSkHoZOZsh6JRDy44WwXUGVYS5a7Y4IkCOjrVWGawRS_aAtEzBl7MwXu2e9AColj-1N2Afd0MeGJG5nLq0ybBspNXSwbqsbHnQGjbJfa6cEQqkQsx0xacRIqan4CeAp1P-AD2wAnxCPUuHpY6wj2MomjulDnfY-vaYC3-7cI7on4TZYRIC4fmmWuu2ubqIGXykKUzYsi-zaVmW0JQaDzfMbiyNyU_RmMiqRtadWRRQKRUXmgo8nTnYCIAJ3t578pT0e0hEt6y53tft-I4o6c3HW8d79AFxB-0i0)
+[Architectural Overview]
+
+### System Context
+https://github.com/johnhinz/AIGatekeeper/blob/master/diagrams/systemcontext.svg
+
+### Container 
+https://github.com/johnhinz/AIGatekeeper/blob/master/diagrams/container.svg
+
 
 ## Installation
 Configuration parmeters:
