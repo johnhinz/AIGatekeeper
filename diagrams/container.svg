@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1067px" preserveAspectRatio="none" style="width:670px;height:1067px;" version="1.1" viewBox="0 0 670 1067" width="670px" zoomAndPan="magnify"><defs/><g><!--MD5=[1e490f37982d2ada97dbdca2436b2137]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1062px" preserveAspectRatio="none" style="width:665px;height:1062px;" version="1.1" viewBox="0 0 665 1062" width="665px" zoomAndPan="magnify"><defs/><g><!--MD5=[1e490f37982d2ada97dbdca2436b2137]
 cluster bound--><rect fill="#FFFFFF" height="317" style="stroke: #444444; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;" width="504" x="7" y="155"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="86" x="216" y="169.9951">«boundary»</text><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="98" x="210" y="188.1484">AIGuardian</text><text fill="#444444" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="64" x="227" y="203.0605">[System]</text><!--MD5=[8c215f4cdc0a7ff754cde1071a3f3807]
 entity discovery--><rect fill="#1168BD" height="71.2188" style="stroke: #3C7FC0; stroke-width: 1.5;" width="219" x="23.5" y="222"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="104.5" y="243.1387">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="150" x="55" y="260.8203">Item Discovery :</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="199" x="33.5" y="279.4453">AIGuard.Orchestrator</text><!--MD5=[012b2df6ae9eb64e3596d6b602232baf]
 entity detector--><rect fill="#1168BD" height="71.2188" style="stroke: #3C7FC0; stroke-width: 1.5;" width="170" x="71" y="385"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="127.5" y="406.1387">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="144" x="81" y="423.8203">Item Detector :</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="139" x="86.5" y="442.4453">AIGuard.Broker</text><!--MD5=[ae38f3df50bbf8acf027574e6a8bac37]
@@ -16,10 +16,14 @@ link discovery to detector--><path d="M137.934,293.039 C141.56,318.419 146.495,3
 link detector to bus--><path d="M152.792,456.435 C152.556,476.288 155.056,500.913 166,520 C171.902,530.294 180.572,539.213 189.964,546.711 " fill="none" id="detector-to-bus" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="194.028,549.836,189.3335,541.1779,190.065,546.7873,184.4556,547.5188,194.028,549.836" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="167" y="501.0669">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="210" y="516.1997">found</text><!--MD5=[eecc44e5b637a4d3bc1e08c6ebb6e2dd]
 link bus to repo--><path d="M275.682,549.904 C285.259,541.271 294.982,531.008 302,520 C347.197,449.109 369.982,351.827 379.788,298.133 " fill="none" id="bus-to-repo" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="380.696,293.075,375.1674,301.2257,379.8118,297.9962,383.0413,302.6405,380.696,293.075" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="359" y="417.5669">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="402" y="432.6997">found</text><!--MD5=[59d05459374325cb1e2177977deb1fc6]
 link repo to persist--><path d="M430.407,293.039 C467.85,322.161 520.81,363.352 555.993,390.717 " fill="none" id="repo-to-persist" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="560.193,393.984,555.5446,385.3011,556.2462,390.9143,550.6331,391.6159,560.193,393.984" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="509" y="336.0669">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="552" y="351.1997">found</text><!--MD5=[a29a36ecc64aeadc2f5e0d77092c8627]
-link filesys to discovery--><path d="M133,92.187 C133,128.493 133,180.778 133,216.56 " fill="none" id="filesys-to-discovery" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="133,221.715,137,212.715,133,216.715,129,212.715,133,221.715" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="144" x="134" y="135.0669">File system change</text><!--MD5=[03dc1105b9dae0dceaa2cc27c611c094]
+link filesys to discovery--><path d="M133,92.187 C133,128.493 133,180.778 133,216.56 " fill="none" id="filesys-to-discovery" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="133,221.715,137,212.715,133,216.715,129,212.715,133,221.715" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="144" x="134" y="135.0669">File system change</text><!--MD5=[41209bf287f0510f672921d75043b2a1]
 @startuml
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
-  
+
+'LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
 Person(recipient, "Notified person", "A person notified when an event of interest occurs")
 
 System_Ext(filesys, "File System", "Source for Detections")
@@ -177,7 +181,8 @@ skinparam database<<container>> {
 
 
 
-  
+
+
 rectangle "==Notified person\n\n A person notified when an event of interest occurs" <<person>> as recipient
 
 rectangle "==File System\n\n Source for Detections" <<external_system>> as filesys
@@ -202,7 +207,7 @@ repo - -> persist : "===Item of interest found"
 filesys - -> discovery : "===File system change"
 @enduml
 
-PlantUML version 1.2020.18beta4(Unknown compile time)
+PlantUML version 1.2020.18(Wed Sep 30 19:40:44 UTC 2020)
 (GPL source distribution)
 Java Runtime: Java(TM) SE Runtime Environment
 JVM: Java HotSpot(TM) 64-Bit Server VM
