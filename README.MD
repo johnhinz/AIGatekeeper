@@ -9,8 +9,6 @@ The library has abstracted the AI discovery tool and the repository.  There are 
 An implementation of AI discovery tool that corresponds to AIGuard.Broker and a repository that corresponds to AIGuard.IRepository.
 
 ## Architecture
-[Architectural Overview]
-
 ### System Context
 ![System Context](diagrams/systemcontext.svg)
 
