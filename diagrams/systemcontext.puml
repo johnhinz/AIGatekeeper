@@ -1,7 +1,11 @@
-@startuml test
+@startuml 
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
 
+LAYOUT_WITH_LEGEND
+
 title AIGatekeeper System Context Diagram 
+
+
  
 Person(recipient, "Notified person", "A person notified when an event of interest occurs")
 
