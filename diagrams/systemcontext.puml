@@ -1,12 +1,6 @@
 @startuml 
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
-<<<<<<< HEAD
-
-LAYOUT_WITH_LEGEND
-
-=======
  
->>>>>>> 458d143a642a25ef341db282d2ba04f293ca7db6
 title AIGatekeeper System Context Diagram 
 
 
