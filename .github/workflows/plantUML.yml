@@ -1,4 +1,4 @@
-name: generate plantuml diagrams
+name: Diagrams
 on:
   push:
     paths:
