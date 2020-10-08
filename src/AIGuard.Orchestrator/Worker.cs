@@ -207,12 +207,11 @@ namespace AIGuard.Orchestrator
                             detection.YMax - detection.YMin);
                     }
                 }
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    image.Save(ms, image.RawFormat);
-                    //result.Base64Image = Convert.ToBase64String(ms.ToArray());
-                    return ms;
-                }
+                MemoryStream ms = new MemoryStream();
+                image.Save(ms, image.RawFormat);
+                //result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                return ms;
+            
             }
         }
 
