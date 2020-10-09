@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AIGuard.Broker
+﻿namespace AIGuard.Broker
 {
     public interface IPresence
     {
