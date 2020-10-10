@@ -23,9 +23,9 @@ namespace AIGuard.MqttRepository
 
         public MqttAIPublish(ILogger<MqttAIPublish> logger, string server, string clientName, string regexPattern, int position, string queueName)
         {
-            if (string.IsNullOrEmpty(server)) throw new ArgumentNullException("MqttPublish:server cannot be null");
-            if (string.IsNullOrEmpty(regexPattern)) throw new ArgumentNullException("MqttPublish:regexPattern cannot be null");
-            if (position < 0) throw new ArgumentOutOfRangeException("MqttPublish:position < 0");
+            if (string.IsNullOrEmpty(server)) throw new ArgumentNullException("server");
+            if (string.IsNullOrEmpty(regexPattern)) throw new ArgumentNullException("regexPattern");
+            if (position < 0) throw new ArgumentOutOfRangeException("position");
 
             _logger = logger;
             _server = server;
