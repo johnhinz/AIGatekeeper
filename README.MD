@@ -17,6 +17,8 @@ An implementation of AI discovery tool that corresponds to AIGuard.Broker and a 
 ### Container 
 ![Container](diagrams/container.svg)
 
+### Component 
+![Component](diagrams/ComponentOrchestrator.svg)
 
 ## Installation
 Configuration parmeters:
