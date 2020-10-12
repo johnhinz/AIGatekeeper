@@ -39,11 +39,11 @@ namespace AIGuard.Orchestrator
             string watchedExtensions)
         {
             _logger = logger;
-            _objDetector = objectDetector;
-            _publisher = publisher;
-            _cameras = cameras;
-            _path = imagePath ?? throw new ArgumentNullException("Worker:imagePath cannot be null.");
-            _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("Worker:watchedExtensions cannot be null.");
+            _objDetector = objectDetector ?? throw new ArgumentNullException("objectDetector"); ;
+            _publisher = publisher ?? throw new ArgumentNullException("publisher");
+            _cameras = cameras ?? throw new ArgumentNullException("cameras");
+            _path = imagePath ?? throw new ArgumentNullException("imagePath");
+            _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("watchedExtensions");
 
             _stopwatch = new Stopwatch();
 
