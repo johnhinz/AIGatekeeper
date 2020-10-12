@@ -1,5 +1,4 @@
-﻿using AIGuard.Broker;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace AIGuard.IRepository

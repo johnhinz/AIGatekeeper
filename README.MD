@@ -1,4 +1,6 @@
-![Build Status](https://github.com/johnhinz/AIGatekeeper/workflows/.NET%20Core/badge.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/johnhinz/AIGatekeeper/blob/master/LICENSE)
+![Build Status](https://github.com/johnhinz/AIGatekeeper/workflows/.NET%20Core/badge.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/johnhinz/AIGatekeeper/blob/master/LICENSE) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=alert_status)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=bugs)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=code_smells)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper)
 
 # AIGateKeeper
 
@@ -15,6 +17,8 @@ An implementation of AI discovery tool that corresponds to AIGuard.Broker and a 
 ### Container 
 ![Container](diagrams/container.svg)
 
+### Component 
+![Component](diagrams/ComponentOrchestrator.svg)
 
 ## Installation
 Configuration parmeters:

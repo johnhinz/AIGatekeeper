@@ -14,8 +14,13 @@ System_Ext(bus, "Message Bus")
 System_Ext(notification, "Notifications")
 System_Ext(workflow, "Workflow")
 System_Ext(persist, "Storgage")
+System_Ext(detect, "Detector")
 
 Rel(filesys, guard, "Files Added")
+
+Rel(guard, detect, "Image check")
+Rel(detect, guard, "Image Results")
+
 Rel(guard, bus, "Item of interest found")
 Rel(bus, guard, "Item of interest found")
 Rel(bus, workflow, "Item of interest found")

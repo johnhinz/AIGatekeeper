@@ -12,6 +12,7 @@ System_Ext(bus, "Message Bus")
 System_Ext(notification, "Notifications")
 System_Ext(workflow, "Workflow")
 System_Ext(persist, "Storgage")
+System_Ext(detect, "Detector")
  
 System_Boundary(bound, "AIGuardian") {
     System(discovery, "Item Discovery : AIGuard.Orchestrator")
@@ -20,6 +21,9 @@ System_Boundary(bound, "AIGuardian") {
 }
 
 Rel(bus, workflow, "File system change")
+
+Rel(detector, detect, "Image check")
+Rel(detect, detector, "Image Results")
 
 Rel(notification, recipient, "User notified")
 Rel(workflow, notification, "Item of interest found")
