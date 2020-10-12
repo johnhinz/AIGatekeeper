@@ -38,12 +38,12 @@ namespace AIGuard.Orchestrator
             string imagePath, 
             string watchedExtensions)
         {
-            _logger = logger;
-            _objDetector = objectDetector ?? throw new ArgumentNullException("objectDetector"); ;
-            _publisher = publisher ?? throw new ArgumentNullException("publisher");
-            _cameras = cameras ?? throw new ArgumentNullException("cameras");
-            _path = imagePath ?? throw new ArgumentNullException("imagePath");
-            _watchedExtensions = watchedExtensions.Split(';').ToList() ?? throw new ArgumentNullException("watchedExtensions");
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _objDetector = objectDetector ?? throw new ArgumentNullException(nameof(objectDetector)); 
+            _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
+            _cameras = cameras ?? throw new ArgumentNullException(nameof(cameras));
+            _path = imagePath ?? throw new ArgumentNullException(nameof(imagePath));
+            _watchedExtensions = watchedExtensions?.Split(';').ToList() ?? throw new ArgumentNullException(nameof(watchedExtensions));
 
             _stopwatch = new Stopwatch();
 
