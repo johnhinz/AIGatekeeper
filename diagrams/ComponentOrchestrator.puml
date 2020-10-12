@@ -5,7 +5,7 @@ LAYOUT_TOP_DOWN
 'LAYOUT_AS_SKETCH
 LAYOUT_WITH_LEGEND()
 
-System_Boundary(c1, "AIGuardian.Orchistrator") {
+System_Boundary(c1, "AIGuardian.Orchestrator") {
   Container(app, "Service", "C#", "Watches for new files, when found sends them to the the detector and if an object of interest is detected sends the data to a repository.")
   Container(log, "Logger", "C#", "Writes relevent event information to a target log.")
   Container(detector, "Detector", "C#", "Communication routines for conversing with the detector.")
