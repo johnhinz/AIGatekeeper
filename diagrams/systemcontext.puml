@@ -5,7 +5,7 @@ title AIGatekeeper System Context Diagram
 
 
  
-Person(recipient, "Notified person", "A person notified when an event of interest occurs")
+Person(recipient, "Notified person", "Some person notified when an event of interest occurs")
 
 System(guard, "AIGuardian")
 
