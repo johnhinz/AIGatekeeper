@@ -5,7 +5,7 @@
   </PropertyGroup>
  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.9" />
-    <PackageReference Include="mqttnet" Version="3.0.12" />
+    <PackageReference Include="mqttnet" Version="3.0.13" />
     <ProjectReference Include="..\AIGuard.Broker\AIGuard.Broker.csproj" />
     <ProjectReference Include="..\AIGuard.IRepository\AIGuard.IRepository.csproj" />
   </ItemGroup>
