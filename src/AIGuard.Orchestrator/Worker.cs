@@ -191,22 +191,32 @@ namespace AIGuard.Orchestrator
 
         private MemoryStream DrawBounds(Image image, IPrediction result, Camera camera)
         {
+
+
             using (Graphics g = Graphics.FromImage(image))
             {
-                Pen redPen = new Pen(Color.Red, 5);
-                foreach (IDetectedObject detection in result.Detections)
-                {
-                    _logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
-                    if (camera.Watches.Any(i => i.Label == detection.Label))
+                using (Pen redPen = new Pen(Color.Red, 5))
+                using (Font font = new Font("Arial", 20, FontStyle.Italic, GraphicsUnit.Pixel))
+                using (SolidBrush brush = new SolidBrush(Color.Red)) 
+
+                    foreach (IDetectedObject detection in result.Detections)
                     {
-                        g.DrawRectangle(
-                            redPen,
-                            detection.XMin,
-                            detection.YMin,
-                            detection.XMax - detection.XMin,
-                            detection.YMax - detection.YMin);
+                        _logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
+                        if (camera.Watches.Any(i => i.Label == detection.Label))
+                        {
+                            g.DrawRectangle(
+                                redPen,
+                                detection.XMin,
+                                detection.YMin,
+                                detection.XMax - detection.XMin,
+                                detection.YMax - detection.YMin);
+
+                            g.DrawString($"{detection.Label}:{detection.Confidence}",
+                                font,
+                                brush,
+                                new Point(detection.XMin, detection.YMin));
+                        }
                     }
-                }
                 MemoryStream ms = new MemoryStream();
                 image.Save(ms, image.RawFormat);
                 //result.Base64Image = Convert.ToBase64String(ms.ToArray());
