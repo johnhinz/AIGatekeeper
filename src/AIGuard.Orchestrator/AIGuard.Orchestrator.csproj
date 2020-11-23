@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>dotnet-AIGuard.Service-FFB49D53-3EBE-4784-A370-B2ADB9FC27B3</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <LangVersion>8.0</LangVersion>
