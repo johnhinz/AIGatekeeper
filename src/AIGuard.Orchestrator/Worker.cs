@@ -196,7 +196,7 @@ namespace AIGuard.Orchestrator
             using (Graphics g = Graphics.FromImage(image))
             {
                 using (Pen redPen = new Pen(Color.Red, 5))
-                using (Font font = new Font("Arial", 20, FontStyle.Italic, GraphicsUnit.Pixel))
+                using (Font font = new Font("Arial", 30, FontStyle.Italic, GraphicsUnit.Pixel))
                 using (SolidBrush brush = new SolidBrush(Color.Red)) 
 
                     foreach (IDetectedObject detection in result.Detections)
@@ -214,7 +214,7 @@ namespace AIGuard.Orchestrator
                             g.DrawString($"{detection.Label}:{detection.Confidence}",
                                 font,
                                 brush,
-                                new Point(detection.XMin, detection.YMin));
+                                new Point(detection.XMin, detection.YMin - (int)redPen.Width - 1));
                         }
                     }
                 MemoryStream ms = new MemoryStream();
