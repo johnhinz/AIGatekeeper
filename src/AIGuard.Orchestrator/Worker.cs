@@ -197,7 +197,7 @@ namespace AIGuard.Orchestrator
             {
                 using (Pen redPen = new Pen(Color.Red, 5))
                 using (Font font = new Font("Arial", 30, FontStyle.Italic, GraphicsUnit.Pixel))
-                using (SolidBrush brush = new SolidBrush(Color.Red)) 
+                using (SolidBrush brush = new SolidBrush(Color.White)) 
 
                     foreach (IDetectedObject detection in result.Detections)
                     {
@@ -219,7 +219,6 @@ namespace AIGuard.Orchestrator
                     }
                 MemoryStream ms = new MemoryStream();
                 image.Save(ms, image.RawFormat);
-                //result.Base64Image = Convert.ToBase64String(ms.ToArray());
                 return ms;
             
             }
