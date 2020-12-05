@@ -234,7 +234,7 @@ namespace AIGuard.Orchestrator
                     return item;
                 }
             }
-            throw new ArgumentOutOfRangeException($"Camera for {e.Name} not found");
+            throw new ArgumentOutOfRangeException($"Camera for {e.FullPath} not found");
         }
 
         private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
