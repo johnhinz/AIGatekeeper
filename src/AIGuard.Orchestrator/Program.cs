@@ -25,8 +25,7 @@ namespace AIGuard.Orchestrator
                 .ConfigureLogging((hostContext,logging) =>
                 {
                     var serilogLogger = new LoggerConfiguration()
-                    .WriteTo.Console()
-                    .WriteTo.File(hostContext.Configuration.GetSection("LogFile").Value)
+                    .ReadFrom.Configuration(hostContext.Configuration)
                     .CreateLogger();
 
                     logging.ClearProviders();
