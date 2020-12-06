@@ -152,6 +152,7 @@ namespace AIGuard.Orchestrator
             {
                 _stopwatch.Stop();
                 _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}, elapsed time:{_stopwatch.Elapsed.TotalSeconds}");
+                _logger.LogInformation("_____________________________________");
                 _stopwatch.Reset();
             }
         }
