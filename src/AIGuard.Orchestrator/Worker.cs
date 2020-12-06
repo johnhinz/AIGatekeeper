@@ -69,12 +69,15 @@ namespace AIGuard.Orchestrator
                 dirWatcher.Created += OnChanged;
                 dirWatcher.EnableRaisingEvents = true;
 
+                _logger.LogInformation("========== Orchestrator Start Up >>>>>>>>>>>>");
+
                 while (!stoppingToken.IsCancellationRequested) 
                 {
                     Thread.Sleep(100);
                 }
-
                 dirWatcher.Created -= OnChanged;
+                _logger.LogInformation("<<<<<<<<<< Orchestrator Shut Down ==========");
+
             }
         }
 
