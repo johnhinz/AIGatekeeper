@@ -1,20 +1,20 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["AIGuard.Service.csproj", "AIGuard.Service/"]
-RUN dotnet restore "AIGuard.Service/AIGuard.Service.csproj"
+COPY ["AIGuard.Orchestrator.csproj", "AIGuard.Orchestrator/"]
+RUN dotnet restore "AIGuard.Orchestrator/AIGuard.Orchestrator.csproj"
 COPY . .
-WORKDIR "/src/AIGuard.Service"
-RUN dotnet build "AIGuard.Service.csproj" -c Release -o /app/build
+WORKDIR "/src/AIGuard.Orchestrator"
+RUN dotnet build "AIGuard.Orchestrator.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AIGuard.Service.csproj" -c Release -o /app/publish
+RUN dotnet publish "AIGuard.Orchestrator.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AIGuard.Service.dll"]
+ENTRYPOINT ["dotnet", "AIGuard.Orchestrator.dll"
