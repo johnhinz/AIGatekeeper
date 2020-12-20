@@ -86,6 +86,18 @@ namespace AIGuard.Orchestrator
                 _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
                 try
                 {
+
+                    Camera camera = null;
+                    try
+                    {
+                        camera = FindCamera(e);
+                    }
+                    catch (ArgumentOutOfRangeException exp)
+                    {
+                        _logger.LogError(exp.Message);
+                        return;
+                    }
+
                     if (IsFileClosed(e.FullPath, true))
                     {
                         using (Image image = Image.FromFile(e.FullPath))
@@ -99,16 +111,6 @@ namespace AIGuard.Orchestrator
                                 return;
                             }
 
-                            Camera camera = null;
-                            try
-                            {
-                                camera = FindCamera(e);
-                            }
-                            catch (ArgumentOutOfRangeException exp)
-                            {
-                                _logger.LogError(exp.Message);
-                                return;
-                            }
 
                             bool foundTarget = DetectTarget(camera, result.Detections);
 
