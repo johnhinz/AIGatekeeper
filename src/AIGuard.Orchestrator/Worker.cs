@@ -25,6 +25,7 @@ namespace AIGuard.Orchestrator
         private readonly IDetectObjects _objDetector;
         private readonly IPublishDetections<MqttClientPublishResult> _publisher;
         private readonly List<string> _watchedExtensions;
+        private readonly bool _publishFalseDetections;
         private readonly Stopwatch _stopwatch;
         private readonly IEnumerable<Camera> _cameras;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
@@ -37,7 +38,8 @@ namespace AIGuard.Orchestrator
             IPublishDetections<MqttClientPublishResult> publisher, 
             IEnumerable<Camera> cameras, 
             string imagePath, 
-            string watchedExtensions)
+            string watchedExtensions,
+            bool publishFalseDetections)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _objDetector = objectDetector ?? throw new ArgumentNullException(nameof(objectDetector)); 
@@ -45,6 +47,7 @@ namespace AIGuard.Orchestrator
             _cameras = cameras ?? throw new ArgumentNullException(nameof(cameras));
             _path = imagePath ?? throw new ArgumentNullException(nameof(imagePath));
             _watchedExtensions = watchedExtensions?.Split(';').ToList() ?? throw new ArgumentNullException(nameof(watchedExtensions));
+            _publishFalseDetections = publishFalseDetections;
 
             _stopwatch = new Stopwatch();
 
@@ -70,12 +73,15 @@ namespace AIGuard.Orchestrator
                 dirWatcher.Created += OnChanged;
                 dirWatcher.EnableRaisingEvents = true;
 
+                _logger.LogInformation("========== Orchestrator Start Up >>>>>>>>>>>>");
+
                 while (!stoppingToken.IsCancellationRequested) 
                 {
                     Thread.Sleep(100);
                 }
-
                 dirWatcher.Created -= OnChanged;
+                _logger.LogInformation("<<<<<<<<<< Orchestrator Shut Down ==========");
+
             }
         }
 
@@ -115,7 +121,7 @@ namespace AIGuard.Orchestrator
 
                             bool foundTarget = DetectTarget(camera, result.Detections);
 
-                            if ((result.Success && foundTarget) || (result.Detections.Count() > 0))
+                            if ((result.Success && foundTarget) || (result.Detections.Count() > 0 && _publishFalseDetections))
                             {
                                 _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
                                 result.FileName = e.Name;
@@ -155,6 +161,7 @@ namespace AIGuard.Orchestrator
             {
                 _stopwatch.Stop();
                 _logger.LogInformation($"OnChange event end: {e.FullPath} {DateTime.Now}, elapsed time:{_stopwatch.Elapsed.TotalSeconds}");
+                _logger.LogInformation("_____________________________________");
                 _stopwatch.Reset();
             }
         }

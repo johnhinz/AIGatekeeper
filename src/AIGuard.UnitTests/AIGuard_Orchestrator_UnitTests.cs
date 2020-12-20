@@ -38,7 +38,8 @@ namespace AIGuard.UnitTests
                 publisher.Object,
                 cameras,
                 "c:\\temp",
-                "*.jpg"
+                "*.jpg",
+                false
                 );
         }
 

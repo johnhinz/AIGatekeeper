@@ -58,7 +58,8 @@ namespace AIGuard.Orchestrator
                             serviceProvider.GetService<IPublishDetections<MqttClientPublishResult>>(),
                             hostContext.Configuration.GetSection("Cameras").Get<IEnumerable<Camera>>(),
                             hostContext.Configuration.GetSection("WatchFolder").Value,
-                            hostContext.Configuration.GetSection("WatchedExtensions").Value);
+                            hostContext.Configuration.GetSection("WatchedExtensions").Value,
+                            bool.Parse(hostContext.Configuration.GetSection("PublishFalseDetections").Value));
                     });
                 });
     }
