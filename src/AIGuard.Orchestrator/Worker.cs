@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -193,8 +194,6 @@ namespace AIGuard.Orchestrator
 
         private MemoryStream DrawBounds(Image image, IPrediction result, Camera camera)
         {
-
-
             using (Graphics g = Graphics.FromImage(image))
             {
                 using (Pen redPen = new Pen(Color.Red, 5))
@@ -241,7 +240,8 @@ namespace AIGuard.Orchestrator
 
         private async Task<MqttClientPublishResult> PublishAsync(IPrediction prediction, string fileName, CancellationToken token)
         {
-            return await _httpRetryPolicy.ExecuteAsync<MqttClientPublishResult>(() => _publisher.PublishAsync(prediction, fileName, token));
+            return await _httpRetryPolicy.ExecuteAsync(() => _publisher.PublishAsync(prediction, fileName, token))
+                .ConfigureAwait(false);
         }
 
         private async Task<IPrediction> DetectObjectAsync(Image image, string filePath)
@@ -249,35 +249,37 @@ namespace AIGuard.Orchestrator
             using (MemoryStream ms = new MemoryStream())
             {
                 image.Save(ms, image.RawFormat);
-                return await _httpRetryPolicy.ExecuteAsync<IPrediction>(
-                    () => _objDetector.DetectObjectsAsync(ms.ToArray(), filePath));
+                return await _httpRetryPolicy.ExecuteAsync(() => _objDetector.DetectObjectsAsync(ms.ToArray(), filePath))
+                    .ConfigureAwait(false);
             }
         }
 
-        public bool DetectTarget(Camera camera, IDetectedObject[] detectedItems)
+        public static bool DetectTarget(Camera camera, IDetectedObject[] detectedItems)
         {
+            if (camera == null || detectedItems == null)
+            {
+                string msg = $"Parameter {(camera == null ? "camera" : string.Empty)} {(detectedItems == null ? "detectedItems" : string.Empty)} cannot be null";
+                throw new ArgumentNullException(paramName: msg);
+            }
+
             if (!detectedItems.Any(i => camera.Watches.Any(w => w.Label == i.Label)))
                 return false;
 
-            bool targetFound = false;
             foreach (var detection in detectedItems)
             {
-                Item item = camera.Watches.Where(w => w.Label == detection.Label).FirstOrDefault();
+                Item item = camera.Watches.FirstOrDefault(w => w.Label == detection.Label && w.Confidence <= detection.Confidence);
                 if (item != null)
                 {
-                    if (item.Confidence <= detection.Confidence)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                
+
             }
-            return targetFound;
+            return false;
         }
 
    
 
-        private bool IsFileClosed(string filepath, bool wait)
+        private static bool IsFileClosed(string filepath, bool wait)
         {
             bool fileClosed = false;
             int retries = 20;

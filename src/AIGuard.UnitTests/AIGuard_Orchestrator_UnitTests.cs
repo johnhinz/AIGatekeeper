@@ -71,9 +71,30 @@ namespace AIGuard.UnitTests
 
             Mock<List<IDetectedObject>> detectedObjects = new Mock<List<IDetectedObject>>();
             detectedObjects.Object.Add(detectedObject.Object);
-            var result = _worker.DetectTarget(camera, new[] { detectedObject.Object });
+            var result = Worker.DetectTarget(camera, new[] { detectedObject.Object });
 
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void DetectTarget_Find_LowConfidence_Negative_Match()
+        {
+            Camera camera = new Camera()
+            {
+                Clip = true,
+                Name = "test",
+                Watches = new List<Item>() { new Item() { Confidence = 0.6F, Label = "person" } }
+            };
+
+            Mock<IDetectedObject> detectedObject = new Mock<IDetectedObject>();
+            detectedObject.Setup(d => d.Label).Returns("person");
+            detectedObject.Setup(d => d.Confidence).Returns(.5F);
+
+            Mock<List<IDetectedObject>> detectedObjects = new Mock<List<IDetectedObject>>();
+            detectedObjects.Object.Add(detectedObject.Object);
+            var result = Worker.DetectTarget(camera, new[] { detectedObject.Object });
+
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -92,9 +113,57 @@ namespace AIGuard.UnitTests
 
             Mock<List<IDetectedObject>> detectedObjects = new Mock<List<IDetectedObject>>();
             detectedObjects.Object.Add(detectedObject.Object);
-            var result = _worker.DetectTarget(camera, new[] { detectedObject.Object });
+            var result = Worker.DetectTarget(camera, new[] { detectedObject.Object });
 
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public void DetectTarget_NullParam_Camera()
+        {
+            Mock<IDetectedObject> detectedObject = new Mock<IDetectedObject>();
+            detectedObject.Setup(d => d.Label).Returns("person");
+            detectedObject.Setup(d => d.Confidence).Returns(.5F);
+
+            Mock<List<IDetectedObject>> detectedObjects = new Mock<List<IDetectedObject>>();
+            detectedObjects.Object.Add(detectedObject.Object);
+
+            ArgumentNullException anull = Assert.ThrowsException<ArgumentNullException>(() => Worker.DetectTarget(null, new[] { detectedObject.Object }));
+            Assert.IsTrue(anull.Message.Contains("camera"));
+        }
+        [TestMethod]
+        public void DetectTarget_NullParam_DetectedItems()
+        {
+            Camera camera = new Camera()
+            {
+                Clip = true,
+                Name = "test",
+                Watches = new List<Item>() { new Item() { Confidence = 0.5F, Label = "car" } }
+            };
+
+            try
+            {
+                Assert.ThrowsException<ArgumentNullException>(() => Worker.DetectTarget(camera, null));
+            }
+            catch (ArgumentNullException anull)
+            {
+                Assert.IsTrue(anull.Message.Contains("detectedItems"));
+            }
+        }
+        [TestMethod]
+        public void DetectTarget_NullParam_DetectedItems_Camera()
+        {
+
+            try
+            {
+                Assert.ThrowsException<ArgumentNullException>(() => Worker.DetectTarget(null, null));
+            }
+            catch (ArgumentNullException anull)
+            {
+                Assert.IsTrue(anull.Message.Contains("camera"));
+                Assert.IsTrue(anull.Message.Contains("detectedItems"));
+            }
+        }
+
     }
 }
