@@ -177,22 +177,22 @@ namespace AIGuard.Orchestrator
                 {
                     Rectangle cropRect = new Rectangle(detection.XMin, detection.YMin, detection.XMax - detection.XMin, detection.YMax - detection.YMin);
                     Bitmap src = image as Bitmap;
-                    Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
-
-
-                    using (Graphics g = Graphics.FromImage(target))
+                    using (Bitmap target = new Bitmap(cropRect.Width, cropRect.Height))
                     {
+                        using (Graphics g = Graphics.FromImage(target))
+                        {
 
-                        g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                                         cropRect,
-                                         GraphicsUnit.Pixel);
+                            g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                             cropRect,
+                                             GraphicsUnit.Pixel);
 
-                    }
+                        }
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        target.Save(ms, image.RawFormat);
-                        streams.Add(ms);
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            target.Save(ms, image.RawFormat);
+                            streams.Add(ms);
+                        }
                     }
                 }
             }
