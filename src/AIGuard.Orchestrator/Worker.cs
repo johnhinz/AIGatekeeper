@@ -93,7 +93,6 @@ namespace AIGuard.Orchestrator
                 _logger.LogInformation($"OnChange event start: {e.FullPath} {DateTime.Now}");
                 try
                 {
-
                     Camera camera = null;
                     try
                     {
@@ -105,7 +104,7 @@ namespace AIGuard.Orchestrator
                         return;
                     }
 
-                    if (IsFileClosed(e.FullPath, true))
+                    if (FileHelper.IsFileClosed(e.FullPath, true))
                     {
                         using (Image image = Image.FromFile(e.FullPath))
                         {
@@ -117,7 +116,6 @@ namespace AIGuard.Orchestrator
                                 _logger.LogError($"Cannot connect to object detector.");
                                 return;
                             }
-
 
                             bool foundTarget = DetectTarget(camera, result.Detections);
 
@@ -286,33 +284,6 @@ namespace AIGuard.Orchestrator
 
    
 
-        private static bool IsFileClosed(string filepath, bool wait)
-        {
-            bool fileClosed = false;
-            int retries = 20;
-            const int delayMS = 100;
-
-            if (!File.Exists(filepath))
-                return false;
-            do
-            {
-                try
-                {
-                    FileStream fs = File.Open(filepath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    fs.Close();
-                    fileClosed = true; // success
-                }
-                catch (IOException) { }
-
-                if (!wait) break;
-
-                retries--;
-
-                if (!fileClosed)
-                    Thread.Sleep(delayMS);
-            }
-            while (!fileClosed && retries > 0);
-            return fileClosed;
-        }
+        
     }
 }
