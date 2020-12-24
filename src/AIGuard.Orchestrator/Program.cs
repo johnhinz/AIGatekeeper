@@ -33,6 +33,8 @@ namespace AIGuard.Orchestrator
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddHealthChecks().AddCheck<FileSystemCheck>("ShallowQuery");
+
                     services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>
                     {
                         return new DetectObjects(serviceProvider.GetService<ILogger<DetectObjects>>(),
