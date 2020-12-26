@@ -3,11 +3,13 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Security.Permissions;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace AIGuard.Orchestrator
 {
-    class FileSystemCheck : IHealthCheck
+    internal class FileSystemCheck : IHealthCheck
     {
         private readonly string _path;
 
@@ -30,6 +32,22 @@ namespace AIGuard.Orchestrator
             {
                 return Task.FromResult(HealthCheckResult.Unhealthy());
             }
+        }
+
+        public static Task WriteResponse(HttpContext httpContext, HealthReport result)
+        {
+            httpContext.Response.ContentType = "application/json";
+
+            var json = new JObject(
+                new JProperty("status", result.Status.ToString()),
+                new JProperty("results", new JObject(result.Entries.Select(pair =>
+                    new JProperty(pair.Key, new JObject(
+                        new JProperty("status", pair.Value.Status.ToString()),
+                        new JProperty("description", pair.Value.Description),
+                        new JProperty("data", new JObject(pair.Value.Data.Select(
+                            p => new JProperty(p.Key, p.Value))))))))));
+            return httpContext.Response.WriteAsync(
+                json.ToString(Formatting.Indented));
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -29,7 +28,7 @@ namespace AIGuard.Orchestrator
         private readonly Stopwatch _stopwatch;
         private readonly IEnumerable<Camera> _cameras;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
-
+        private readonly AsyncRetryPolicy _fileAccessRetryPolicy;
         private const string falseDetectionTopic = "False";
 
         public Worker(

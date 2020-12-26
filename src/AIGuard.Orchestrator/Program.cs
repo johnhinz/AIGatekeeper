@@ -9,6 +9,7 @@ using MQTTnet.Client.Publishing;
 using AIGuard.MqttRepository;
 using System.Collections.Generic;
 using Serilog;
+using Microsoft.AspNetCore.Hosting;
 
 namespace AIGuard.Orchestrator
 {
@@ -22,6 +23,10 @@ namespace AIGuard.Orchestrator
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
                 .ConfigureLogging((hostContext,logging) =>
                 {
                     var serilogLogger = new LoggerConfiguration()
@@ -33,7 +38,11 @@ namespace AIGuard.Orchestrator
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHealthChecks().AddCheck<FileSystemCheck>("ShallowQuery");
+
+                     
+                    services.AddHealthChecks().AddTypeActivatedCheck<FileSystemCheck>(
+                        "ShallowQuery", 
+                        new object[] { hostContext.Configuration.GetSection("WatchFolder").Value });
 
                     services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>
                     {
