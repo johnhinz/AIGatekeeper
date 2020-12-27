@@ -41,7 +41,7 @@ namespace AIGuard.Orchestrator
 
                      
                     services.AddHealthChecks().AddTypeActivatedCheck<FileSystemCheck>(
-                        "ShallowQuery", 
+                        "FileSystemQuery", 
                         new object[] { hostContext.Configuration.GetSection("WatchFolder").Value });
 
                     services.AddTransient<IDetectObjects, DetectObjects>((serviceProvider) =>
