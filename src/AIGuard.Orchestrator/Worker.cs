@@ -73,6 +73,16 @@ namespace AIGuard.Orchestrator
                 dirWatcher.EnableRaisingEvents = true;
 
                 _logger.LogInformation("========== Orchestrator Start Up >>>>>>>>>>>>");
+                _logger.LogInformation("Watching Cameras >>>>>>>>>>>>");
+                foreach (var camera in _cameras)
+                {
+                    _logger.LogInformation(camera.Name);
+                    foreach (var item in camera.Watches)
+                    {
+                        _logger.LogInformation($"{item.Label}: confidence {item.Confidence}");
+                    }
+                }
+                _logger.LogInformation("<<<<<<<<<<<<< Watching Cameras");
 
                 while (!stoppingToken.IsCancellationRequested) 
                 {
