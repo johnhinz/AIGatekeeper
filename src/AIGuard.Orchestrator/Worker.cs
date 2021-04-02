@@ -119,9 +119,13 @@ namespace AIGuard.Orchestrator
                         {
                             _logger.LogInformation($"Checking file {e.FullPath}.");
 
-                            IPrediction result = DetectObjectAsync(image, e.FullPath).Result;
-                            if (result == null)
+                            IPrediction result = null;
+                            try
                             {
+                                result = DetectObjectAsync(image, e.FullPath).Result;
+                            } 
+                            catch 
+                            { 
                                 _logger.LogError($"Cannot connect to object detector.");
                                 return;
                             }
@@ -198,11 +202,17 @@ namespace AIGuard.Orchestrator
 
         private async Task<IPrediction> DetectObjectAsync(Image image, string filePath)
         {
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = new MemoryStream();
+            try
             {
                 image.Save(ms, image.RawFormat);
-                return await _httpRetryPolicy.ExecuteAsync(() => _objDetector.DetectObjectsAsync(ms.ToArray(), filePath))
+                return await _httpRetryPolicy.ExecuteAsync(
+                    () => _objDetector.DetectObjectsAsync(ms.ToArray(), filePath))
                     .ConfigureAwait(false);
+            }
+            finally
+            {
+                ms.Dispose();
             }
         }
 
