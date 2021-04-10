@@ -28,7 +28,7 @@ namespace AIGuard.Orchestrator
         private readonly Stopwatch _stopwatch;
         private readonly IEnumerable<Camera> _cameras;
         private readonly AsyncRetryPolicy _httpRetryPolicy;
-        private readonly AsyncRetryPolicy _fileAccessRetryPolicy;
+        private readonly RetryPolicy _fileAccessRetryPolicy;
         private const string falseDetectionTopic = "False";
 
         public Worker(
@@ -57,6 +57,12 @@ namespace AIGuard.Orchestrator
                     {
                         _logger.LogError(ex.Message);
                     });
+            _fileAccessRetryPolicy = Policy
+                .Handle<FileLoadException>()
+                .Or<FileNotFoundException>()
+                .Or<ArgumentException>()
+                .Or<OutOfMemoryException>()
+                .Retry(3);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -113,54 +119,61 @@ namespace AIGuard.Orchestrator
                         return;
                     }
 
-                    if (FileHelper.IsFileClosed(e.FullPath, true))
+                    Image image = null;
+                    try
                     {
-                        using (Image image = Image.FromFile(e.FullPath))
+                        image = _fileAccessRetryPolicy.Execute<Image>(() => { return Image.FromFile(e.FullPath); });
+                    }
+                    catch (FileLoadException fe)
+                    {
+                        _logger.LogError($"Cannot load from file {fe.FileName}");
+                    }
+                    
+                    using (image)
+                    {
+                        _logger.LogInformation($"Checking file {e.FullPath}.");
+
+                        IPrediction result = null;
+                        try
                         {
-                            _logger.LogInformation($"Checking file {e.FullPath}.");
+                            result = DetectObjectAsync(image, e.FullPath).Result;
+                        } 
+                        catch 
+                        { 
+                            _logger.LogError($"Cannot connect to object detector.");
+                            return;
+                        }
 
-                            IPrediction result = null;
-                            try
+                        bool foundTarget = DetectTarget(camera, result.Detections);
+
+                        if ((result.Success && foundTarget) || (result.Detections.Count() > 0 && _publishFalseDetections))
+                        {
+                            _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
+                            result.FileName = e.Name;
+
+                            string topic = foundTarget ? e.Name : falseDetectionTopic;
+                            if (camera.Clip)
                             {
-                                result = DetectObjectAsync(image, e.FullPath).Result;
-                            } 
-                            catch 
-                            { 
-                                _logger.LogError($"Cannot connect to object detector.");
-                                return;
-                            }
-
-                            bool foundTarget = DetectTarget(camera, result.Detections);
-
-                            if ((result.Success && foundTarget) || (result.Detections.Count() > 0 && _publishFalseDetections))
-                            {
-                                _logger.LogInformation($"{result.Detections.Count()} target(s) found in {e.FullPath}.");
-                                result.FileName = e.Name;
-
-                                string topic = foundTarget ? e.Name : falseDetectionTopic;
-                                if (camera.Clip)
+                                List<MemoryStream> streams = ImageHelper.CropBounds(_logger, image, result, camera);
+                                foreach (MemoryStream ms in streams)
                                 {
-                                    List<MemoryStream> streams = ImageHelper.CropBounds(_logger, image, result, camera);
-                                    foreach (MemoryStream ms in streams)
-                                    {
-                                        using (ms)
-                                        {
-                                            result.Base64Image = Convert.ToBase64String(ms.ToArray());
-                                            PublishAsync(result, topic, CancellationToken.None).Wait();
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    using (MemoryStream ms = ImageHelper.DrawBounds(_logger, image, result, camera))
+                                    using (ms)
                                     {
                                         result.Base64Image = Convert.ToBase64String(ms.ToArray());
                                         PublishAsync(result, topic, CancellationToken.None).Wait();
                                     }
                                 }
                             }
-
+                            else
+                            {
+                                using (MemoryStream ms = ImageHelper.DrawBounds(_logger, image, result, camera))
+                                {
+                                    result.Base64Image = Convert.ToBase64String(ms.ToArray());
+                                    PublishAsync(result, topic, CancellationToken.None).Wait();
+                                }
+                            }
                         }
+
                     }
                 }
                 catch (HttpRequestException ex)
@@ -176,10 +189,6 @@ namespace AIGuard.Orchestrator
                 _stopwatch.Reset();
             }
         }
-
-        
-
-        
 
         public Camera FindCamera(FileSystemEventArgs e)
         {

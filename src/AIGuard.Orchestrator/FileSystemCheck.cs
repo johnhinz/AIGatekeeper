@@ -6,32 +6,30 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Polly;
+using Polly.Retry;
+using System;
 
 namespace AIGuard.Orchestrator
 {
     internal class FileSystemCheck : IHealthCheck
     {
         private readonly string _path;
+        private readonly RetryPolicy _fileAccessRetryPolicy;
+
+        public FileSystemCheck()
+        {
+            _fileAccessRetryPolicy = Policy
+                .Handle<FileLoadException>()
+                .Or<FileNotFoundException>()
+                .Or<ArgumentException>()
+                .Or<OutOfMemoryException>()
+                .Retry(3);
+        }
 
         public FileSystemCheck(string path)
         {
             _path = path;
-        }
-
-        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
-        {
-            DirectoryInfo d = new DirectoryInfo(_path);
-            FileInfo[] files = d.GetFiles("*.*");
-            FileInfo file =  files.FirstOrDefault();
-
-            if (FileHelper.IsFileClosed(file.FullName, false))
-            {
-                return Task.FromResult(HealthCheckResult.Healthy());
-            }
-            else
-            {
-                return Task.FromResult(HealthCheckResult.Unhealthy());
-            }
         }
 
         public static Task WriteResponse(HttpContext httpContext, HealthReport result)
@@ -45,6 +43,23 @@ namespace AIGuard.Orchestrator
                         new JProperty("status", pair.Value.Status.ToString())))))));
 
             return httpContext.Response.WriteAsync(response.ToString(Formatting.Indented));
+        }
+
+        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+        {
+            DirectoryInfo d = new DirectoryInfo(_path);
+            FileInfo[] files = d.GetFiles("*.*");
+            FileInfo file = files.FirstOrDefault();
+
+            try
+            {
+                _fileAccessRetryPolicy.Execute(() => { return File.Open(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read); });
+                return Task.FromResult(HealthCheckResult.Healthy());
+            }
+            catch
+            {
+                return Task.FromResult(HealthCheckResult.Unhealthy());
+            }
         }
     }
 }
