@@ -2,7 +2,7 @@
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=bugs)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=johnhinz_AIGatekeeper&metric=code_smells)](https://sonarcloud.io/dashboard?id=johnhinz_AIGatekeeper)
 
-[![Discord Chat](https://img.shields.io/badge/chat-on%20discord-7289DA.svg)](https://discord.gg/a8d3hunU)
+[![Discord Chat](https://img.shields.io/badge/chat-on%20discord-7289DA.svg)](https://discord.gg/5kTurQfz)
 
 # AIGateKeeper
 
