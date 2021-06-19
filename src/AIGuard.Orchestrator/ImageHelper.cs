@@ -19,6 +19,9 @@ namespace AIGuard.Orchestrator
             {
                 logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
 
+                if (detection.Confidence <= camera.Watches?.FirstOrDefault(w => w.Label == detection.Label).Confidence)
+                    continue;
+
                 if (camera.Watches.Any(i => i.Label == detection.Label))
                 {
                     Rectangle cropRect = new Rectangle(detection.XMin, detection.YMin, detection.XMax - detection.XMin, detection.YMax - detection.YMin);
