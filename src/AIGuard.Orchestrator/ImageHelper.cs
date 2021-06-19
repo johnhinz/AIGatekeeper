@@ -17,7 +17,9 @@ namespace AIGuard.Orchestrator
             List<MemoryStream> streams = new List<MemoryStream>();
             foreach (IDetectedObject detection in result.Detections)
             {
-                logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
+
+                if (detection.Confidence <= camera.Watches?.FirstOrDefault(w => w.Label == detection.Label).Confidence)
+                    continue;
 
                 if (camera.Watches.Any(i => i.Label == detection.Label))
                 {
