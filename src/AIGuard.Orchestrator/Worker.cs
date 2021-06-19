@@ -137,6 +137,13 @@ namespace AIGuard.Orchestrator
                         try
                         {
                             result = DetectObjectAsync(image, e.FullPath).Result;
+                            if (result.Detections != null)
+                            {
+                                foreach (var d in result.Detections)
+                                {
+                                    _logger.LogInformation($"Found item: {d.Label}, confidence: {d.Confidence} at x:{d.XMin} y:{d.YMin} xmax:{d.XMax} ymax:{d.YMax}");
+                                }
+                            }
                         } 
                         catch 
                         { 
@@ -145,6 +152,9 @@ namespace AIGuard.Orchestrator
                         }
 
                         bool foundTarget = DetectTarget(camera, result.Detections);
+
+
+
 
                         if ((result.Success && foundTarget) || (result.Detections.Count() > 0 && _publishFalseDetections))
                         {
@@ -172,6 +182,10 @@ namespace AIGuard.Orchestrator
                                     PublishAsync(result, topic, CancellationToken.None).Wait();
                                 }
                             }
+                        }
+                        else
+                        {
+                            _logger.LogInformation($"0 targets found in {e.FullPath}.");
                         }
 
                     }
