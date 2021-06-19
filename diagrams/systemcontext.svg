@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="618px" preserveAspectRatio="none" style="width:725px;height:618px;" version="1.1" viewBox="0 0 725 618" width="725px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="365" x="173.5" y="16.708">AIGatekeeper System Context Diagram</text><!--MD5=[220ff719a33124f3f213ce1f4ef94081]
-entity recipient--><rect fill="#08427B" height="117.7813" style="stroke: #073B6F; stroke-width: 1.5;" width="210" x="7" y="494.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="55" x="84.5" y="516.0918">«person»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="143" x="40.5" y="533.7734">Notified person</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="0" x="114" y="550.542"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="156" x="34" y="566.8389">Some person notified</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="186" x="17" y="583.1357">when an event of interest</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="89" y="599.4326">occurs</text><!--MD5=[432f27d108c44921b4150cc8acd1c046]
-entity guard--><rect fill="#1168BD" height="52.5938" style="stroke: #3C7FC0; stroke-width: 1.5;" width="118" x="397" y="204.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="57" x="427.5" y="226.0918">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="98" x="407" y="243.7734">AIGuardian</text><!--MD5=[02a5fd4fdb1bb76f8f9195a6bb636583]
-entity filesys--><rect fill="#999999" height="85.1875" style="stroke: #8A8A8A; stroke-width: 1.5;" width="182" x="537" y="27.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="112" x="572" y="49.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="105" x="575.5" y="66.7734">File System</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="0" x="630" y="83.542"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="158" x="551" y="99.8389">Source for Detections</text><!--MD5=[c21c6209adb761c2c6f92b8fc687f537]
-entity bus--><rect fill="#999999" height="52.5938" style="stroke: #8A8A8A; stroke-width: 1.5;" width="138" x="215" y="43.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="112" x="228" y="65.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="118" x="225" y="82.7734">Message Bus</text><!--MD5=[83bb000889dec5c32d93443fca192eba]
-entity notification--><rect fill="#999999" height="52.5938" style="stroke: #8A8A8A; stroke-width: 1.5;" width="140" x="42" y="349.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="112" x="56" y="371.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="120" x="52" y="388.7734">Notifications</text><!--MD5=[560cbc92c8892f2a19c372a90fb00ac0]
-entity workflow--><rect fill="#999999" height="52.5938" style="stroke: #8A8A8A; stroke-width: 1.5;" width="132" x="46" y="204.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="112" x="56" y="226.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="88" x="68" y="243.7734">Workflow</text><!--MD5=[c11bdee3075602d34c6a1f21dd5e463e]
-entity persist--><rect fill="#999999" height="52.5938" style="stroke: #8A8A8A; stroke-width: 1.5;" width="132" x="539" y="349.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="112" x="549" y="371.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="84" x="563" y="388.7734">Storgage</text><!--MD5=[91942a8223ccd6dc2ba2a2b4cf4ced37]
-entity detect--><rect fill="#999999" height="52.5938" style="stroke: #8A8A8A; stroke-width: 1.5;" width="132" x="313" y="349.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="112" x="323" y="371.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="83" x="337.5" y="388.7734">Detector</text><!--MD5=[a564962264c271f0409a5019cdd7f2a1]
-link filesys to guard--><path d="M620.506,112.9871 C614.893,133.8051 605.273,158.1011 589,174.9531 C570.425,194.1891 544.179,207.0371 519.904,215.4771 " fill="none" id="filesys-to-guard" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="515.079,217.1071,524.8858,218.0168,519.8161,215.5071,522.3258,210.4375,515.079,217.1071" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="85" x="609" y="163.52">Files Added</text><!--MD5=[790bfa902219ea89ee3c5516fa9815b1]
-link guard to detect--><path d="M396.945,240.4021 C367.715,247.6471 334.926,261.4931 317,287.9531 C303.686,307.6051 319.013,329.3871 337.755,346.3011 " fill="none" id="guard-to-detect" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="341.541,349.6171,337.4059,340.6784,337.7796,346.3229,332.1351,346.6966,341.541,349.6171" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="94" x="318" y="308.52">Image check</text><!--MD5=[fd4829038a78269b16710fe63027f3a8]
-link detect to guard--><path d="M397.98,349.8191 C404.397,340.6301 411.358,330.0441 417,319.9531 C427.238,301.6421 436.856,280.1321 443.979,263.0211 " fill="none" id="detect-to-guard" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="445.92,258.3181,438.7893,265.1117,444.0127,262.94,446.1843,268.1634,445.92,258.3181" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="107" x="434" y="308.52">Image Results</text><!--MD5=[cde738f2836ccc98a9f9ef798ff22867]
-link guard to bus--><path d="M396.576,228.7241 C356.866,224.0891 307.261,210.8321 281,174.9531 C265.799,154.1851 268.539,124.2741 273.907,101.9431 " fill="none" id="guard-to-bus" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="275.164,97.0131,269.0636,104.7452,273.9281,101.858,276.8153,106.7226,275.164,97.0131" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="282" y="156.02">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="325" y="171.1528">found</text><!--MD5=[821bc2f53c9c30e092d0eb2582cc727b]
-link bus to guard--><path d="M351.414,97.0091 C374.48,108.3291 398.983,123.5511 417,142.9531 C431.896,158.9941 441.785,181.6721 447.877,199.9201 " fill="none" id="bus-to-guard" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="449.495,204.9411,450.5402,195.1479,447.9607,200.1824,442.9262,197.6028,449.495,204.9411" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="438" y="156.02">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="481" y="171.1528">found</text><!--MD5=[691f7f7caddc72d9f9b710a3bbd86ebb]
-link bus to workflow--><path d="M214.64,88.7911 C184.761,99.6471 151.945,116.7171 131,142.9531 C118.234,158.9431 113.573,181.6221 112.057,199.8841 " fill="none" id="bus-to-workflow" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="111.709,204.9091,116.3218,196.2073,112.0548,199.9211,108.341,195.6541,111.709,204.9091" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="132" y="156.02">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="175" y="171.1528">found</text><!--MD5=[bffb9ffa9081c3035e69811662b1016a]
-link guard to persist--><path d="M509.356,258.0511 C523.538,266.3651 538.18,276.4581 550,287.9531 C566.957,304.4441 581.034,327.1541 590.701,345.3051 " fill="none" id="guard-to-persist" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="593.063,349.8151,592.4311,339.9866,590.7433,345.3858,585.3441,343.698,593.063,349.8151" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="112" x="575" y="308.52">Item persisted</text><!--MD5=[d44cbcc699e4ee28dba43029ff64408b]
-link workflow to notification--><path d="M112,258.0191 C112,282.2701 112,318.7481 112,344.6041 " fill="none" id="workflow-to-notification" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="112,349.6271,116,340.6271,112,344.6271,108,340.6271,112,349.6271" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="113" y="301.02">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="156" y="316.1528">found</text><!--MD5=[72cd434be22131ee91cc83da704a9593]
-link notification to recipient--><path d="M112,402.9721 C112,425.6191 112,459.6591 112,489.5891 " fill="none" id="notification-to-recipient" style="stroke: #666666; stroke-width: 1.0;"/><polygon fill="#666666" points="112,494.7391,116,485.7391,112,489.7391,108,485.7391,112,494.7391" style="stroke: #666666; stroke-width: 1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="125" x="113" y="446.02">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="44" x="156" y="461.1528">found</text><!--MD5=[82a5588c6ebf02be36310a5bd9355b67]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="657px" preserveAspectRatio="none" style="width:722px;height:657px;background:#FFFFFF;" version="1.1" viewBox="0 0 722 657" width="722px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacing" textLength="365" x="172" y="16.708">AIGatekeeper System Context Diagram</text><!--MD5=[220ff719a33124f3f213ce1f4ef94081]
+entity recipient--><rect fill="#08427B" height="165.7813" style="stroke:#073B6F;stroke-width:1.5;" width="210" x="7" y="485.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55" x="84.5" y="507.0918">«person»</text><image height="48" width="48" x="88" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAACD0lEQVR4Xu2YoU4EMRCGT+4j8Ai8AhaH4QHgAUjQuFMECUgMIUgwJAgMhgQsAYUiJCiQIBBY+EITsjfTdme6V24v4c8vyGbb+ZjOtN0bNcvjQXmkH83WvYBWto6PLm6v7p7uH1/w2fXD+PBycX1Pv2l3IdDm/vn7x+dXQiAubRzoURa7gRZWd0iGRIiJbOnhnfYBQZNJjNbuyY2eJG8fkDE3bbG4ep6MHUAsgYxmE3nVs6VsBWJSGccsOlFPmLIViMzLOB7pCVO2AtHJMohH7Fh6zqitQK7m0rJvAVYgGcEpe//PLdDz65sM4pF9N7ICcXDKIB5Nv6j7tD0NoSdM2QrU9Gg0ewE1LqBhHR3BBdvj2vapnidjHxD/q6vd7Pvhr31AwcY8eXMTXAKECZZJFXuEq27aLgQK5uLMohCenGGuGewOxSjBvYBqeG6B+Nqiblggdjnc+ZXDy+FNFpFzw76O3UBAROuXh6FoiAcf5g9eTvUgzy0nWg6I8cXHRUpg5bOVBCo+KDpFajOf23GgPme7RSQ+lacIENUgJ6gg1k6HjgOlqnLqip4tEuhv0hNEMXUD0clyXE3p6pZA0S2nnvTlXwLJEZWlb7cTQH1+USgTN4VhAenm/wea1OCAOmqo6fE1WCb9WSKBah+rbUWPWAmE2Rvk0ApiB45eOyNAzU8xcTvj8KvkKEoOaIYeHNA3ZuygAvFMUO0AAAAASUVORK5CYII=" y="509.9219"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="143" x="40.5" y="572.7734">Notified person</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="114" y="589.542"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="156" x="34" y="605.8389">Some person notified</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="186" x="17" y="622.1357">when an event of interest</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="46" x="89" y="638.4326">occurs</text><!--MD5=[432f27d108c44921b4150cc8acd1c046]
+entity guard--><rect fill="#1168BD" height="52.5938" style="stroke:#3C7FC0;stroke-width:1.5;" width="118" x="404" y="201.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="57" x="434.5" y="223.0918">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="98" x="414" y="240.7734">AIGuardian</text><!--MD5=[02a5fd4fdb1bb76f8f9195a6bb636583]
+entity filesys--><rect fill="#999999" height="85.1875" style="stroke:#8A8A8A;stroke-width:1.5;" width="182" x="534" y="27.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="569" y="49.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105" x="572.5" y="66.7734">File System</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="627" y="83.542"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="548" y="99.8389">Source for Detections</text><!--MD5=[c21c6209adb761c2c6f92b8fc687f537]
+entity bus--><rect fill="#999999" height="52.5938" style="stroke:#8A8A8A;stroke-width:1.5;" width="138" x="205" y="43.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="218" y="65.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="118" x="215" y="82.7734">Message Bus</text><!--MD5=[83bb000889dec5c32d93443fca192eba]
+entity notification--><rect fill="#999999" height="52.5938" style="stroke:#8A8A8A;stroke-width:1.5;" width="140" x="42" y="343.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="56" y="365.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="120" x="52" y="382.7734">Notifications</text><!--MD5=[560cbc92c8892f2a19c372a90fb00ac0]
+entity workflow--><rect fill="#999999" height="52.5938" style="stroke:#8A8A8A;stroke-width:1.5;" width="132" x="46" y="201.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="56" y="223.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="88" x="68" y="240.7734">Workflow</text><!--MD5=[c11bdee3075602d34c6a1f21dd5e463e]
+entity persist--><rect fill="#999999" height="52.5938" style="stroke:#8A8A8A;stroke-width:1.5;" width="132" x="540" y="343.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="550" y="365.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="84" x="564" y="382.7734">Storgage</text><!--MD5=[91942a8223ccd6dc2ba2a2b4cf4ced37]
+entity detect--><rect fill="#999999" height="52.5938" style="stroke:#8A8A8A;stroke-width:1.5;" width="132" x="320" y="343.9531"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="330" y="365.0918">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83" x="344.5" y="382.7734">Detector</text><!--MD5=[a564962264c271f0409a5019cdd7f2a1]
+link filesys to guard--><path d="M616.609,113.1051 C610.824,132.9351 601.32,155.7881 586,171.9531 C570.782,188.0111 550.053,199.7741 529.951,208.2261 " fill="none" id="filesys-to-guard" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="522.29,211.3051,530.8317,211.1058,528.5945,205.5385,522.29,211.3051" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="82" x="605" y="162.0918">Files Added</text><!--MD5=[790bfa902219ea89ee3c5516fa9815b1]
+link guard to detect--><path d="M403.941,238.5291 C376.28,246.0641 345.788,259.8291 329,284.9531 C317.267,302.5121 328.861,322.0641 344.583,337.9351 " fill="none" id="guard-to-detect" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="350.526,343.6051,346.8088,335.9121,342.6669,340.2532,350.526,343.6051" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="89" x="330" y="304.0918">Image check</text><!--MD5=[fd4829038a78269b16710fe63027f3a8]
+link detect to guard--><path d="M404.906,343.7771 C411.316,334.5841 418.292,324.0061 424,313.9531 C433.324,297.5321 442.263,278.4921 449.225,262.6471 " fill="none" id="detect-to-guard" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="452.478,255.1511,446.5415,261.2959,452.0457,263.6842,452.478,255.1511" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="101" x="439" y="304.0918">Image Results</text><!--MD5=[cde738f2836ccc98a9f9ef798ff22867]
+link guard to bus--><path d="M403.983,218.3011 C353.706,209.1561 287.108,193.3771 271,171.9531 C256.861,153.1481 258.442,126.2871 263.109,105.0651 " fill="none" id="guard-to-bus" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="265.022,97.2361,260.2079,104.2948,266.0362,105.7197,265.022,97.2361" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="143" x="272" y="155.0918">Post notification to</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="123" x="284" y="169.0605">the message bus</text><!--MD5=[821bc2f53c9c30e092d0eb2582cc727b]
+link bus to guard--><path d="M343.338,92.8181 C371.15,104.1481 401.802,120.4781 424,142.9531 C437.981,157.1091 447.536,177.1981 453.687,194.2361 " fill="none" id="bus-to-guard" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="456.278,201.8181,456.5296,193.2778,450.852,195.2182,456.278,201.8181" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="116" x="445" y="155.0918">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43" x="483.5" y="169.0605">found</text><!--MD5=[691f7f7caddc72d9f9b710a3bbd86ebb]
+link bus to workflow--><path d="M204.58,83.0661 C169.622,92.8051 130.246,110.5921 109,142.9531 C99.3073,157.7171 99.3878,177.2671 102.1961,193.8441 " fill="none" id="bus-to-workflow" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="103.763,201.7091,105.1423,193.2772,99.2579,194.4493,103.763,201.7091" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="116" x="110" y="155.0918">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43" x="148.5" y="169.0605">found</text><!--MD5=[bffb9ffa9081c3035e69811662b1016a]
+link guard to persist--><path d="M510.177,255.0781 C523.556,263.5781 537.577,273.7601 549,284.9531 C564.483,300.1241 578.2,320.1251 588.296,336.8591 " fill="none" id="guard-to-persist" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="592.396,343.8071,590.9141,335.3926,585.7466,338.4419,592.396,343.8071" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="106" x="573" y="304.0918">Item persisted</text><!--MD5=[d44cbcc699e4ee28dba43029ff64408b]
+link workflow to notification--><path d="M112,255.1311 C112,277.8261 112,311.0801 112,335.8791 " fill="none" id="workflow-to-notification" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="112,343.9381,115,335.9381,109,335.9381,112,343.9381" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="116" x="113" y="297.0918">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43" x="151.5" y="311.0605">found</text><!--MD5=[72cd434be22131ee91cc83da704a9593]
+link notification to recipient--><path d="M112,397.1421 C112,417.7771 112,448.0591 112,477.4171 " fill="none" id="notification-to-recipient" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="112,485.6651,115,477.6651,109,477.6651,112,485.6651" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="116" x="113" y="439.0918">Item of interest</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43" x="151.5" y="453.0605">found</text><!--MD5=[ddd9f37b382c6a1d8afecd6f1ae21aab]
 @startuml
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
  
@@ -39,7 +39,7 @@ Rel(filesys, guard, "Files Added")
 Rel(guard, detect, "Image check")
 Rel(detect, guard, "Image Results")
 
-Rel(guard, bus, "Item of interest found")
+Rel(guard, bus, "Post notification to the message bus")
 Rel(bus, guard, "Item of interest found")
 Rel(bus, workflow, "Item of interest found")
 Rel(guard, persist, "Item persisted")
@@ -53,10 +53,18 @@ Rel(notification, recipient, "Item of interest found")
 
 
 
+
+
+
+
 skinparam defaultTextAlignment center
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 150
+
+skinparam LegendBorderColor transparent
+skinparam LegendBackgroundColor transparent
+skinparam LegendFontColor #FFFFFF
 
 skinparam rectangle {
     StereotypeFontSize 12
@@ -68,19 +76,78 @@ skinparam database {
     shadowing false
 }
 
+skinparam queue {
+    StereotypeFontSize 12
+    shadowing false
+}
+
 skinparam Arrow {
     Color #666666
     FontColor #666666
     FontSize 12
 }
 
+skinparam package {
+    StereotypeFontSize 6
+    StereotypeFontColor #FFFFFF
+    FontStyle plain
+    BackgroundColor #FFFFFF
+}
+
 skinparam rectangle<<boundary>> {
     Shadowing false
-    StereotypeFontSize 0
+    StereotypeFontSize 6
+    StereotypeFontColor #FFFFFF
     FontColor #444444
     BorderColor #444444
+    BackgroundColor #FFFFFF
     BorderStyle dashed
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -109,8 +176,32 @@ skinparam rectangle<<person>> {
     BackgroundColor #08427B
     BorderColor #073B6F
 }
+skinparam database<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+skinparam queue<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
 
 skinparam rectangle<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+skinparam database<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+skinparam queue<<external_person>> {
     StereotypeFontColor #FFFFFF
     FontColor #FFFFFF
     BackgroundColor #686868
@@ -123,6 +214,18 @@ skinparam rectangle<<system>> {
     BackgroundColor #1168BD
     BorderColor #3C7FC0
 }
+skinparam database<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+skinparam queue<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
 
 skinparam rectangle<<external_system>> {
     StereotypeFontColor #FFFFFF
@@ -130,20 +233,132 @@ skinparam rectangle<<external_system>> {
     BackgroundColor #999999
     BorderColor #8A8A8A
 }
-
-skinparam database<<system>> {
-    StereotypeFontColor #FFFFFF
-    FontColor #FFFFFF
-    BackgroundColor #1168BD
-    BorderColor #3C7FC0
-}
-
 skinparam database<<external_system>> {
     StereotypeFontColor #FFFFFF
     FontColor #FFFFFF
     BackgroundColor #999999
     BorderColor #8A8A8A
 }
+skinparam queue<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+
+
+
+
+sprite $person [48x48/16] {
+000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000
+0000000000000000000049BCCA7200000000000000000000
+0000000000000000006EFFFFFFFFB3000000000000000000
+00000000000000001CFFFFFFFFFFFF700000000000000000
+0000000000000001EFFFFFFFFFFFFFF80000000000000000
+000000000000000CFFFFFFFFFFFFFFFF6000000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+00000000000001FFFFFFFFFFFFFFFFFFF900000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFF00000000000000
+0000000000000BFFFFFFFFFFFFFFFFFFFF40000000000000
+0000000000000EFFFFFFFFFFFFFFFFFFFF70000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000DFFFFFFFFFFFFFFFFFFFF60000000000000
+0000000000000AFFFFFFFFFFFFFFFFFFFF40000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFE00000000000000
+00000000000000EFFFFFFFFFFFFFFFFFF800000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+000000000000000BFFFFFFFFFFFFFFFF5000000000000000
+0000000000000001DFFFFFFFFFFFFFF70000000000000000
+00000000000000000BFFFFFFFFFFFF500000000000000000
+0000000000000000005DFFFFFFFFA1000000000000000000
+0000000000000000000037ABB96100000000000000000000
+000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000
+000000000000025788300000000005886410000000000000
+000000000007DFFFFFFD9643347BFFFFFFFB400000000000
+0000000004EFFFFFFFFFFFFFFFFFFFFFFFFFFB1000000000
+000000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFD200000000
+00000006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE10000000
+0000003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB0000000
+000000BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5000000
+000003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD000000
+000009FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF200000
+00000DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF600000
+00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF800000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA00000
+00000EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF700000
+000006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE100000
+0000008FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD3000000
+000000014555555555555555555555555555555300000000
+000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000
+}
+
+sprite $person2 [48x48/16] {
+0000000000000000000049BCCA7200000000000000000000
+0000000000000000006EFFFFFFFFB3000000000000000000
+00000000000000001CFFFFFFFFFFFF700000000000000000
+0000000000000001EFFFFFFFFFFFFFF80000000000000000
+000000000000000CFFFFFFFFFFFFFFFF6000000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+00000000000001FFFFFFFFFFFFFFFFFFF900000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFF00000000000000
+0000000000000BFFFFFFFFFFFFFFFFFFFF40000000000000
+0000000000000EFFFFFFFFFFFFFFFFFFFF70000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000DFFFFFFFFFFFFFFFFFFFF60000000000000
+0000000000000AFFFFFFFFFFFFFFFFFFFF40000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFE00000000000000
+00000000000000EFFFFFFFFFFFFFFFFFF800000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+000000000000000BFFFFFFFFFFFFFFFF5000000000000000
+0000000000000001DFFFFFFFFFFFFFF70000000000000000
+00000000000000000BFFFFFFFFFFFF500000000000000000
+0000000000000000005DFFFFFFFFA1000000000000000000
+0000000000000000000037ABB96100000000000000000000
+000000000002578888300000000005888864100000000000
+0000000007DFFFFFFFFD9643347BFFFFFFFFFB4000000000
+00000004EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB10000000
+0000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD2000000
+000006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE100000
+00003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+0000BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50000
+0003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD0000
+0009FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2000
+000DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6000
+000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA000
+000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000
+000DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6000
+0009FFFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFFF2000
+0003FFFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFFD0000
+0000BFFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFF50000
+00003FFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFB00000
+000006FFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFE100000
+0000007FFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFD2000000
+00000004EFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFB10000000
+0000000007DF8FFFFFFFFFFFFFFFFFFFFFF8FB4000000000
+000000000002578888888888888888888864100000000000
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -160,31 +375,31 @@ title AIGatekeeper System Context Diagram
 
 
  
-rectangle "==Notified person\n\n Some person notified when an event of interest occurs" <<person>> as recipient
+rectangle "<$person>\n==Notified person\n\n Some person notified when an event of interest occurs" <<person>> as recipient 
 
-rectangle "==AIGuardian" <<system>> as guard
+rectangle "==AIGuardian" <<system>> as guard 
 
-rectangle "==File System\n\n Source for Detections" <<external_system>> as filesys
-rectangle "==Message Bus" <<external_system>> as bus
-rectangle "==Notifications" <<external_system>> as notification
-rectangle "==Workflow" <<external_system>> as workflow
-rectangle "==Storgage" <<external_system>> as persist
-rectangle "==Detector" <<external_system>> as detect
+rectangle "==File System\n\n Source for Detections" <<external_system>> as filesys 
+rectangle "==Message Bus" <<external_system>> as bus 
+rectangle "==Notifications" <<external_system>> as notification 
+rectangle "==Workflow" <<external_system>> as workflow 
+rectangle "==Storgage" <<external_system>> as persist 
+rectangle "==Detector" <<external_system>> as detect 
 
-filesys - -> guard : "===Files Added"
+filesys - ->> guard : **Files Added**
 
-guard - -> detect : "===Image check"
-detect - -> guard : "===Image Results"
+guard - ->> detect : **Image check**
+detect - ->> guard : **Image Results**
 
-guard - -> bus : "===Item of interest found"
-bus - -> guard : "===Item of interest found"
-bus - -> workflow : "===Item of interest found"
-guard - -> persist : "===Item persisted"
-workflow - -> notification : "===Item of interest found"
-notification - -> recipient : "===Item of interest found"
+guard - ->> bus : **Post notification to the message bus**
+bus - ->> guard : **Item of interest found**
+bus - ->> workflow : **Item of interest found**
+guard - ->> persist : **Item persisted**
+workflow - ->> notification : **Item of interest found**
+notification - ->> recipient : **Item of interest found**
 @enduml
 
-PlantUML version 1.2020.20beta11(Unknown compile time)
+PlantUML version 1.2021.7(Sun May 23 12:40:07 UTC 2021)
 (GPL source distribution)
 Java Runtime: Java(TM) SE Runtime Environment
 JVM: Java HotSpot(TM) 64-Bit Server VM
