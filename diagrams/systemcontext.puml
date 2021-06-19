@@ -21,7 +21,7 @@ Rel(filesys, guard, "Files Added")
 Rel(guard, detect, "Image check")
 Rel(detect, guard, "Image Results")
 
-Rel(guard, bus, "Item of interest found")
+Rel(guard, bus, "Post notification to the message bus")
 Rel(bus, guard, "Item of interest found")
 Rel(bus, workflow, "Item of interest found")
 Rel(guard, persist, "Item persisted")
