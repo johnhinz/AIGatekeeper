@@ -61,8 +61,7 @@ namespace AIGuard.Orchestrator
                 .Handle<FileLoadException>()
                 .Or<FileNotFoundException>()
                 .Or<ArgumentException>()
-                .Or<OutOfMemoryException>()
-                .Retry(3);
+                .Or<OutOfMemoryException>().WaitAndRetry(retryCount: 5, retryNumber => TimeSpan.FromMilliseconds(200));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -122,11 +121,16 @@ namespace AIGuard.Orchestrator
                     Image image = null;
                     try
                     {
+                        _logger.LogDebug($"Loading image for {e.FullPath}");
                         image = _fileAccessRetryPolicy.Execute<Image>(() => { return Image.FromFile(e.FullPath); });
                     }
                     catch (FileLoadException fe)
                     {
                         _logger.LogError($"Cannot load from file {fe.FileName}");
+                    }
+                    catch (OutOfMemoryException oe)
+                    {
+                        _logger.LogError($"An out of memory exception was thrown: {oe.Message}");
                     }
                     
                     using (image)
@@ -195,6 +199,10 @@ namespace AIGuard.Orchestrator
                     _logger.LogError($"Unable to connect to IDetectObjects:{typeof(IDetectObjects)}:{ex.Message}");
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex.Message}");
+            }
             finally
             {
                 _stopwatch.Stop();
@@ -206,6 +214,7 @@ namespace AIGuard.Orchestrator
 
         public Camera FindCamera(FileSystemEventArgs e)
         {
+            _logger.LogDebug($"FindCamera start for {e.FullPath}");
             foreach (var item in _cameras)
             {
                 if (e.Name.Contains(item.Name, StringComparison.OrdinalIgnoreCase))
@@ -225,6 +234,7 @@ namespace AIGuard.Orchestrator
 
         private async Task<IPrediction> DetectObjectAsync(Image image, string filePath)
         {
+            _logger.LogDebug($"Calling detector for {filePath}");
             MemoryStream ms = new MemoryStream();
             try
             {
