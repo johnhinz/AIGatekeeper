@@ -9,6 +9,8 @@ namespace AIGuard.Orchestrator
     {
         public string Name { get; set; }
         public bool Clip { get; set; }
+        public bool DrawTarget { get; set; }
+        public bool DrawConfidence { get; set; }
         public List<Item> Watches { get; set; }
     }
 }

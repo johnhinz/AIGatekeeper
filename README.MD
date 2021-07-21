@@ -37,16 +37,14 @@ RepositoryEndpoint : The repository endpoint.
 Cameras : A Javascript array containing a list of cameras.
   [ 
     {
-      "name": "east",   Name of the camera.  The value must be a substring of the image filename.
-      "clip": false,    True will crop the image to the object of interest, false will send the whole image with a target in a bounded rectangle
+      "name": string,   Name of the camera.  The value must be a substring of the image filename.
+      "clip": bool,    True will crop the image to the object of interest, false will send the whole image with a target in a bounded rectangle
+      "drawTarget": bool,  True will draw a box around the item of interest in the image
+      "drawConfidence": bool,  True will print the target and confidence on the image
       "watches": [      A Javascript array containing the items of interest and the confidence level required to produce a match
         {
-          "label": "person",   The title of an object of interest
-          "confidence": 0.75   The confidence level that will produce a match
-        },
-        {
-          "label": "car",   
-          "confidence": 0.75   
+          "label": string,   The title of an object of interest as returned by the AI
+          "confidence": decimal   The confidence level that will produce a match
         }
       ]
     }

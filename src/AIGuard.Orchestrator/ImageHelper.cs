@@ -18,29 +18,26 @@ namespace AIGuard.Orchestrator
             foreach (IDetectedObject detection in result.Detections)
             {
 
-                if (detection.Confidence <= camera.Watches?.FirstOrDefault(w => w.Label == detection.Label).Confidence)
+                Item watch = camera.Watches?.FirstOrDefault(w => w.Label == detection.Label);
+                if (watch == null || detection.Confidence <= watch.Confidence)
                     continue;
 
-                if (camera.Watches.Any(i => i.Label == detection.Label))
+                Rectangle cropRect = new Rectangle(detection.XMin, detection.YMin, detection.XMax - detection.XMin, detection.YMax - detection.YMin);
+                Bitmap src = image as Bitmap;
+                using (Bitmap target = new Bitmap(cropRect.Width, cropRect.Height))
                 {
-                    Rectangle cropRect = new Rectangle(detection.XMin, detection.YMin, detection.XMax - detection.XMin, detection.YMax - detection.YMin);
-                    Bitmap src = image as Bitmap;
-                    using (Bitmap target = new Bitmap(cropRect.Width, cropRect.Height))
+                    using (Graphics g = Graphics.FromImage(target))
                     {
-                        using (Graphics g = Graphics.FromImage(target))
-                        {
 
-                            g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                                             cropRect,
-                                             GraphicsUnit.Pixel);
+                        g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                            cropRect,
+                                            GraphicsUnit.Pixel);
+                    }
 
-                        }
-
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            target.Save(ms, image.RawFormat);
-                            streams.Add(ms);
-                        }
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        target.Save(ms, image.RawFormat);
+                        streams.Add(ms);
                     }
                 }
             }
@@ -58,8 +55,12 @@ namespace AIGuard.Orchestrator
                     foreach (IDetectedObject detection in result.Detections)
                     {
                         logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
-                        if (camera.Watches.Any(i => i.Label == detection.Label))
-                        {
+
+                        Item watch = camera.Watches?.FirstOrDefault(w => w.Label == detection.Label);
+                        if (watch == null || detection.Confidence <= watch.Confidence)
+                            continue;
+
+                        if (camera.DrawTarget)
                             g.DrawRectangle(
                                 redPen,
                                 detection.XMin,
@@ -67,17 +68,16 @@ namespace AIGuard.Orchestrator
                                 detection.XMax - detection.XMin,
                                 detection.YMax - detection.YMin);
 
+                        if (camera.DrawConfidence)
                             g.DrawString($"{detection.Label}:{detection.Confidence}",
                                 font,
                                 brush,
                                 new Point(detection.XMin, detection.YMin - (int)redPen.Width - 1));
-                        }
                     }
-                MemoryStream ms = new MemoryStream();
-                image.Save(ms, image.RawFormat);
-                return ms;
-
             }
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, image.RawFormat);
+            return ms;
         }
     }
 }
