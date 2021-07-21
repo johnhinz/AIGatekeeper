@@ -54,8 +54,6 @@ namespace AIGuard.Orchestrator
 
                     foreach (IDetectedObject detection in result.Detections)
                     {
-                        logger.LogInformation($"Found item: {detection.Label}, confidence: {detection.Confidence} at x:{detection.XMin} y:{detection.YMin} xmax:{detection.XMax} ymax:{detection.YMax}");
-
                         Item watch = camera.Watches?.FirstOrDefault(w => w.Label == detection.Label);
                         if (watch == null || detection.Confidence <= watch.Confidence)
                             continue;
