@@ -5,12 +5,11 @@ using System.Text;
 
 namespace AIGuard.Orchestrator
 {
-    public class Camera
+    public record Camera 
     {
-        public string Name { get; set; }
-        public bool Clip { get; set; }
-        public bool DrawTarget { get; set; }
-        public bool DrawConfidence { get; set; }
-        public List<Item> Watches { get; set; }
+        public string Name { get; init; }
+        public bool Clip { get; init; }
+        public DrawTarget Draw { get; init; }
+        public List<Item> Watches { get; init; }
     }
 }
