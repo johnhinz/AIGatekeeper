@@ -58,7 +58,7 @@ namespace AIGuard.Orchestrator
                         if (watch == null || detection.Confidence <= watch.Confidence)
                             continue;
 
-                        if (camera.DrawTarget)
+                        if (camera.Draw.Target)
                             g.DrawRectangle(
                                 redPen,
                                 detection.XMin,
@@ -66,7 +66,7 @@ namespace AIGuard.Orchestrator
                                 detection.XMax - detection.XMin,
                                 detection.YMax - detection.YMin);
 
-                        if (camera.DrawConfidence)
+                        if (camera.Draw.Confidence)
                             g.DrawString($"{detection.Label}:{detection.Confidence}",
                                 font,
                                 brush,
