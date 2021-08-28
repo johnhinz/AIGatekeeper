@@ -1,8 +1,8 @@
 ﻿namespace AIGuard.Orchestrator
 {
-    public class Item
+    public record Item
     {
-        public string Label { get; set; }
-        public float Confidence { get; set; }
+        public string Label { get; init; }
+        public float Confidence { get; init; }
     }
 }
