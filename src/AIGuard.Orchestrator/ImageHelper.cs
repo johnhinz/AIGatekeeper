@@ -48,7 +48,7 @@ namespace AIGuard.Orchestrator
         {
             using (Graphics g = Graphics.FromImage(image))
             {
-                using (Pen redPen = new Pen(Color.Red, 5))
+                
                 using (Font font = new Font("Arial", 30, FontStyle.Italic, GraphicsUnit.Pixel))
                 using (SolidBrush brush = new SolidBrush(Color.White))
 
@@ -57,6 +57,11 @@ namespace AIGuard.Orchestrator
                         Item watch = camera.Watches?.FirstOrDefault(w => w.Label == detection.Label);
                         if (watch == null || detection.Confidence <= watch.Confidence)
                             continue;
+
+                        if (camera.Draw == null)
+                            continue;
+
+                        using (Pen redPen = new Pen(Color.Red, camera.Draw.Width))
 
                         if (camera.Draw.Target)
                             g.DrawRectangle(
@@ -70,7 +75,7 @@ namespace AIGuard.Orchestrator
                             g.DrawString($"{detection.Label}:{detection.Confidence}",
                                 font,
                                 brush,
-                                new Point(detection.XMin, detection.YMin - (int)redPen.Width - 1));
+                                new Point(detection.XMin, detection.YMin - camera.Draw.Width - 1));
                     }
             }
             MemoryStream ms = new MemoryStream();
