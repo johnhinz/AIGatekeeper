@@ -10,7 +10,7 @@ jobs:
       uses: codeinspectorio/github-action@master
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        code_inspector_api_token: ${{ secrets.CODE_INSPECTOR_CODIGA }}
+        code_inspector_api_token: ${{ secrets.CODE_INSPECTOR_API_TOKEN }}
         force_ref: 'none'
         min_quality_grade: 'WARNING'
         min_quality_score: '50'
