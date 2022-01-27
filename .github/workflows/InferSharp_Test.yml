@@ -1,0 +1,22 @@
+name: InferSharp_Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Infer# analysis results
+        uses: microsoft/infersharpaction@v1.2.1
+        id: runinfersharp
+        with:
+         binary-path: '<path to the binary directory containing .dlls and .pdbs>'
+
+      - name: Infer# analysis results
+        run: echo "${{ steps.runinfersharp.outputs.results }}"   
