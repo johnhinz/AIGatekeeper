@@ -31,7 +31,7 @@ jobs:
       run: |
         cd src
         dotnet build --configuration Release --no-restore
-    - name: Test
-      run: |
-        cd src/AIGuard.UnitTests
-        dotnet test --no-restore --verbosity normal   
+#    - name: Test
+#      run: |
+#        cd src/AIGuard.UnitTests
+#        dotnet test --no-restore --verbosity normal   
