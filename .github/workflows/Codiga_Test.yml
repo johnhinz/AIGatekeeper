@@ -1,3 +1,4 @@
+name: Codiga_Test
 on: 
   push:
   workflow_dispatch:
