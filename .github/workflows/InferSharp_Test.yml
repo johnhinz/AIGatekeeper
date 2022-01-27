@@ -17,7 +17,7 @@ jobs:
         id: runinfersharp
         with:
 #         binary-path: '<path to the binary directory containing .dlls and .pdbs>'
-         binary-path: 'AIGatekeeper'
+         binary-path: 'src/AIGuard.Orchestrator/'
 
       - name: Infer# analysis results
         run: echo "${{ steps.runinfersharp.outputs.results }}"   
