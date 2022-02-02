@@ -36,6 +36,3 @@ jobs:
 #      run: |
 #        cd src/AIGuard.UnitTests
 #        dotnet test --no-restore --verbosity normal   
-    - name: Test with the dotnet CLI
-      run: dotnet test
-
