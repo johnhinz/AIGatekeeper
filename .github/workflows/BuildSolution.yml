@@ -37,7 +37,3 @@ jobs:
 #        cd src/AIGuard.UnitTests
 #        dotnet test --no-restore --verbosity normal   
 
-    - name: Run Parasoft dotTEST
-      uses: parasoft/run-dottest-action@1.1.0
-      with:
-        solution: '.\src\*.sln'
