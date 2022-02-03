@@ -26,6 +26,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ./src/Dockerfile
+        file: ./src/AIGuard.Orchestrator/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/simplewhale:latest
