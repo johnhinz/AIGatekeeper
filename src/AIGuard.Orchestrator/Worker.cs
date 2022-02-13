@@ -56,6 +56,7 @@ namespace AIGuard.Orchestrator
                     (ex, timeSpan) =>
                     {
                         _logger.LogError(ex.Message);
+                        _publisher.PublishAsync<string>("Failed to connect to AI","test", CancellationToken.None);
                     });
             _fileAccessRetryPolicy = Policy
                 .Handle<FileLoadException>()
