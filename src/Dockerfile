@@ -5,7 +5,7 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["AIGuard.Orchestrator/AIGuard.Orchestrator.csproj", "AIGuard.Orchestrator/"]
+COPY ["./AIGuard.Orchestrator/AIGuard.Orchestrator.csproj", "AIGuard.Orchestrator/"]
 COPY ["src/AIGuard.IRepository/AIGuard.IRepository.csproj", "src/AIGuard.IRepository/"]
 COPY ["src/AIGuard.Broker/AIGuard.Broker.csproj", "src/AIGuard.Broker/"]
 COPY ["src/AIGuard.Interface/AIGuard.Interface.csproj", "src/AIGuard.Interface/"]
