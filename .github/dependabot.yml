@@ -1,6 +1,8 @@
 version: 2
 updates:
-- package-ecosystem: nuget
+#- package-ecosystem: nuget
+# Since Dependabot has native GitHub Actions support, to enable it on your GitHub repo:
+- package-ecosystem: "github-actions"
   directory: "/"
   schedule:
     interval: daily
