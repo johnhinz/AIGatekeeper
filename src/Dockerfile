@@ -5,7 +5,7 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["AIGuard.Orchestrator.csproj", "AIGuard.Orchestrator/"]
+COPY ["AIGuard.Orchestrator/AIGuard.Orchestrator.csproj", "AIGuard.Orchestrator/"]
 COPY ["AIGuard.IRepository/AIGuard.IRepository.csproj", "AIGuard.IRepository/"]
 COPY ["AIGuard.Broker/AIGuard.Broker.csproj", "AIGuard.Broker/"]
 COPY ["AIGuard.Interface/AIGuard.Interface.csproj", "AIGuard.Interface/"]
@@ -23,4 +23,4 @@ RUN dotnet publish "AIGuard.Orchestrator.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AIGuard.Orchestrator.dll"
+ENTRYPOINT ["dotnet", "AIGuard.Orchestrator.dll"]
