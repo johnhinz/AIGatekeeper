@@ -1,12 +1,12 @@
 name: docker
 
 on:
-  push:
+  push: 
     branches: [main]
   workflow_dispatch:      
 
 jobs:
-  docker:
+  docker: # job name
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -17,17 +17,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
         
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: ./src/Dockerfile
-          push: true
-          build-args: ${{ secrets.DOCKER_USERNAME }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/aigatekeeper
-          
-          
+      - name: Build and push to Docker Hub            
+        run : |
+          docker build ./src -t ${{ secrets.DOCKER_USERNAME }}/aigatekeeper
+          docker push ${{ secrets.DOCKER_USERNAME }}/aigatekeeper
