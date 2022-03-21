@@ -12,7 +12,7 @@ jobs:
     name: plantuml
     steps:
     - name: checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       with:
         fetch-depth: 1
     - name: plantuml
