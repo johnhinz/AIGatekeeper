@@ -17,11 +17,13 @@ RUN dotnet restore "AIGuard.Orchestrator/AIGuard.Orchestrator.csproj"
 COPY . .
 WORKDIR "/src/AIGuard.Orchestrator"
 RUN dotnet build "AIGuard.Orchestrator.csproj" -c Release -o /app/build
+RUN dotnet test
 
 FROM build AS publish
 RUN dotnet publish "AIGuard.Orchestrator.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
+
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "AIGuard.Orchestrator.dll"]
