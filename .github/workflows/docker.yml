@@ -34,7 +34,7 @@ jobs:
         run : |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/aigatekeeper ./src 
           docker push ${{ secrets.DOCKER_USERNAME }}/aigatekeeper
-          kubectl apply -f ./src/k8s.yaml
+#          kubectl apply -f ./src/k8s.yaml
           
 #         docker run --rm --name aigatekeeper-container -d aigatekeeper -v ./Volume-temp:/Volume-temp
 
