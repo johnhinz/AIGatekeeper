@@ -25,7 +25,7 @@ jobs:
 #          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Install Kubectl
-        uses: azure/setup-kubectl@v2.0
+        uses: azure/setup-kubectl@v2.1
         with:
          version: 'v1.21.3' # default is latest stable
         id: install     
