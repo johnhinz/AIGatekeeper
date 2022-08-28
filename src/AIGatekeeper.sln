@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.Interface", "AIGuard.Interface\AIGuard.Interface.csproj", "{039867F6-550B-420A-B583-52EF75367465}"
 EndProject
@@ -31,6 +31,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.Orchestrator", "AIGuard.Orchestrator\AIGuard.Orchestrator.csproj", "{4661DE2B-48F9-46BD-A540-A9B33F710C3E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.MySQLSubscriber", "AIGuard.MySQLSubscriber\AIGuard.MySQLSubscriber.csproj", "{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIGuard.CodeProject.AI", "AIGuard.CodeProject.AI\AIGuard.CodeProject.AI.csproj", "{DE3FED08-441E-4CB3-A19D-EF4B5E6DC75B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0120E0EC-E203-4FB7-A113-8D23ED8E63A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE3FED08-441E-4CB3-A19D-EF4B5E6DC75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3FED08-441E-4CB3-A19D-EF4B5E6DC75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE3FED08-441E-4CB3-A19D-EF4B5E6DC75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE3FED08-441E-4CB3-A19D-EF4B5E6DC75B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
