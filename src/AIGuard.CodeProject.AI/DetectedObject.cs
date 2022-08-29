@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AIGuard.CodePorject.AI
+namespace AIGuard.CodeProject.AI
 {
     internal class DetectedObject : IDetectedObject
     {
