@@ -1,33 +1,42 @@
-name: docker
+name: docker-kubernetes
 
 on:
-  push:
+  push: 
     branches: [main]
   workflow_dispatch:      
 
 jobs:
-  docker:
+  dockerBuild-deployK8s: # job name
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
+      - name: checkout Repo
+        uses: actions/checkout@v3
         
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
+      - name: login to DockerHub
+        uses: docker/login-action@v2 
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-        
-      - name: Build and push
-        uses: docker/build-push-action@v2
+#      - name: Kubernetes Set Context
+#        uses: Azure/k8s-set-context@v2
+#        with:
+#          method: kubeconfig
+#          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Install Kubectl
+        uses: azure/setup-kubectl@v3.0
         with:
-          context: ./
-          file: ./src/Dockerfile
-          push: true
-          build-args: ${{ secrets.DOCKER_USERNAME }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/aigatekeeper
+         version: 'v1.21.3' # default is latest stable
+        id: install     
+        
+      - name: build and push the docker image            
+        run : |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/aigatekeeper ./src 
+          docker push ${{ secrets.DOCKER_USERNAME }}/aigatekeeper
+#          kubectl apply -f ./src/k8s.yaml
           
-          
+#         docker run --rm --name aigatekeeper-container -d aigatekeeper -v ./Volume-temp:/Volume-temp
+
+#         sed -i'' -e 's/ACR_URL/${{ secrets.ACR_URL }}/g' -e 's/AKS_URL/${{ secrets.AKS_URL }}/g' -e 's/IMAGE_LABEL/${{ github.sha }}/g' k8s.yaml
+#         kubectl apply -f k8s.yaml
