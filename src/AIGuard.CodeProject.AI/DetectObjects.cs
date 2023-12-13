@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace AIGuard.CodePorject.AI
 {
+    //https://www.codeproject.com/AI/docs/api/api_reference.html
+
     internal class DetectObjects : IDetectObjects
     {
         public Task<IPrediction> DetectObjectsAsync(byte[] image, string imagePath)
