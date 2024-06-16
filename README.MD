@@ -50,3 +50,89 @@ Cameras : A Javascript array containing a list of cameras.
     }
   ]
 ```
+
+## Sample Results Array
+
+[
+
+   {
+
+      "Confidence":0.7237486,
+
+      "Label":"chair",
+
+      "YMin":860,
+
+      "XMin":2141,
+
+      "YMax":1432,
+
+      "XMax":2560
+
+   },
+
+   {
+
+      "Confidence":0.81453925,
+
+      "Label":"potted plant",
+
+      "YMin":535,
+
+      "XMin":1156,
+
+      "YMax":774,
+
+      "XMax":1314
+
+   },
+
+   {
+
+      "Confidence":0.82615024,
+
+      "Label":"chair",
+
+      "YMin":666,
+
+      "XMin":1895,
+
+      "YMax":918,
+
+      "XMax":2088
+
+   },
+
+   {
+
+      "Confidence":0.85697025,
+
+      "Label":"chair",
+
+      "YMin":520,
+
+      "XMin":1643,
+
+      "YMax":789,
+
+      "XMax":1853
+
+   },
+
+   {
+
+      "Confidence":0.8937214,
+
+      "Label":"person",
+
+      "YMin":573,
+
+      "XMin":1881,
+
+      "YMax":1436,
+
+      "XMax":2330
+
+   }
+
+]
